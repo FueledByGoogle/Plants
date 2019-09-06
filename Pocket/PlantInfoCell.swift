@@ -1,11 +1,3 @@
-//
-//  DataCell.swift
-//  Plants
-//
-//  Created by Leo Huang on 2018-07-17.
-//  Copyright © 2018 Leo Huang. All rights reserved.
-//
-
 import UIKit
 
 class PlantInfoCell: UICollectionViewCell {

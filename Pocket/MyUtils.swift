@@ -1,11 +1,3 @@
-//
-//  ImageUtil.swift
-//  Plants
-//
-//  Created by Leo Huang on 2018-07-19.
-//  Copyright © 2018 Leo Huang. All rights reserved.
-//
-
 import UIKit
 
 extension UIImage {

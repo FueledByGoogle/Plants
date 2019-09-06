@@ -1,10 +1,3 @@
-//
-//  Plant.swift
-//  Plants
-//
-//  Created by Leo Huang on 2018-06-26.
-//  Copyright © 2018 Leo Huang. All rights reserved.
-//
 import UIKit
 
 /***
@@ -17,7 +10,7 @@ class PlantInfoVc: UICollectionViewController, UICollectionViewDelegateFlowLayou
     var passedPlantId =  0
     var passedPlantName = ""
     
-    let cellId = "cevard"
+    let cellId = "cellId"
     let headerId = "headerId"
     let footerId = "footerId"
     
@@ -27,14 +20,19 @@ class PlantInfoVc: UICollectionViewController, UICollectionViewDelegateFlowLayou
         // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
         self.collectionView?.backgroundColor = UIColor.white
         self.collectionView?.register(PlantInfoCell.self, forCellWithReuseIdentifier: cellId)
-        self.collectionView!.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId) // header
+        // header
+        self.collectionView!.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerId)
         self.collectionView!.register(UICollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: footerId)
     }
+    
+    // number of sections
+    
+    
     
     // cell count
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-// should return number of sections we'll have
+    //  number of items in the section
         return 3
     }
     
@@ -82,29 +80,4 @@ class PlantInfoVc: UICollectionViewController, UICollectionViewDelegateFlowLayou
         return CGSize(width: self.view.frame.width,
                     height: 30 + estimatedFrame.height)
     }
-    
-    
-    // header
-/*    override func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        if (kind == UICollectionElementKindSectionHeader) {
-            let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerId, for: indexPath)
-            header.backgroundColor = UIColor.red
-            return header
-        } else {
-            let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: footerId, for: indexPath)
-            footer.backgroundColor = UIColor.blue
-            return footer
-        }
-    }
-    
-    // header size
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.height, height: 50)
-    }
-    
-    // footer size
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-        return CGSize(width: view.frame.height, height: 100)
-   }
-*/
 }

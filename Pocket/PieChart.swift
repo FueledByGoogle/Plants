@@ -1,15 +1,7 @@
-//
-//  PieView.swift
-//  Pocket
-//
-//  Created by Leo Huang on 2019-09-01.
-//  Copyright © 2019 Leo Huang. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
-class PieView: UIView {
+class Piechart: UIView {
     
     struct PiePiece {
         var name : String
@@ -18,21 +10,23 @@ class PieView: UIView {
     }
     
     override func draw(_ rect: CGRect) {
-        
+
         // temp variables to test pie chart
         var segments: [PiePiece] = []
-        segments.append(PiePiece.init(name: "Entertainment", amount: 25, color: UIColor.red))
-        segments.append(PiePiece.init(name: "Food", amount: 50, color: UIColor.yellow))
-        segments.append(PiePiece.init(name: "Services", amount: 100, color: UIColor.blue))
+        segments.append(PiePiece.init(name: "Entertainment", amount: 25, color: UIColor(rgb: 0xFF2F92)))
+        segments.append(PiePiece.init(name: "Food", amount: 50, color: UIColor(rgb: 0x9437FF)))
+        segments.append(PiePiece.init(name: "Services", amount: 100, color: UIColor(rgb: 0x76D6FF)))
         
+        let pieChartSizeReduction  = CGFloat(0.40)
         
         
         //  total angle of a circle
         let anglePI2 = (CGFloat.pi * 2)
-        // center point of circle
-        let viewCenter = CGPoint.init(x: bounds.size.width * 0.5, y: bounds.size.height * 0.5)
         // radius of the pie chart
-        let radius = min(self.bounds.size.width, self.bounds.size.height) * 0.5;
+        let radius = min(bounds.size.width, bounds.size.height) * pieChartSizeReduction;
+        
+        // center point of circle
+        let viewCenter = CGPoint.init(x: bounds.size.width/2, y: bounds.size.height/2)
         
         let ctx = UIGraphicsGetCurrentContext()
         ctx?.setLineWidth(2) // width of future lines that are drawn

@@ -14,14 +14,19 @@ class TabBar: UITabBarController {
         
         
         let layout = UICollectionViewFlowLayout()
+        
         let menuController = MenuVc(collectionViewLayout: layout)
         let menuNavController = UINavigationController(rootViewController: menuController)
         menuNavController.tabBarItem.title = MyEnums.TabNames.Menu.rawValue
         
         
-        let expensesTab = ExpensesVc()
-        let icon2 = UITabBarItem(title: MyEnums.TabNames.Expenses.rawValue, image:  nil, selectedImage: nil)
-        expensesTab.tabBarItem = icon2
+//        let expensesTab = ExpensesVc()
+//        let icon2 = UITabBarItem(title: MyEnums.TabNames.Expenses.rawValue, image:  nil, selectedImage: nil)
+//        expensesTab.tabBarItem = icon2
+        
+        let expenseController = ExpensesCVC(collectionViewLayout: layout)
+        let expenseNavcontroller = UINavigationController(rootViewController: expenseController)
+        expenseNavcontroller.tabBarItem.title = MyEnums.TabNames.Expenses.rawValue
         
         
         let searchController = SearchVc(collectionViewLayout: layout)
@@ -29,7 +34,7 @@ class TabBar: UITabBarController {
         searchNavController.tabBarItem.title = MyEnums.TabNames.Search.rawValue
         
 //        viewControllers = [menuNavController, expensesTab, searchNavController]
-        viewControllers = [expensesTab, menuNavController, searchNavController]
+        viewControllers = [expenseNavcontroller, menuNavController, searchNavController]
         
         
         

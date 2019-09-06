@@ -1,11 +1,3 @@
-//
-//  Plant.swift
-//  Plants
-//
-//  Created by Leo Huang on 2018-08-07.
-//  Copyright © 2018 Leo Huang. All rights reserved.ooo
-//
-
 import UIKit
 
 class Plant {

@@ -13,8 +13,8 @@
 		021964CC2094333F009A43A6 /* PlantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964CB2094333F009A43A6 /* PlantsTests.swift */; };
 		021964D72094333F009A43A6 /* PocketUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964D62094333F009A43A6 /* PocketUITests.swift */; };
 		02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DBC231B32DC00FAAFC4 /* MyEnums.swift */; };
-		02202DC6231C69B200FAAFC4 /* PieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC5231C69B200FAAFC4 /* PieView.swift */; };
-		02202DC7231C69B200FAAFC4 /* ExpensesVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC4231C69B200FAAFC4 /* ExpensesVc.swift */; };
+		02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC5231C69B200FAAFC4 /* PieChart.swift */; };
+		02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */; };
 		022047912100C181002F6E9B /* DSC_1336.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 022047902100C181002F6E9B /* DSC_1336.JPG */; };
 		022047972100CF26002F6E9B /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022047962100CF26002F6E9B /* MyUtils.swift */; };
 		0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0220479B2100EB96002F6E9B /* SearchVc.swift */; };
@@ -66,8 +66,8 @@
 		021964D62094333F009A43A6 /* PocketUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketUITests.swift; sourceTree = "<group>"; };
 		021964D82094333F009A43A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02202DBC231B32DC00FAAFC4 /* MyEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnums.swift; sourceTree = "<group>"; };
-		02202DC4231C69B200FAAFC4 /* ExpensesVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesVc.swift; sourceTree = "<group>"; };
-		02202DC5231C69B200FAAFC4 /* PieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieView.swift; sourceTree = "<group>"; };
+		02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesCVC.swift; sourceTree = "<group>"; };
+		02202DC5231C69B200FAAFC4 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		022047902100C181002F6E9B /* DSC_1336.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DSC_1336.JPG; sourceTree = "<group>"; };
 		022047962100CF26002F6E9B /* MyUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUtils.swift; sourceTree = "<group>"; };
 		0220479B2100EB96002F6E9B /* SearchVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVc.swift; sourceTree = "<group>"; };
@@ -157,6 +157,7 @@
 				02DE4EF820E7CE0400300F98 /* Resources */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
 				022047962100CF26002F6E9B /* MyUtils.swift */,
+				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */,
 				0286812B2119E94600E0A67E /* Plant.swift */,
@@ -185,20 +186,11 @@
 			path = PocketUITests;
 			sourceTree = "<group>";
 		};
-		02202DC8231C69C500FAAFC4 /* ExpenseTab */ = {
-			isa = PBXGroup;
-			children = (
-				02202DC4231C69B200FAAFC4 /* ExpensesVc.swift */,
-				02202DC5231C69B200FAAFC4 /* PieView.swift */,
-			);
-			path = ExpenseTab;
-			sourceTree = "<group>";
-		};
 		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				02202DC8231C69C500FAAFC4 /* ExpenseTab */,
 				029B4E8621E1DACD00882705 /* TabBar.swift */,
+				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
 				021964B82094333F009A43A6 /* MenuVc.swift */,
 				0220479B2100EB96002F6E9B /* SearchVc.swift */,
 				02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */,
@@ -510,11 +502,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				0286812C2119E94600E0A67E /* Plant.swift in Sources */,
-				02202DC7231C69B200FAAFC4 /* ExpensesVc.swift in Sources */,
+				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
 				022047972100CF26002F6E9B /* MyUtils.swift in Sources */,
 				02A5B2FD210F6CA100486DE5 /* PlantInfoCell.swift in Sources */,
-				02202DC6231C69B200FAAFC4 /* PieView.swift in Sources */,
+				02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */,
 				02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */,
 				02697DC620E287EE0090D7E2 /* PlantInfoVc.swift in Sources */,
 				021964B92094333F009A43A6 /* MenuVc.swift in Sources */,
