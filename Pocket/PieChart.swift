@@ -1,24 +1,33 @@
 import Foundation
 import UIKit
 
+
+/* TODO:
+ - Possibly map category to a number, this way, piechart can be used
+ regardless category names
+ */
+
 class Piechart: UIView {
     
-    struct PiePiece {
-        var name : String
-        var amount : CGFloat
-        var color : UIColor
+    // Array holding category corresponding to its value
+    var categories = [String]()
+    var values = [CGFloat]()
+    
+    /** initialize with relevant frame, and reference to user
+     */
+    init(frame: CGRect, categories: inout [String],  values: inout [CGFloat]) {
+        super.init(frame: frame)
+        self.categories =  categories
+        self.values = values
+    }
+    
+    required init(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func draw(_ rect: CGRect) {
-
-        // temp variables to test pie chart
-        var segments: [PiePiece] = []
-        segments.append(PiePiece.init(name: "Entertainment", amount: 25, color: UIColor(rgb: 0xFF2F92)))
-        segments.append(PiePiece.init(name: "Food", amount: 50, color: UIColor(rgb: 0x9437FF)))
-        segments.append(PiePiece.init(name: "Services", amount: 100, color: UIColor(rgb: 0x76D6FF)))
         
         let pieChartSizeReduction  = CGFloat(0.40)
-        
         
         //  total angle of a circle
         let anglePI2 = (CGFloat.pi * 2)
@@ -35,14 +44,13 @@ class Piechart: UIView {
         var currentAngle  = CGFloat.init()
         
         // we set initial result to be 0, recursively add result with next element
-        let totalValue = segments.reduce(0, {$0 + $1.amount} )
+        let totalValue = values.reduce(0, {$0 + $1})
         
-        // note when drawing: whatever is drawn after goes on top of the first
-        for i in 0 ..< segments.count {
-            let segment = segments[i]
+        
+        for i in 0 ..< self.categories.count {
             
             // percentage to determine how much to move by
-            let percent = segment.amount/totalValue
+            let percent = values[i]/totalValue
             let endAngle = currentAngle + anglePI2 * percent
             
             // define path (shape) of the piece
@@ -52,7 +60,17 @@ class Piechart: UIView {
             ctx?.closePath()
             
             // fill color of piece
-            ctx?.setFillColor(segment.color.cgColor)
+            switch categories[i] {
+            case MyEnums.Categories.Transportation.rawValue :
+                ctx?.setFillColor(UIColor(rgb: 0xFF2F92).cgColor)
+            case MyEnums.Categories.Food.rawValue :
+                ctx?.setFillColor(UIColor(rgb: 0x9437FF).cgColor)
+            case MyEnums.Categories.Entertainment.rawValue :
+                ctx?.setFillColor(UIColor(rgb: 0x76D6FF).cgColor)
+            default:
+                print("Category not in Enum, or incorrectly formatted. Setting colour to black.")
+                ctx?.setFillColor(UIColor.black.cgColor)
+            }
             ctx?.fillPath()
             
             // piece border

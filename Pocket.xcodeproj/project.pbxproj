@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		021263462322F5E400477342 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021263452322F5E400477342 /* User.swift */; };
 		021964B72094333F009A43A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964B62094333F009A43A6 /* AppDelegate.swift */; };
 		021964B92094333F009A43A6 /* MenuVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964B82094333F009A43A6 /* MenuVc.swift */; };
 		021964BE2094333F009A43A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 021964BD2094333F009A43A6 /* Assets.xcassets */; };
@@ -54,6 +55,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		021263452322F5E400477342 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		021964B32094333F009A43A6 /* Pocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		021964B62094333F009A43A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		021964B82094333F009A43A6 /* MenuVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVc.swift; sourceTree = "<group>"; };
@@ -127,6 +129,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		021263472322FB6600477342 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0286812B2119E94600E0A67E /* Plant.swift */,
+				021263452322F5E400477342 /* User.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
 		021964AA2094333F009A43A6 = {
 			isa = PBXGroup;
 			children = (
@@ -160,8 +171,8 @@
 				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */,
-				0286812B2119E94600E0A67E /* Plant.swift */,
 				023363F020FE417800A99F27 /* SearchCell.swift */,
+				021263472322FB6600477342 /* Classes */,
 				021964C22094333F009A43A6 /* Info.plist */,
 				021964BD2094333F009A43A6 /* Assets.xcassets */,
 			);
@@ -189,11 +200,11 @@
 		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				029B4E8621E1DACD00882705 /* TabBar.swift */,
 				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
 				021964B82094333F009A43A6 /* MenuVc.swift */,
 				0220479B2100EB96002F6E9B /* SearchVc.swift */,
 				02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */,
+				029B4E8621E1DACD00882705 /* TabBar.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -314,6 +325,11 @@
 					021964B22094333F009A43A6 = {
 						CreatedOnToolsVersion = 9.0.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 					021964C62094333F009A43A6 = {
 						CreatedOnToolsVersion = 9.0.1;
@@ -501,6 +517,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				021263462322F5E400477342 /* User.swift in Sources */,
 				0286812C2119E94600E0A67E /* Plant.swift in Sources */,
 				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
