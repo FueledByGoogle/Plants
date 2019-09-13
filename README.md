@@ -15,4 +15,4 @@ An IOS app to track your daily expenses.
 
 - Custom pie chart drawn from data
 - Simple database that is searchable
-- Using Google's ML API to recognize text from picture ( plan is to use this in the future read from a grocery receipt and categorize expenditure; however,  many items are abbrevieated and inconsistent across s tores )
+- Using Google's ML API to recognize text from picture ( plan is to use this in the future read from a grocery receipt and categorize expenditure. Would be nice to recognize types of food but product names are usually abbreviated and different across stores )
