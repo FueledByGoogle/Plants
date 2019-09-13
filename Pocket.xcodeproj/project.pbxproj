@@ -32,6 +32,7 @@
 		029B4E8721E1DACD00882705 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B4E8621E1DACD00882705 /* TabBar.swift */; };
 		02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */; };
 		02A5B2FD210F6CA100486DE5 /* PlantInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */; };
+		02F83C1C23297A320012E836 /* GraphLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F83C1B23297A320012E836 /* GraphLegend.swift */; };
 		0DBF74FDD565A0A37345B635 /* Pods_Pocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C1A3449BEED2B8CBB59F63D /* Pods_Pocket.framework */; };
 		30B5DC7DE79E316368F25690 /* Pods_PocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A777A3CC0721C1ADF70B77E2 /* Pods_PocketTests.framework */; };
 		8BE8A549587295D0FF6B7B77 /* Pods_PocketUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE8D04FE06BF67174390CCD /* Pods_PocketUITests.framework */; };
@@ -84,6 +85,7 @@
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plant_picture.JPG; sourceTree = "<group>"; };
 		02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoCell.swift; sourceTree = "<group>"; };
+		02F83C1B23297A320012E836 /* GraphLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GraphLegend.swift; sourceTree = "<group>"; };
 		0B4E44CBAF4259B94A57255A /* Pods-PlantsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlantsTests.release.xcconfig"; path = "Target Support Files/Pods-PlantsTests/Pods-PlantsTests.release.xcconfig"; sourceTree = "<group>"; };
 		1FE8D04FE06BF67174390CCD /* Pods_PocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27441814C217DF6BA3FA363D /* Pods-PocketUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketUITests.debug.xcconfig"; path = "Target Support Files/Pods-PocketUITests/Pods-PocketUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -168,10 +170,11 @@
 				02DE4EF820E7CE0400300F98 /* Resources */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
 				022047962100CF26002F6E9B /* MyUtils.swift */,
-				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */,
 				023363F020FE417800A99F27 /* SearchCell.swift */,
+				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
+				02F83C1B23297A320012E836 /* GraphLegend.swift */,
 				021263472322FB6600477342 /* Classes */,
 				021964C22094333F009A43A6 /* Info.plist */,
 				021964BD2094333F009A43A6 /* Assets.xcassets */,
@@ -530,6 +533,7 @@
 				029B4E8721E1DACD00882705 /* TabBar.swift in Sources */,
 				023363F120FE417800A99F27 /* SearchCell.swift in Sources */,
 				021964B72094333F009A43A6 /* AppDelegate.swift in Sources */,
+				02F83C1C23297A320012E836 /* GraphLegend.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,4 +9,5 @@ class MyEnums {
     enum Categories: String {
         case Transportation, Food, Entertainment
     }
+
 }

@@ -30,12 +30,11 @@ class MenuVc: UICollectionViewController, UICollectionViewDelegateFlowLayout  {
         navigationItem.title = "Home"
         self.navigationController?.isNavigationBarHidden = true
         
-        
         self.collectionView?.backgroundColor = UIColor.white
         
         // load database first so we can populate the array that searchVC loads from
         populateDataArray()
-//        setupBackgroundImg() // big picture causes lag
+        setupBackgroundImg() // big picture causes lag
 //        setupButtons()
         
 //        print("this should only print once (MenuVC)")
@@ -150,12 +149,13 @@ class MenuVc: UICollectionViewController, UICollectionViewDelegateFlowLayout  {
     /** background image setup
      */
     func setupBackgroundImg() {
-        self.collectionView?.backgroundColor = .white
         let imageView = UIImageView(frame: self.view.bounds)
         imageView.image = UIImage(named: "DSC_1336.JPG")
         imageView.image = imageView.image!.rotate(radians: 3*Float.pi/2) // using extended function of image implemented in ImageUtil
         imageView.contentMode = UIView.ContentMode.scaleAspectFill // same effect as windows desktop fill option
         self.view.addSubview(imageView)
+        
+//        imageView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -500).isActive = true
         // blur effect
 //        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.light)
 //        let blurEffectView = UIVisualEffectView(effect: blurEffect)
