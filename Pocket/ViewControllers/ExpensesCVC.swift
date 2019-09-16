@@ -6,7 +6,10 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let backgroundColor: UIColor = UIColor(rgb: 0xe8e8e8)
     // single user
     var user1: User = User()
-
+    
+    var colourMapping: [String: Int] = [:]
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
@@ -36,6 +39,29 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         user1.addExpenseType(expenseType: "Entertainment")
         user1.addExpenseValue(expenseValue: 50)
         
+        
+//        The pro approach would be to use an extension:
+//        extension Dictionary {
+//            public init(keys: [Key], values: [Value]) {
+//                precondition(keys.count == values.count)
+//
+//                self.init()
+//
+//                for (index, key) in keys.enumerate() {
+//                    self[key] = values[index]
+//                }
+//            }
+//        }
+        
+        for (index, element) in user1.expenseType.enumerated() {
+            
+            if index < MyEnums.Colours.allCases.count {
+                colourMapping[element] = MyEnums.Colours.allCases[index].rawValue
+            } else {
+                print("not enough colours, setting colour to black")
+                colourMapping[element] = 0
+            }
+        }
     }
     
     // number of sections
@@ -55,11 +81,16 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         cell.backgroundColor = UIColor.purple
         
-        if indexPath.row == 0 { // first cell in section
-            let pieView = PieChart(frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height), categories: &user1.expenseType,  values: &user1.expenseValue)
+        if indexPath.row == 0 { // pie chart
+            let pieView = PieChart(
+                frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height),
+                categories: &user1.expenseType,
+                values: &user1.expenseValue,
+                mapping: &colourMapping)
             pieView.backgroundColor = UIColor.white
             cell.contentView.addSubview(pieView)
-        } else {
+        
+        } else { // legend for chart
             // category color
             let circleRadius =  cell.frame.height*0.1
             let circlePath = UIBezierPath(arcCenter: CGPoint(x: circleRadius*2, y: cell.frame.height/2), radius: circleRadius, startAngle: 0, endAngle: CGFloat(Float.pi*2), clockwise: true)
@@ -68,18 +99,19 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             circleLabel.path = circlePath.cgPath
             
             // color inside circle
-            circleLabel.fillColor = UIColor.red.cgColor
+            circleLabel.fillColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row-1].rawValue).cgColor // we iterate with indexpath here, hence the reason of needing to offset by subtracting 1
             cell.contentView.layer.addSublayer(circleLabel)
             
             let categoryLabel = UILabel(frame: CGRect(x: circleRadius*4, y: 0, width: cell.frame.width, height: cell.frame.height))
             // for performance, but probably makes no difference since there's so few UILabels
             categoryLabel.isOpaque = true
-            categoryLabel.text =  user1.expenseType[indexPath.row-1]
+            categoryLabel.text = user1.expenseType[indexPath.row-1]
             cell.contentView.addSubview(categoryLabel)
         }
         
         return cell
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var size = CGSize(width: self.view.frame.width, height: 300)

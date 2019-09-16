@@ -6,15 +6,15 @@ class PieChart: UIView {
     // Array holding category corresponding to its value
     var categories = [String]()
     var values = [CGFloat]()
-    
-    let categoryColors = [0xFF2F92, 0x76D6FF, 0x9437FF]
+    var colourMap: [String: Int] = [:]
     
     /** initialize with relevant frame, and reference to user
      */
-    init(frame: CGRect, categories: inout [String],  values: inout [CGFloat]) {
+    init(frame: CGRect, categories: inout [String],  values: inout [CGFloat],  mapping: inout [String : Int]) {
         super.init(frame: frame)
         self.categories =  categories
         self.values = values
+        self.colourMap = mapping
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -42,8 +42,7 @@ class PieChart: UIView {
         // we set initial result to be 0, recursively add result with next element
         let totalValue = values.reduce(0, {$0 + $1})
         
-        
-        for i in 0 ..< self.categories.count {
+        for i in 0 ..< colourMap.count {
             
             // percentage to determine how much to move by
             let percent = values[i]/totalValue
@@ -54,13 +53,7 @@ class PieChart: UIView {
             ctx?.addArc(center: viewCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
             
             // fill color of piece
-            
-            if (i < categoryColors.count) {
-                ctx?.setFillColor(UIColor(rgb: categoryColors[i]).cgColor)
-            } else {
-                print("Not enough unique colors to cover all categories, setting to black")
-                ctx?.setFillColor(UIColor.black.cgColor)
-            }
+            ctx?.setFillColor(UIColor(rgb: MyEnums.Colours.allCases[i].rawValue).cgColor)
             ctx?.fillPath()
             
             // piece border
