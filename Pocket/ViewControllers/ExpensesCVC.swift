@@ -1,4 +1,15 @@
 import UIKit
+import SQLite3
+
+
+
+
+
+
+
+
+
+var user: User = User()
 
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -9,6 +20,11 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     var colourMapping: [String: Int] = [:]
     
+    
+    // database
+    var db: OpaquePointer?
+    let databaseFileName = "TestDatabase"
+    let databaseFileExtension = "db"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +39,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //        // gets rid of spacing between cells
 //        layout.minimumLineSpacing = 0
 //        layout.minimumInteritemSpacing = 0
+        populateDataArray()
         dummyInfo()
     }
 
@@ -89,7 +106,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 mapping: &colourMapping)
             pieView.backgroundColor = UIColor.white
             cell.contentView.addSubview(pieView)
-        
         } else { // legend for chart
             // category color
             let circleRadius =  cell.frame.height*0.1
@@ -98,8 +114,9 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             let circleLabel = CAShapeLayer()
             circleLabel.path = circlePath.cgPath
             
-            // color inside circle
-            circleLabel.fillColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row-1].rawValue).cgColor // we iterate with indexpath here, hence the reason of needing to offset by subtracting 1
+            // colouring in the circles
+            // because our dictionary mapping is in order we can simply iterate through the index, hence the reason of needing to offset by subtracting 1
+            circleLabel.fillColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row-1].rawValue).cgColor
             cell.contentView.layer.addSublayer(circleLabel)
             
             let categoryLabel = UILabel(frame: CGRect(x: circleRadius*4, y: 0, width: cell.frame.width, height: cell.frame.height))
@@ -121,5 +138,54 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             size = CGSize(width: self.view.frame.width, height: 50)
         }
         return size
+    }
+    
+    func populateDataArray () {
+        let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
+        
+        if (sqlite3_open(dbPath!.absoluteString, &db) != SQLITE_OK && dbPath != nil) {
+            print("Error opening database")
+        } else {
+            print("Successfully opened database")
+        }
+        // query language
+        let queryString = "SELECT * FROM Expense WHERE Date between '2019-01-01' AND '2019-01-01'"
+        
+        // statement pointer
+        var stmt:OpaquePointer?
+        // preparing the query
+        if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error preparing the database: ", errmsg)
+            return
+        }
+        // traverse through all records
+        var i = 0
+        while sqlite3_step(stmt) == SQLITE_ROW {
+//            let customerIdDb = String(cString: sqlite3_column_text(stmt, 0))
+            let amountDb = String(cString: sqlite3_column_text(stmt, 1))
+            let categoryDb = String(cString: sqlite3_column_text(stmt, 2))
+            
+            
+            
+//            probably don't need to read the date at all, and just query database with each load
+//            let dateDb = String(cString: sqlite3_column_text(stmt, 3))
+            
+            guard let amount = NumberFormatter().number(from: amountDb) else {
+                print("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
+                return
+            }
+            user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
+            user.addExpenseType(expenseType: categoryDb)
+            
+//            let dateFormatter = DateFormatter()
+//            dateFormatter.dateFormat = "yyyy-MM-dd"
+//            guard let date = dateFormatter.date(from: dateDb) else {
+//                print("Error converting entry ", i+1, " in database category \"Date\" to Date format.")
+//                return
+//            }
+//            user.addDate(date: date)
+            i += 1
+        }
     }
 }

@@ -15,7 +15,7 @@ class MyEnums {
         case c1 = 0xFF2F92
         case c2 = 0x76D6FF
         case c3 = 0x9437FF
-        case c4 = 0
+        case c4 = 0xf0da81
     }
 
 }

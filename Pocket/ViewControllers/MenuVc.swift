@@ -34,7 +34,7 @@ class MenuVc: UICollectionViewController, UICollectionViewDelegateFlowLayout  {
         
         // load database first so we can populate the array that searchVC loads from
         populateDataArray()
-        setupBackgroundImg() // big picture causes lag
+//        setupBackgroundImg() // big picture causes lag
 //        setupButtons()
         
 //        print("this should only print once (MenuVC)")
@@ -175,9 +175,9 @@ class MenuVc: UICollectionViewController, UICollectionViewDelegateFlowLayout  {
         }
         // query language
         let queryString = "SELECT name, sowinstructions, spaceinstructions, harvestinstructions FROM " + searchTableName + " ORDER BY name"
-        //statement pointer
+        // statement pointer
         var stmt:OpaquePointer?
-        //preparing the query
+        // preparing the query
         if sqlite3_prepare(db, queryString, -1, &stmt, nil) != SQLITE_OK{
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("There was an error preparing the database: ", errmsg)
