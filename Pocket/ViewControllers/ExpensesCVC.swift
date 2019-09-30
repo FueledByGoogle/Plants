@@ -7,11 +7,6 @@ var user: User = User()
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId: String = "cellId"
-    let backgroundColor: UIColor = UIColor(rgb: 0xe8e8e8)
-    // single user
-    
-    var myDictionary: [String: CGFloat] = [:]
-    
     
     // database
     var db: OpaquePointer?
@@ -19,7 +14,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let databaseFileExtension = "db"
     
     var uniqueCategories: [String] = []
-    
+    var categoryDictionary: [String: CGFloat] = [:]
     
     let queryDate = "'2019-01-01'"
     
@@ -28,7 +23,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
         self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
         self.navigationController?.isNavigationBarHidden = true
-        self.collectionView.backgroundColor = backgroundColor
+        self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
 //        let layout = UICollectionViewFlowLayout()
@@ -65,7 +60,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         if indexPath.row == 0 { // pie chart
             let pieView = PieChart(
                 frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height),
-                categories: &myDictionary)
+                categories: &categoryDictionary)
             pieView.backgroundColor = UIColor.white
             cell.contentView.addSubview(pieView)
         } else { // legend for chart
@@ -90,7 +85,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             let categoryLabel = UILabel(frame: CGRect(x: circleRadius*4, y: 0, width: cell.frame.width, height: cell.frame.height))
             // for performance, but probably makes no difference since there's so few UILabels
             categoryLabel.isOpaque = true
-            categoryLabel.text = Array(myDictionary)[indexPath.row-1].key
+            categoryLabel.text = Array(categoryDictionary)[indexPath.row-1].key
             cell.contentView.addSubview(categoryLabel)
         }
         
@@ -103,7 +98,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var size = CGSize(width: self.view.frame.width, height: 300)
         if (indexPath.row == 0 ) {
-            size = CGSize(width: self.view.frame.width, height: self.view.frame.height*0.55)
+            size = CGSize(width: self.view.frame.width, height: self.view.frame.height * 0.55)
         } else {
             size = CGSize(width: self.view.frame.width, height: 50)
         }
@@ -140,20 +135,9 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
         // initialize dictionary for storing total value of each category
         for element in uniqueCategories {
-            myDictionary[element] = 0
+            categoryDictionary[element] = 0
         }
-//        The pro approach would be to use an extension:
-//        extension Dictionary {
-//            public init(keys: [Key], values: [Value]) {
-//                precondition(keys.count == values.count)
-//
-//                self.init()
-//
-//                for (index, key) in keys.enumerate() {
-//                    self[key] = values[index]
-//                }
-//            }
-//        }
+
         
         let userDataQuery = "SELECT * FROM Expense WHERE Date between " + queryDate + " AND " + queryDate
         
@@ -177,7 +161,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 return
             }
             user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
-            myDictionary[categoryDb]! +=  CGFloat(truncating: amount)
+            categoryDictionary[categoryDb]! +=  CGFloat(truncating: amount)
             user.addExpenseType(expenseType: categoryDb)
             
 //            let dateFormatter = DateFormatter()

@@ -14,6 +14,10 @@ class TabBar: UITabBarController {
         
         let layout = UICollectionViewFlowLayout()
         
+        let mainMenuController = MenuCVC(collectionViewLayout: layout)
+        let mainMenuNavcontroller = UINavigationController(rootViewController: mainMenuController)
+        mainMenuNavcontroller.tabBarItem.title = MyEnums.TabNames.Menu.rawValue
+        
         let menuController = MenuVc(collectionViewLayout: layout)
         let menuNavController = UINavigationController(rootViewController: menuController)
         menuNavController.tabBarItem.title = MyEnums.TabNames.Menu.rawValue
@@ -26,7 +30,7 @@ class TabBar: UITabBarController {
         let searchNavController = UINavigationController(rootViewController: searchController)
         searchNavController.tabBarItem.title = MyEnums.TabNames.Search.rawValue
         
-        viewControllers = [expenseNavcontroller, menuNavController, searchNavController]
+        viewControllers = [mainMenuNavcontroller, expenseNavcontroller, menuNavController, searchNavController]
         
     }
 }
