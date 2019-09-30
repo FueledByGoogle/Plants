@@ -21,7 +21,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     var uniqueCategories: [String] = []
     
     
-    let queryDate = "'2019-05-01'"
+    let queryDate = "'2019-01-01'"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,19 +39,25 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         populateDataArray()
     }
     
-    // number of sections
+    /**
+        number of sections
+     */
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    // number of cells in section
+    /**
+        number of cells in section
+     */
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // where 1 is the pie view
         let numOfCells  = 1 + uniqueCategories.count // + 1 to account for piechart cell
         return numOfCells
     }
     
-    //  what each cell is going to display
+    /**
+        what each cell is going to display
+     */
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
         cell.backgroundColor = UIColor.purple
@@ -91,7 +97,9 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         return cell
     }
     
-    // what a specific cell's size should be
+    /**
+        what a specific cell's size should be
+     */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var size = CGSize(width: self.view.frame.width, height: 300)
         if (indexPath.row == 0 ) {
@@ -103,7 +111,8 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     
-    /** Read database and map each category to its total value
+    /**
+        Read database and map each category to its total value
      */
     func populateDataArray () {
         let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
@@ -180,8 +189,5 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //            user.addDate(date: date)
             i += 1
         }
-        
-        
-        
     }
 }

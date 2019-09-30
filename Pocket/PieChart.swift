@@ -43,7 +43,7 @@ class PieChart: UIView {
         }
         
         var i = 0
-        for (category, value) in categories {
+        for (_, value) in categories {
             // percentage to determine how much to move by
             let percent = value/totalValue
             let endAngle = startAngle + anglePI2 * percent
@@ -53,8 +53,15 @@ class PieChart: UIView {
             ctx?.addArc(center: viewCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
             
             // fill color of piece
-            ctx?.setFillColor(UIColor(rgb: MyEnums.Colours.allCases[i].rawValue).cgColor)
+            if i < MyEnums.Colours.allCases.count {
+                ctx?.setFillColor(UIColor(rgb: MyEnums.Colours.allCases[i].rawValue).cgColor)
+            } else {
+                print("not enough colours, grey will be used to reprersent the rest of the colours")
+                ctx?.setFillColor(UIColor(rgb: 0x454545).cgColor)
+            }
             ctx?.fillPath()
+            
+            
             // piece border
 //            ctx?.move(to: viewCenter)
 //            ctx?.addArc(center: viewCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
