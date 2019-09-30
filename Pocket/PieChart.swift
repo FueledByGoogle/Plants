@@ -4,17 +4,14 @@ import UIKit
 class PieChart: UIView {
     
     // Array holding category corresponding to its value
-    var categories = [String]()
-    var values = [CGFloat]()
-    var colourMap: [String: Int] = [:]
+    var categories: [String: CGFloat] = [:]
     
-    /** initialize with relevant frame, and reference to user
+    /** catgegories : unique array of categories
+        values : total value of each category
      */
-    init(frame: CGRect, categories: inout [String],  values: inout [CGFloat],  mapping: inout [String : Int]) {
+    init(frame: CGRect, categories: inout [String: CGFloat]) {
         super.init(frame: frame)
         self.categories =  categories
-        self.values = values
-        self.colourMap = mapping
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -39,13 +36,16 @@ class PieChart: UIView {
         // starting angle
         var startAngle  = -CGFloat.pi * 0.5
         
-        // we set initial result to be 0, recursively add result with next element
-        let totalValue = values.reduce(0, {$0 + $1})
+        // could be more efficient to add up totals before passing, but since there won't be many categories the run time difference will be negligible.
+        var totalValue = CGFloat(0)
+        for (_, value) in categories {
+            totalValue += value
+        }
         
-        for i in 0 ..< colourMap.count {
-            
+        var i = 0
+        for (category, value) in categories {
             // percentage to determine how much to move by
-            let percent = values[i]/totalValue
+            let percent = value/totalValue
             let endAngle = startAngle + anglePI2 * percent
             
             // define path (shape) of the piece
@@ -55,7 +55,6 @@ class PieChart: UIView {
             // fill color of piece
             ctx?.setFillColor(UIColor(rgb: MyEnums.Colours.allCases[i].rawValue).cgColor)
             ctx?.fillPath()
-            
             // piece border
 //            ctx?.move(to: viewCenter)
 //            ctx?.addArc(center: viewCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
@@ -63,7 +62,7 @@ class PieChart: UIView {
             // draw line on current path, and colour
 //            ctx?.setStrokeColor(UIColor.white.cgColor)
 //            ctx?.strokePath()
-            
+            i += 1
             startAngle = endAngle
         }
     }
