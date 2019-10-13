@@ -27,9 +27,10 @@
 		0251C8E62318BE46002E2311 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0251C8E52318BE46002E2311 /* GoogleService-Info.plist */; };
 		0251C8E72318BE46002E2311 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0251C8E52318BE46002E2311 /* GoogleService-Info.plist */; };
 		0251C8E82318BE46002E2311 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0251C8E52318BE46002E2311 /* GoogleService-Info.plist */; };
-		0266A55923429B6800025226 /* MenuCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* MenuCVC.swift */; };
+		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
 		02697DC620E287EE0090D7E2 /* PlantInfoVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */; };
 		0286812C2119E94600E0A67E /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0286812B2119E94600E0A67E /* Plant.swift */; };
+		02886EE62352B82F006F7B8D /* CategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE52352B82F006F7B8D /* CategoryCell.swift */; };
 		029B4E8721E1DACD00882705 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B4E8621E1DACD00882705 /* TabBar.swift */; };
 		02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */; };
 		02A5B2FD210F6CA100486DE5 /* PlantInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */; };
@@ -81,9 +82,10 @@
 		023363F020FE417800A99F27 /* SearchCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		0251124420E7E7E300C12D56 /* Plants.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Plants.db; sourceTree = "<group>"; };
 		0251C8E52318BE46002E2311 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		0266A55823429B6800025226 /* MenuCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuCVC.swift; sourceTree = "<group>"; };
+		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
 		02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoVc.swift; sourceTree = "<group>"; };
 		0286812B2119E94600E0A67E /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
+		02886EE52352B82F006F7B8D /* CategoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryCell.swift; sourceTree = "<group>"; };
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plant_picture.JPG; sourceTree = "<group>"; };
 		02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoCell.swift; sourceTree = "<group>"; };
@@ -171,8 +173,7 @@
 				021964B62094333F009A43A6 /* AppDelegate.swift */,
 				02DE4EF820E7CE0400300F98 /* Resources */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
-				02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */,
-				023363F020FE417800A99F27 /* SearchCell.swift */,
+				02886EE42352B7D8006F7B8D /* Cells */,
 				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
 				022047962100CF26002F6E9B /* MyUtils.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
@@ -204,7 +205,7 @@
 		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				0266A55823429B6800025226 /* MenuCVC.swift */,
+				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
 				021964B82094333F009A43A6 /* MenuVc.swift */,
 				0220479B2100EB96002F6E9B /* SearchVc.swift */,
@@ -212,6 +213,16 @@
 				029B4E8621E1DACD00882705 /* TabBar.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		02886EE42352B7D8006F7B8D /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				02886EE52352B82F006F7B8D /* CategoryCell.swift */,
+				02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */,
+				023363F020FE417800A99F27 /* SearchCell.swift */,
+			);
+			path = Cells;
 			sourceTree = "<group>";
 		};
 		02DE4EF820E7CE0400300F98 /* Resources */ = {
@@ -535,9 +546,10 @@
 				02697DC620E287EE0090D7E2 /* PlantInfoVc.swift in Sources */,
 				021964B92094333F009A43A6 /* MenuVc.swift in Sources */,
 				029B4E8721E1DACD00882705 /* TabBar.swift in Sources */,
-				0266A55923429B6800025226 /* MenuCVC.swift in Sources */,
+				0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */,
 				023363F120FE417800A99F27 /* SearchCell.swift in Sources */,
 				021964B72094333F009A43A6 /* AppDelegate.swift in Sources */,
+				02886EE62352B82F006F7B8D /* CategoryCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -621,7 +633,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -672,7 +684,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -689,6 +701,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = "$(SRCROOT)/Pocket/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Assets.Pocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -707,6 +720,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = "$(SRCROOT)/Pocket/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Assets.Pocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";

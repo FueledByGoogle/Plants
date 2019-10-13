@@ -1,13 +1,15 @@
 import Foundation
 
+
 class MyEnums {
     
     enum TabNames: String {
-        case Menu, Expenses, Search
+        case Add, Expenses, Search
     }
     
-    enum Categories: String {
-        case Transportation, Food, Entertainment
+    
+    enum Categories: String, CaseIterable {
+        case Clothing, Electronics, Entertainment, Food, Furniture, Groceries, Sports, Transportation
     }
     
     // colours used for each category in pie chart

@@ -6,7 +6,7 @@ var user: User = User()
 
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
-    let cellId: String = "cellId"
+    let cellId: String = "TableViewCellIdentifier"
     
     // database
     var db: OpaquePointer?
@@ -18,6 +18,9 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     let queryDate = "'2019-01-01'"
     
+    
+    var testInt = 10.0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
@@ -27,11 +30,12 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         
 //        let layout = UICollectionViewFlowLayout()
-//        self.collectionView.collectionViewLayout = layout
 //        // gets rid of spacing between cells
 //        layout.minimumLineSpacing = 0
 //        layout.minimumInteritemSpacing = 0
+//        self.collectionView.collectionViewLayout = layout
         populateDataArray()
+        print("in expense", testInt)
     }
     
     /**
