@@ -27,15 +27,23 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
         self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
-        self.collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
+        self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
-//        let layout = UICollectionViewFlowLayout()
-//        // gets rid of spacing between cells
-//        layout.minimumLineSpacing = 0
-//        layout.minimumInteritemSpacing = 0
-//        self.collectionView.collectionViewLayout = layout
         populateDataArray()
         print("in expense", testInt)
+        
+        
+        let pieView = PieChart(
+            frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.55),
+            categories: &categoryDictionary)
+        pieView.backgroundColor = UIColor.white
+        self.view.addSubview(pieView)
+        
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: pieView.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
+
+        self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
     /**
@@ -50,47 +58,19 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
      */
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // where 1 is the pie view
-        let numOfCells  = 1 + uniqueCategories.count // + 1 to account for piechart cell
-        return numOfCells
+        return uniqueCategories.count
     }
     
     /**
         what each cell is going to display
      */
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ExpensesCVCCell
         cell.backgroundColor = UIColor.purple
         
-        if indexPath.row == 0 { // pie chart
-            let pieView = PieChart(
-                frame: CGRect(x: 0, y: 0, width: cell.frame.width, height: cell.frame.height),
-                categories: &categoryDictionary)
-            pieView.backgroundColor = UIColor.white
-            cell.contentView.addSubview(pieView)
-        } else { // legend for chart
-            // draw and position circles
-            let circleRadius =  cell.frame.height*0.1
-            let circlePath = UIBezierPath(arcCenter: CGPoint(x: circleRadius*2, y: cell.frame.height/2), radius: circleRadius, startAngle: 0, endAngle: CGFloat(Float.pi*2), clockwise: true)
-            let circleLabel = CAShapeLayer()
-            circleLabel.path = circlePath.cgPath
-            
-            // fill in circles
-            // because our dictionary mapping is in order we can simply iterate through the index, hence the reason of needing to offset by subtracting 1
-            if indexPath.row-1 < MyEnums.Colours.allCases.count {
-                circleLabel.fillColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row-1].rawValue).cgColor
-            } else {
-                print("not enough colours, grey will be used to reprersent the rest of the colours")
-                circleLabel.fillColor = UIColor(rgb: 0x454545).cgColor
-            }
-            
-            
-            cell.contentView.layer.addSublayer(circleLabel)
-            
-            let categoryLabel = UILabel(frame: CGRect(x: circleRadius*4, y: 0, width: cell.frame.width, height: cell.frame.height))
-            // for performance, but probably makes no difference since there's so few UILabels
-            categoryLabel.isOpaque = true
-            categoryLabel.text = Array(categoryDictionary)[indexPath.row-1].key
-            cell.contentView.addSubview(categoryLabel)
+        if indexPath.row < MyEnums.Colours.allCases.count {
+            cell.label.text = Array(categoryDictionary)[indexPath.row].key
+            cell.label.textColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row].rawValue)
         }
         
         return cell
@@ -100,13 +80,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         what a specific cell's size should be
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = CGSize(width: self.view.frame.width, height: 300)
-        if (indexPath.row == 0 ) {
-            size = CGSize(width: self.view.frame.width, height: self.view.frame.height * 0.55)
-        } else {
-            size = CGSize(width: self.view.frame.width, height: 50)
-        }
-        return size
+        return CGSize(width: self.view.frame.width, height: 50)
     }
     
     

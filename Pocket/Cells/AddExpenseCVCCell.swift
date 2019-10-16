@@ -1,8 +1,6 @@
 import UIKit
 
-class CategoryCell: UICollectionViewCell {
-    
-    public var labelId = 0
+class AddExpenseCVCCell: UICollectionViewCell {
     
     //    let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
     let label: UILabel = {
@@ -19,7 +17,6 @@ class CategoryCell: UICollectionViewCell {
         
         setUpContraints()
     }
-    
     
     func setUpContraints() {
         label.topAnchor.constraint(equalTo: self.topAnchor).isActive = true

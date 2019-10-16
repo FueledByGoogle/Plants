@@ -16,7 +16,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.navigationItem.title = MyEnums.TabNames.Add.rawValue
         self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
-        self.collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
         totalNumCells =  1 + MyEnums.Categories.allCases.count + 20
         
@@ -39,7 +39,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         expenseEntry.addSubview(expenseTextField)
         // we don't want the add expense view to scroll with the collection view so we add it to view instead of collection view
         self.view.addSubview(expenseEntry)
-        
         
         
         let layout = UICollectionViewFlowLayout()
@@ -66,7 +65,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         what each cell is going to display
      */
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CategoryCell
+        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
         cell.backgroundColor = UIColor.purple
         
         cell.label.text = String(indexPath.row)
@@ -79,28 +78,16 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         what a specific cell's size should be
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var size = CGSize(width: self.view.frame.width, height: 300)
-        
-//        if indexPath.row == 0 {
-//            size = CGSize(width: self.view.frame.width, height: self.view.frame.height * 0.40)
-//        } else if indexPath.row > 0 && indexPath.row <= totalNumCells {
-//            size = CGSize(width: 70, height: 70)
-//        } else {
-//            size = CGSize(width: self.view.frame.width, height: 50)
-//        }
-        size = CGSize(width: 70, height: 70)
-        
-        
-// Cells are not aligning may be caused by first cell not being same size as rest
-//         size = CGSize(width: 70, height: 70)
-        return size
+        return CGSize(width: 70, height: 70)
     }
     
-    
+    /**
+         on user selection of cell
+     */
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let cell = collectionView.cellForItem(at: indexPath) as! CategoryCell
-        print ("category: ", cell.label.text ?? 888888888888)
+        let cell = collectionView.cellForItem(at: indexPath) as! AddExpenseCVCCell
+        print ("category: ", cell.label.text ?? 8888888888888)
         
         // check for correct number of decimals
         if (expenseTextField.text!.filter { $0 == "."}.count) > 1 {
@@ -124,12 +111,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             expenseCVC.testInt = Double(truncating: floatNum)
 
             // this reloads that tab each time it is called
-            tabBarController!.selectedIndex = 1 // go to expense tab
+//            tabBarController!.selectedIndex = 1 // go to expense tab
         }
-    }
-    
-    func addToDatabase(value: CGFloat, category: String) {
-        
     }
     
 }
