@@ -1,6 +1,14 @@
 import UIKit
 import SQLite3
+import SwiftKueryORM
+import SwiftKuerySQLite
 
+
+
+/*
+ TODO:
+    - replace total number of cells with unique categories in the future when loading of database data
+ */
 
 class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
@@ -8,7 +16,11 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     var expenseTextField: UITextField = UITextField()
     
-    var totalNumCells = 0
+    
+    // database
+    var db: OpaquePointer?
+    let databaseFileName = "TestDatabase"
+    let databaseFileExtension = "db"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,8 +30,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
-        totalNumCells =  1 + MyEnums.Categories.allCases.count + 20
-        
         // dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         
@@ -28,7 +38,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         expenseEntry.backgroundColor = UIColor.red
         
         expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry.frame.height/2 - 50, width: expenseEntry.frame.width, height: 100))
-        expenseTextField.text = "0"
+        expenseTextField.text = "25.6"
         expenseTextField.font = .systemFont(ofSize: 50)
         expenseTextField.adjustsFontSizeToFitWidth = true
         expenseTextField.textAlignment  = .center
@@ -45,6 +55,11 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         layout.sectionInset = UIEdgeInsets(top: expenseEntry.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
 
         self.collectionView.setCollectionViewLayout(layout, animated: false)
+        
+        
+        
+        
+        
     }
     
     /**
@@ -58,7 +73,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         number of cells in section
      */
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return totalNumCells
+        return MyEnums.Categories.allCases.count
     }
     
     /**
@@ -68,7 +83,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
         cell.backgroundColor = UIColor.purple
         
-        cell.label.text = String(indexPath.row)
+        cell.label.text = MyEnums.Categories.allCases[indexPath.item].rawValue
 
         return cell
     }
@@ -86,33 +101,108 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
      */
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let cell = collectionView.cellForItem(at: indexPath) as! AddExpenseCVCCell
-        print ("category: ", cell.label.text ?? 8888888888888)
+//        let cell = collectionView.cellForItem(at: indexPath) as! AddExpenseCVCCell
         
         // check for correct number of decimals
         if (expenseTextField.text!.filter { $0 == "."}.count) > 1 {
-            print("Invalid input, try again")
+            print ("Invalid input, try again")
             return
         }
 
         // check for invalid characters
         let removedDecimal = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: removedDecimal)) == false {
-            print("Entered text that contains unsupported characters ")
+            print ("Entered text that contains unsupported characters ")
         } else {
-            print("adding", expenseTextField.text!, "to database")
             let expenseUINavController = self.tabBarController!.viewControllers![1] as! UINavigationController
-            let expenseCVC = expenseUINavController.topViewController as! ExpensesCVC
-            guard let floatNum = NumberFormatter().number(from: expenseTextField.text!)
+//            let expenseCVC = expenseUINavController.topViewController as! ExpensesCVC
+            guard Double(expenseTextField.text!) != nil
                 else {
-                    print("error")
+                    print ("Could not convert number to a float")
                 return
             }
-            expenseCVC.testInt = Double(truncating: floatNum)
+            addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: expenseTextField.text!)
 
             // this reloads that tab each time it is called
 //            tabBarController!.selectedIndex = 1 // go to expense tab
         }
+    }
+    
+    func addToDatabase(category: String, amount: String) {
+
+        
+//        let connection = SQLiteConnection(filename: Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)!.absoluteString)
+//
+//        connection.connect() { result in
+//            guard result.success else {
+//                print ("connection unsuccessful")
+//                return
+//            }
+//            print ("connection successful")
+//            // Use connection
+//        }
+        
+        
+        
+        // open database file
+        guard let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
+        else {
+            print ("Error opening database file")
+            return
+        }
+
+        if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
+            print ("Error opening database")
+        }
+
+//        let insertQuery = "INSERT INTO expense_table (customerId, amount, category, entry_date) VALUES (0, " + amount + ", \"" + category + "\", \"" + NSDate().description + "\");"
+        let insertQuery = "INSERT INTO expense_table (customerId, amount, category, entry_date) VALUES (0, ?, ?, \"2019-10-21 23:29:03\" )"
+        
+        print (insertQuery)
+        // statement pointer
+        var stmt:OpaquePointer?
+
+        sqlite3_reset(stmt)
+
+        // preparing query
+        if sqlite3_prepare(db, insertQuery, -1, &stmt, nil) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error preparing the database: ", errmsg)
+            return
+        }
+
+
+        //binding the parameters
+
+        // amount
+        if sqlite3_bind_double(stmt, 1, Double(amount)!) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Failure binding amount: \(errmsg)")
+            return
+        }
+
+        // category
+        if sqlite3_bind_text(stmt, 2, category, -1, nil) != SQLITE_OK{
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Failure binding category: \(errmsg)")
+            return
+        }
+
+
+
+
+
+
+        //executing the query to insert values
+        if sqlite3_step(stmt) != SQLITE_DONE {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("failure inserting hero: \(errmsg)")
+            return
+        } else {
+            print("Inserted: " + category + " " + amount + " " + NSDate().description)
+        }
+
+        sqlite3_finalize(stmt)
     }
     
 }

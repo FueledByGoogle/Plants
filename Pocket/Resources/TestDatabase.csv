@@ -1,4 +1,4 @@
-Customer,Amount,Category,Date
+customerId,amount,category,entry_date
 0,50.0,Entertainment,2019-01-01
 0,70.0,Food,2019-01-01
 0,100.0,Transportation,2019-01-01

@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -29,13 +29,16 @@
 		0251C8E82318BE46002E2311 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0251C8E52318BE46002E2311 /* GoogleService-Info.plist */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
 		02697DC620E287EE0090D7E2 /* PlantInfoVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */; };
+		0272E10523593B280046A516 /* TestDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* TestDatabase.db */; };
+		0272E10C235E6F070046A516 /* SwiftKueryORM in Frameworks */ = {isa = PBXBuildFile; productRef = 0272E10B235E6F070046A516 /* SwiftKueryORM */; };
+		0272E10E235E78920046A516 /* DatabaseStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0272E10D235E78920046A516 /* DatabaseStruct.swift */; };
+		0272E111235E7B0A0046A516 /* SwiftKuerySQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 0272E110235E7B0A0046A516 /* SwiftKuerySQLite */; };
 		0286812C2119E94600E0A67E /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0286812B2119E94600E0A67E /* Plant.swift */; };
 		02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */; };
 		02886EE82352C30A006F7B8D /* ExpensesCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */; };
 		029B4E8721E1DACD00882705 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B4E8621E1DACD00882705 /* TabBar.swift */; };
 		02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */; };
 		02A5B2FD210F6CA100486DE5 /* PlantInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */; };
-		02C4E7B5233562C500A257A8 /* TestDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 02C4E7B4233562C500A257A8 /* TestDatabase.db */; };
 		0DBF74FDD565A0A37345B635 /* Pods_Pocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C1A3449BEED2B8CBB59F63D /* Pods_Pocket.framework */; };
 		30B5DC7DE79E316368F25690 /* Pods_PocketTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A777A3CC0721C1ADF70B77E2 /* Pods_PocketTests.framework */; };
 		8BE8A549587295D0FF6B7B77 /* Pods_PocketUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FE8D04FE06BF67174390CCD /* Pods_PocketUITests.framework */; };
@@ -85,13 +88,16 @@
 		0251C8E52318BE46002E2311 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
 		02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoVc.swift; sourceTree = "<group>"; };
+		0272E10423593B280046A516 /* TestDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TestDatabase.db; sourceTree = "<group>"; };
+		0272E10A235E6EF80046A516 /* Swift-Kuery-ORM-0.6.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Swift-Kuery-ORM-0.6.1"; sourceTree = "<group>"; };
+		0272E10D235E78920046A516 /* DatabaseStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStruct.swift; sourceTree = "<group>"; };
+		0272E10F235E7AFE0046A516 /* Swift-Kuery-SQLite-2.0.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Swift-Kuery-SQLite-2.0.1"; sourceTree = "<group>"; };
 		0286812B2119E94600E0A67E /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
 		02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVCCell.swift; sourceTree = "<group>"; };
 		02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesCVCCell.swift; sourceTree = "<group>"; };
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plant_picture.JPG; sourceTree = "<group>"; };
 		02A5B2FC210F6CA100486DE5 /* PlantInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoCell.swift; sourceTree = "<group>"; };
-		02C4E7B4233562C500A257A8 /* TestDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TestDatabase.db; sourceTree = "<group>"; };
 		0B4E44CBAF4259B94A57255A /* Pods-PlantsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PlantsTests.release.xcconfig"; path = "Target Support Files/Pods-PlantsTests/Pods-PlantsTests.release.xcconfig"; sourceTree = "<group>"; };
 		1FE8D04FE06BF67174390CCD /* Pods_PocketUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PocketUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		27441814C217DF6BA3FA363D /* Pods-PocketUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PocketUITests.debug.xcconfig"; path = "Target Support Files/Pods-PocketUITests/Pods-PocketUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -114,6 +120,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0272E111235E7B0A0046A516 /* SwiftKuerySQLite in Frameworks */,
+				0272E10C235E6F070046A516 /* SwiftKueryORM in Frameworks */,
 				0DBF74FDD565A0A37345B635 /* Pods_Pocket.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -182,6 +190,7 @@
 				021263472322FB6600477342 /* Classes */,
 				021964C22094333F009A43A6 /* Info.plist */,
 				021964BD2094333F009A43A6 /* Assets.xcassets */,
+				0272E10D235E78920046A516 /* DatabaseStruct.swift */,
 			);
 			path = Pocket;
 			sourceTree = "<group>";
@@ -231,13 +240,15 @@
 		02DE4EF820E7CE0400300F98 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				0272E10F235E7AFE0046A516 /* Swift-Kuery-SQLite-2.0.1 */,
+				0272E10A235E6EF80046A516 /* Swift-Kuery-ORM-0.6.1 */,
 				02235A49231AF6550005B9AC /* IMG_9671.jpg */,
 				02235A46231AF56A0005B9AC /* IMG_9669.JPG */,
 				02235A412319E9950005B9AC /* testTextImage.jpg */,
 				02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */,
 				022047902100C181002F6E9B /* DSC_1336.JPG */,
 				0251124420E7E7E300C12D56 /* Plants.db */,
-				02C4E7B4233562C500A257A8 /* TestDatabase.db */,
+				0272E10423593B280046A516 /* TestDatabase.db */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -290,6 +301,10 @@
 			dependencies = (
 			);
 			name = Pocket;
+			packageProductDependencies = (
+				0272E10B235E6F070046A516 /* SwiftKueryORM */,
+				0272E110235E7B0A0046A516 /* SwiftKuerySQLite */,
+			);
 			productName = Plants;
 			productReference = 021964B32094333F009A43A6 /* Pocket.app */;
 			productType = "com.apple.product-type.application";
@@ -395,7 +410,7 @@
 				02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */,
 				0251124520E7E7E300C12D56 /* Plants.db in Resources */,
 				02235A422319E9950005B9AC /* testTextImage.jpg in Resources */,
-				02C4E7B5233562C500A257A8 /* TestDatabase.db in Resources */,
+				0272E10523593B280046A516 /* TestDatabase.db in Resources */,
 				0251C8E62318BE46002E2311 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -539,6 +554,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				021263462322F5E400477342 /* User.swift in Sources */,
+				0272E10E235E78920046A516 /* DatabaseStruct.swift in Sources */,
 				0286812C2119E94600E0A67E /* Plant.swift in Sources */,
 				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
@@ -691,7 +707,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -706,7 +723,10 @@
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = "$(SRCROOT)/Pocket/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Assets.Pocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -725,7 +745,10 @@
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = "$(SRCROOT)/Pocket/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.Assets.Pocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -743,7 +766,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = PlantsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ECOSoft.Plants.PlantsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -761,7 +788,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = PlantsTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ECOSoft.Plants.PlantsTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -778,7 +809,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = PlantsUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ECOSoft.Plants.PlantsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -795,7 +830,11 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = PlantsUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ECOSoft.Plants.PlantsUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
@@ -844,6 +883,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0272E10B235E6F070046A516 /* SwiftKueryORM */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftKueryORM;
+		};
+		0272E110235E7B0A0046A516 /* SwiftKuerySQLite */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftKuerySQLite;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 021964AB2094333F009A43A6 /* Project object */;
 }

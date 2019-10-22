@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Database Class Reference</title>
+    <link rel="stylesheet" type="text/css" href="../css/jazzy.css" />
+    <link rel="stylesheet" type="text/css" href="../css/highlight.css" />
+    <meta charset="utf-8">
+    <script src="../js/jquery.min.js" defer></script>
+    <script src="../js/jazzy.js" defer></script>
+    
+    <script src="../js/lunr.min.js" defer></script>
+    <script src="../js/typeahead.jquery.js" defer></script>
+    <script src="../js/jazzy.search.js" defer></script>
+  </head>
+  <body>
+
+    <a name="//apple_ref/swift/Class/Database" class="dashAnchor"></a>
+
+    <a title="Database Class Reference"></a>
+
+    <header class="header">
+      <p class="header-col header-col--primary">
+        <a class="header-link" href="../index.html">
+          SwiftKueryORM Docs
+        </a>
+         (97% documented)
+      </p>
+    
+      <p class="header-col--secondary">
+        <form role="search" action="../search.json">
+          <input type="text" placeholder="Search documentation" data-typeahead>
+        </form>
+      </p>
+    
+        <p class="header-col header-col--secondary">
+          <a class="header-link" href="https://github.com/IBM-Swift/Swift-Kuery-ORM">
+            <img class="header-icon" src="../img/gh.png"/>
+            View on GitHub
+          </a>
+        </p>
+    
+    </header>
+
+    <p class="breadcrumbs">
+      <a class="breadcrumb" href="../index.html">SwiftKueryORM Reference</a>
+      <img class="carat" src="../img/carat.png" />
+      Database Class Reference
+    </p>
+
+    <div class="content-wrapper">
+      <nav class="navigation">
+        <ul class="nav-groups">
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Classes.html">Classes</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/Database.html">Database</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DatabaseDecoder.html">DatabaseDecoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes/DatabaseEncoder.html">DatabaseEncoder</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Classes.html#/s:13SwiftKueryORM9TableInfoC">TableInfo</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Extensions.html">Extensions</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Extensions/RequestError.html">RequestError</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Protocols.html">Protocols</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Protocols/Model.html">Model</a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-group-name">
+            <a class="nav-group-name-link" href="../Typealiases.html">Type Aliases</a>
+            <ul class="nav-group-tasks">
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM21ConnectionPoolOptionsa">ConnectionPoolOptions</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM14ExclusiveRangea">ExclusiveRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM11GreaterThana">GreaterThan</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM18GreaterThanOrEquala">GreaterThanOrEqual</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM14InclusiveRangea">InclusiveRange</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM9LowerThana">LowerThan</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM16LowerThanOrEquala">LowerThanOrEqual</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM8Orderinga">Ordering</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM10Paginationa">Pagination</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM11QueryParamsa">QueryParams</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM12RequestErrora">RequestError</a>
+              </li>
+              <li class="nav-group-task">
+                <a class="nav-group-task-link" href="../Typealiases.html#/s:13SwiftKueryORM11SQLDataTypea">SQLDataType</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <article class="main-content">
+
+        <section class="section">
+          <div class="section-content">
+            <h1>Database</h1>
+              <div class="declaration">
+                <div class="language">
+                  <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">class</span> <span class="kt">Database</span></code></pre>
+
+                </div>
+              </div>
+            <p>Class defining the connection to the database.</p>
+
+<p>To setup the database, in this case using <a href="https://github.com/IBM-Swift/Swift-Kuery-PostgreSQL">PostgreSQL</a>:</p>
+<pre class="highlight swift"><code><span class="kd">import</span> <span class="kt">SwiftKueryORM</span>
+<span class="kd">import</span> <span class="kt">SwiftKueryPostgreSQL</span>
+<span class="k">let</span> <span class="nv">pool</span> <span class="o">=</span> <span class="kt">PostgreSQLConnection</span><span class="o">.</span><span class="nf">createPool</span><span class="p">(</span><span class="nv">host</span><span class="p">:</span> <span class="s">"localhost"</span><span class="p">,</span> <span class="nv">port</span><span class="p">:</span> <span class="mi">5432</span><span class="p">,</span>
+                                           <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="nf">databaseName</span><span class="p">(</span><span class="s">"FoodDatabase"</span><span class="p">)],</span>
+                                           <span class="nv">poolOptions</span><span class="p">:</span> <span class="kt">ConnectionPoolOptions</span><span class="p">(</span>
+                                                                      <span class="nv">initialCapacity</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                                                                      <span class="nv">maxCapacity</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span>
+                                                                      <span class="nv">timeout</span><span class="p">:</span> <span class="mi">10000</span><span class="p">))</span>
+<span class="kt">Database</span><span class="o">.</span><span class="k">default</span> <span class="o">=</span> <span class="kt">Database</span><span class="p">(</span><span class="n">pool</span><span class="p">)</span>
+</code></pre>
+
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="section-content">
+            <div class="task-group">
+              <ul class="item-container">
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13SwiftKueryORM8DatabaseC0D4Taska"></a>
+                    <a name="//apple_ref/swift/Alias/DatabaseTask" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13SwiftKueryORM8DatabaseC0D4Taska">DatabaseTask</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Definition of a DatabaseTask completion handler which accepts an optional Connection and optional Error</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">typealias</span> <span class="kt">DatabaseTask</span> <span class="o">=</span> <span class="p">(</span><span class="kt">Connection</span><span class="p">?,</span> <span class="kt">QueryError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13SwiftKueryORM8DatabaseC7defaultACSgvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/default" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13SwiftKueryORM8DatabaseC7defaultACSgvpZ">default</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Global default Database for the application</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kd">var</span> <span class="p">`</span><span class="nv">default</span><span class="p">`:</span> <span class="kt">Database</span><span class="p">?</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13SwiftKueryORM8DatabaseC9tableInfoAA05TableF0CvpZ"></a>
+                    <a name="//apple_ref/swift/Variable/tableInfo" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13SwiftKueryORM8DatabaseC9tableInfoAA05TableF0CvpZ">tableInfo</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Instance of TableInfo containing cached tables</p>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">static</span> <span class="k">var</span> <span class="nv">tableInfo</span> <span class="o">=</span> <span class="kt"><a href="../Classes.html#/s:13SwiftKueryORM9TableInfoC">TableInfo</a></span><span class="p">()</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13SwiftKueryORM8DatabaseCAC0aB010Connection_p6single_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(single:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13SwiftKueryORM8DatabaseCAC0aB010Connection_p6single_tcfc">init(single:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a Database instance which uses a single connection to perform each operation. The connection will remain open for the lifetime of the Database.
+It is safe for you to issue concurrent operations on the database: the ORM will ensure those operations are executed sequentially.
+This connection strategy provides lower latency requests, as a new connection does not need to be established for each operation, and has a small resource overhead. However, scalability is limited as all database operations are serialized.
+Below is example code which creates a connection and uses it to create a Database instance:</p>
+<pre class="highlight swift"><code><span class="k">var</span> <span class="nv">opts</span> <span class="o">=</span> <span class="p">[</span><span class="kt">ConnectionOptions</span><span class="p">]()</span>
+<span class="n">opts</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="kt">ConnectionOptions</span><span class="o">.</span><span class="nf">userName</span><span class="p">(</span><span class="s">"myUser"</span><span class="p">))</span>
+<span class="n">opts</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="kt">ConnectionOptions</span><span class="o">.</span><span class="nf">password</span><span class="p">(</span><span class="s">"myPassword"</span><span class="p">))</span>
+<span class="k">let</span> <span class="nv">connection</span> <span class="o">=</span> <span class="kt">PostgreSQLConnection</span><span class="p">(</span><span class="nv">host</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span> <span class="nv">port</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">opts</span><span class="p">)</span>
+<span class="k">let</span> <span class="nv">result</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="nf">connectSync</span><span class="p">()</span>
+<span class="k">guard</span> <span class="k">let</span> <span class="nv">result</span><span class="o">.</span><span class="n">success</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="c1">// Handle error</span>
+    <span class="k">return</span>
+<span class="p">}</span>
+<span class="k">let</span> <span class="nv">db</span> <span class="o">=</span> <span class="kt">Database</span><span class="p">(</span><span class="nv">single</span><span class="p">:</span> <span class="n">connection</span><span class="p">)</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="kd">convenience</span> <span class="nf">init</span><span class="p">(</span><span class="n">single</span> <span class="nv">connection</span><span class="p">:</span> <span class="kt">Connection</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13SwiftKueryORM8DatabaseCAC0aB014ConnectionPoolCcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(_:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13SwiftKueryORM8DatabaseCAC0aB014ConnectionPoolCcfc">init(_:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a Database instance with multiple connections, managed by a connection pool, allowing operations to be performed concurrently. These connections will remain open for the lifetime of the Database.
+This connection strategy provides lower latency requests, as a new connection does not need to be established for each operation. You can choose between better performance or lower resource consumption by adjusting the number of connections in the pool.
+Below is an example code which creates a connection pool and uses it to create a Database instance:</p>
+<pre class="highlight swift"><code><span class="k">let</span> <span class="nv">connectionPool</span> <span class="o">=</span> <span class="kt">PostgreSQLConnection</span><span class="o">.</span><span class="nf">createPool</span><span class="p">(</span><span class="nv">host</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span> <span class="nv">port</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="p">[</span><span class="o">.</span><span class="nf">userName</span><span class="p">(</span><span class="s">"myUser"</span><span class="p">),</span> <span class="o">.</span><span class="nf">password</span><span class="p">(</span><span class="s">"myPassword"</span><span class="p">)],</span> <span class="nv">poolOptions</span><span class="p">:</span> <span class="kt">ConnectionPoolOptions</span><span class="p">(</span><span class="nv">initialCapacity</span><span class="p">:</span> <span class="mi">5</span><span class="p">,</span> <span class="nv">maxCapacity</span><span class="p">:</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="k">let</span> <span class="nv">db</span> <span class="o">=</span> <span class="kt">Database</span><span class="p">(</span><span class="n">connectionPool</span><span class="p">)</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="n">_</span> <span class="nv">pool</span><span class="p">:</span> <span class="kt">ConnectionPool</span><span class="p">)</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+                <li class="item">
+                  <div>
+                    <code>
+                    <a name="/s:13SwiftKueryORM8DatabaseCACyy0aB010Connection_pSg_AD10QueryErrorOSgtcc9generator_tcfc"></a>
+                    <a name="//apple_ref/swift/Method/init(generator:)" class="dashAnchor"></a>
+                    <a class="token" href="#/s:13SwiftKueryORM8DatabaseCACyy0aB010Connection_pSg_AD10QueryErrorOSgtcc9generator_tcfc">init(generator:)</a>
+                    </code>
+                  </div>
+                  <div class="height-container">
+                    <div class="pointer-container"></div>
+                    <section class="section">
+                      <div class="pointer"></div>
+                      <div class="abstract">
+                        <p>Create a Database instance which uses short-lived connections that are generated on demand. A new Connection is created for every operation, and will be closed once the operation completes.
+This connection strategy allows for minimal resource consumption when idle, and allows multiple operations to be performed concurrently. However, the process of establishing a connection will increase the time taken to process each operation.
+Below is an example of a function that can be used as a connection generator and the call to create the Database instance:</p>
+<pre class="highlight swift"><code><span class="kd">func</span> <span class="nf">getConnectionAndRunTask</span><span class="p">(</span><span class="nv">task</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kt">Connection</span><span class="p">?,</span> <span class="kt">QueryError</span><span class="p">?)</span> <span class="o">-&gt;</span> <span class="p">())</span> <span class="p">{</span>
+    <span class="k">var</span> <span class="nv">opts</span> <span class="o">=</span> <span class="p">[</span><span class="kt">ConnectionOptions</span><span class="p">]()</span>
+    <span class="n">opts</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="kt">ConnectionOptions</span><span class="o">.</span><span class="nf">userName</span><span class="p">(</span><span class="s">"myUser"</span><span class="p">))</span>
+    <span class="n">opts</span><span class="o">.</span><span class="nf">append</span><span class="p">(</span><span class="kt">ConnectionOptions</span><span class="o">.</span><span class="nf">password</span><span class="p">(</span><span class="s">"myPassword"</span><span class="p">))</span>
+    <span class="k">let</span> <span class="nv">connection</span> <span class="o">=</span> <span class="kt">PostgreSQLConnection</span><span class="p">(</span><span class="nv">host</span><span class="p">:</span> <span class="n">host</span><span class="p">,</span> <span class="nv">port</span><span class="p">:</span> <span class="n">port</span><span class="p">,</span> <span class="nv">options</span><span class="p">:</span> <span class="n">opts</span><span class="p">)</span>
+    <span class="n">connection</span><span class="o">.</span><span class="nf">connect</span><span class="p">()</span> <span class="p">{</span> <span class="n">result</span> <span class="k">in</span>
+        <span class="k">guard</span> <span class="n">result</span><span class="o">.</span><span class="n">success</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="c1">// Handle error</span>
+            <span class="k">return</span> <span class="nf">task</span><span class="p">(</span><span class="kc">nil</span><span class="p">,</span> <span class="kt">QueryError</span><span class="o">.</span><span class="nf">connection</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">asError</span><span class="p">?</span><span class="o">.</span><span class="n">localizedDescription</span> <span class="p">??</span> <span class="s">"Unknown connection error"</span><span class="p">))</span>
+        <span class="p">}</span>
+    <span class="k">return</span> <span class="nf">task</span><span class="p">(</span><span class="n">connection</span><span class="p">,</span> <span class="kc">nil</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">let</span> <span class="nv">db</span> <span class="o">=</span> <span class="kt">Database</span><span class="p">(</span><span class="nv">generator</span><span class="p">:</span> <span class="n">getConnectionAndRunTask</span><span class="p">)</span><span class="err">```</span>
+</code></pre>
+
+                      </div>
+                      <div class="declaration">
+                        <h4>Declaration</h4>
+                        <div class="language">
+                          <p class="aside-title">Swift</p>
+                          <pre class="highlight swift"><code><span class="kd">public</span> <span class="nf">init</span><span class="p">(</span><span class="nv">generator</span><span class="p">:</span> <span class="kd">@escaping</span> <span class="p">(</span><span class="kd">@escaping</span> <span class="kt"><a href="../Classes/Database.html#/s:13SwiftKueryORM8DatabaseC0D4Taska">DatabaseTask</a></span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">())</span></code></pre>
+
+                        </div>
+                      </div>
+                    </section>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+      </article>
+    </div>
+    <section class="footer">
+      <p>&copy; 2019 <a class="link" href="" target="_blank" rel="external">IBM</a>. All rights reserved. (Last updated: 2019-04-01)</p>
+      <p>Generated by <a class="link" href="https://github.com/realm/jazzy" target="_blank" rel="external">jazzy ♪♫ v0.9.1</a>, a <a class="link" href="http://realm.io" target="_blank" rel="external">Realm</a> project.</p>
+    </section>
+  </body>
+</div>
+</html>

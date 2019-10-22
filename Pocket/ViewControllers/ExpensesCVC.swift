@@ -13,13 +13,13 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let databaseFileName = "TestDatabase"
     let databaseFileExtension = "db"
     
+    
     var uniqueCategories: [String] = []
     var categoryDictionary: [String: CGFloat] = [:]
     
     let queryDate = "'2019-01-01'"
     
     
-    var testInt = 10.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +30,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
         populateDataArray()
-        print("in expense", testInt)
-        
         
         let pieView = PieChart(
             frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.55),
@@ -88,20 +86,27 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         Read database and map each category to its total value
      */
     func populateDataArray () {
-        let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
-        if (sqlite3_open(dbPath!.absoluteString, &db) != SQLITE_OK && dbPath != nil) {
-            print("Error opening database")
+        guard let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
+        else {
+            print ("Error opening database file")
+            return
+        }
+        
+        
+        // opening ocnnection to database
+        if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
+            print ("Error opening database")
         }
         
         // statement pointer
         var stmt:OpaquePointer?
         
-        let distinctCategoryQuery = "SELECT DISTINCT Category FROM Expense WHERE Date between " + queryDate + " AND " + queryDate
+        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_table WHERE entry_date between " + queryDate + " AND " + queryDate
         
         // preparing distinct category query
         if sqlite3_prepare(db, distinctCategoryQuery, -1, &stmt, nil) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Error preparing the database: ", errmsg)
+            print ("Error preparing the database: ", errmsg)
             return
         }
         // traverse through all records
@@ -117,12 +122,12 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
 
         
-        let userDataQuery = "SELECT * FROM Expense WHERE Date between " + queryDate + " AND " + queryDate
+        let userDataQuery = "SELECT * FROM expense_table WHERE entry_date between " + queryDate + " AND " + queryDate
         
         // preparing user data query
         if sqlite3_prepare(db, userDataQuery, -1, &stmt, nil) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Error preparing the database: ", errmsg)
+            print ("Error preparing the database: ", errmsg)
             return
         }
         // traverse through all records
@@ -135,7 +140,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //            let dateDb = String(cString: sqlite3_column_text(stmt, 3))
             
             guard let amount = NumberFormatter().number(from: amountDb) else {
-                print("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
+                print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
                 return
             }
             user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
@@ -145,7 +150,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //            let dateFormatter = DateFormatter()
 //            dateFormatter.dateFormat = "yyyy-MM-dd"
 //            guard let date = dateFormatter.date(from: dateDb) else {
-//                print("Error converting entry ", i+1, " in database category \"Date\" to Date format.")
+//                print ("Error converting entry ", i+1, " in database category \"Date\" to Date format.")
 //                return
 //            }
 //            user.addDate(date: date)
