@@ -114,8 +114,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: removedDecimal)) == false {
             print ("Entered text that contains unsupported characters ")
         } else {
-            let expenseUINavController = self.tabBarController!.viewControllers![1] as! UINavigationController
-//            let expenseCVC = expenseUINavController.topViewController as! ExpensesCVC
             guard Double(expenseTextField.text!) != nil
                 else {
                     print ("Could not convert number to a float")
@@ -129,80 +127,42 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func addToDatabase(category: String, amount: String) {
-
         
-//        let connection = SQLiteConnection(filename: Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)!.absoluteString)
-//
-//        connection.connect() { result in
-//            guard result.success else {
-//                print ("connection unsuccessful")
-//                return
+        let connectionSQL = SQLiteConnection.createPool(
+                filename: Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)!.absoluteString,
+                poolOptions: ConnectionPoolOptions(initialCapacity: 10, maxCapacity: 30))
+
+        connectionSQL.getConnection() { connection, error in
+            guard connection != nil else {
+                // Handle error
+                print ("Unsuccessful connection to database")
+                return
+            }
+            
+            Database.default = Database(connectionSQL)
+            
+            let user = expense_tables(customerId: 1, amount: 20000.0, category: "Transportation", entry_date: Date())
+            
+//            UserProfile.findAll { (result: [UserProfile]?, error: RequestError?) in
+//              if let error = error {
+//                              print("Error:", error)
+//                }
 //            }
-//            print ("connection successful")
-//            // Use connection
+            
+//        UserProfile.find(id: 0) { result, error in
+//            if let error = error {
+//                print("Error:", error)
+//            }
 //        }
-        
-        
-        
-        // open database file
-        guard let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
-        else {
-            print ("Error opening database file")
-            return
+            
+            user.save { user, error in
+                if let error = error {
+                    print("Error:", error)
+                }
+            }
+
         }
 
-        if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
-            print ("Error opening database")
-        }
-
-//        let insertQuery = "INSERT INTO expense_table (customerId, amount, category, entry_date) VALUES (0, " + amount + ", \"" + category + "\", \"" + NSDate().description + "\");"
-        let insertQuery = "INSERT INTO expense_table (customerId, amount, category, entry_date) VALUES (0, ?, ?, \"2019-10-21 23:29:03\" )"
-        
-        print (insertQuery)
-        // statement pointer
-        var stmt:OpaquePointer?
-
-        sqlite3_reset(stmt)
-
-        // preparing query
-        if sqlite3_prepare(db, insertQuery, -1, &stmt, nil) != SQLITE_OK {
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Error preparing the database: ", errmsg)
-            return
-        }
-
-
-        //binding the parameters
-
-        // amount
-        if sqlite3_bind_double(stmt, 1, Double(amount)!) != SQLITE_OK {
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Failure binding amount: \(errmsg)")
-            return
-        }
-
-        // category
-        if sqlite3_bind_text(stmt, 2, category, -1, nil) != SQLITE_OK{
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Failure binding category: \(errmsg)")
-            return
-        }
-
-
-
-
-
-
-        //executing the query to insert values
-        if sqlite3_step(stmt) != SQLITE_DONE {
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("failure inserting hero: \(errmsg)")
-            return
-        } else {
-            print("Inserted: " + category + " " + amount + " " + NSDate().description)
-        }
-
-        sqlite3_finalize(stmt)
     }
     
 }

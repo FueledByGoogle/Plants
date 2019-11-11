@@ -179,6 +179,7 @@
 		021964B52094333F009A43A6 /* Pocket */ = {
 			isa = PBXGroup;
 			children = (
+				021964C22094333F009A43A6 /* Info.plist */,
 				0251C8E52318BE46002E2311 /* GoogleService-Info.plist */,
 				021964B62094333F009A43A6 /* AppDelegate.swift */,
 				02DE4EF820E7CE0400300F98 /* Resources */,
@@ -188,9 +189,8 @@
 				022047962100CF26002F6E9B /* MyUtils.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				021263472322FB6600477342 /* Classes */,
-				021964C22094333F009A43A6 /* Info.plist */,
-				021964BD2094333F009A43A6 /* Assets.xcassets */,
 				0272E10D235E78920046A516 /* DatabaseStruct.swift */,
+				021964BD2094333F009A43A6 /* Assets.xcassets */,
 			);
 			path = Pocket;
 			sourceTree = "<group>";

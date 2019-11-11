@@ -44,6 +44,13 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+         
+        
+        self.tabBarController?.delegate = self as? UITabBarControllerDelegate
+    }
+    
     /**
         number of sections
      */
@@ -92,7 +99,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             return
         }
         
-        
         // opening ocnnection to database
         if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
             print ("Error opening database")
@@ -101,7 +107,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         // statement pointer
         var stmt:OpaquePointer?
         
-        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_table WHERE entry_date between " + queryDate + " AND " + queryDate
+        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_tables"
         
         // preparing distinct category query
         if sqlite3_prepare(db, distinctCategoryQuery, -1, &stmt, nil) != SQLITE_OK {
@@ -122,7 +128,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
 
         
-        let userDataQuery = "SELECT * FROM expense_table WHERE entry_date between " + queryDate + " AND " + queryDate
+        let userDataQuery = "SELECT * FROM expense_tables"
         
         // preparing user data query
         if sqlite3_prepare(db, userDataQuery, -1, &stmt, nil) != SQLITE_OK {
