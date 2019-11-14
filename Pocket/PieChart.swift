@@ -9,7 +9,7 @@ class PieChart: UIView {
     /** catgegories : unique array of categories
         values : total value of each category
      */
-    init(frame: CGRect, categories: inout [String: CGFloat]) {
+    init(frame: CGRect, categories: [String: CGFloat]) {
         super.init(frame: frame)
         self.categories =  categories
     }

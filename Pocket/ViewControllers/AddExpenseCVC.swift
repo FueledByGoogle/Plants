@@ -2,6 +2,7 @@ import UIKit
 import SQLite3
 import SwiftKueryORM
 import SwiftKuerySQLite
+import SwiftKuery
 
 
 
@@ -10,17 +11,18 @@ import SwiftKuerySQLite
     - replace total number of cells with unique categories in the future when loading of database data
  */
 
+var user_entries_database: ConnectionPool?
+
 class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     let cellReuseIdentifier = "CategoryCell"
     
     var expenseTextField: UITextField = UITextField()
     
-    
     // database
-    var db: OpaquePointer?
-    let databaseFileName = "TestDatabase"
-    let databaseFileExtension = "db"
+    let databaseFileName: String = "TestDatabase"
+    let databaseFileExtension: String = "db"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,33 +35,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         
-        
-        let expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
-        expenseEntry.backgroundColor = UIColor.red
-        
-        expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry.frame.height/2 - 50, width: expenseEntry.frame.width, height: 100))
-        expenseTextField.text = "25.6"
-        expenseTextField.font = .systemFont(ofSize: 50)
-        expenseTextField.adjustsFontSizeToFitWidth = true
-        expenseTextField.textAlignment  = .center
-        expenseTextField.borderStyle = UITextField.BorderStyle.line
-        expenseTextField.delegate = self
-        expenseTextField.keyboardType = UIKeyboardType.decimalPad
-        
-        expenseEntry.addSubview(expenseTextField)
-        // we don't want the add expense view to scroll with the collection view so we add it to view instead of collection view
-        self.view.addSubview(expenseEntry)
-        
-        
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: expenseEntry.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
-
-        self.collectionView.setCollectionViewLayout(layout, animated: false)
-        
-        
-        
-        
-        
+        createAddExpense()
+        initializeDatabase()
     }
     
     /**
@@ -104,7 +81,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 //        let cell = collectionView.cellForItem(at: indexPath) as! AddExpenseCVCCell
         
         // check for correct number of decimals
-        if (expenseTextField.text!.filter { $0 == "."}.count) > 1 {
+        if (expenseTextField.text!.filter { $0 == "."}.count) > 1 || expenseTextField.text == "" {
             print ("Invalid input, try again")
             return
         }
@@ -114,55 +91,90 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: removedDecimal)) == false {
             print ("Entered text that contains unsupported characters ")
         } else {
-            guard Double(expenseTextField.text!) != nil
+            guard let amount = Double(expenseTextField.text!)
                 else {
                     print ("Could not convert number to a float")
-                return
-            }
-            addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: expenseTextField.text!)
+                    return
+                }
+            addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: amount)
 
             // this reloads that tab each time it is called
 //            tabBarController!.selectedIndex = 1 // go to expense tab
         }
     }
     
-    func addToDatabase(category: String, amount: String) {
+    /**
+        Initialize Database Connections
+     */
+    func initializeDatabase() {
+        
+        guard let filename = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension) else {
+            print ("AddExpenseCVC: Could not initialize Database")
+            return
+        }
         
         let connectionSQL = SQLiteConnection.createPool(
-                filename: Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)!.absoluteString,
-                poolOptions: ConnectionPoolOptions(initialCapacity: 10, maxCapacity: 30))
-
-        connectionSQL.getConnection() { connection, error in
-            guard connection != nil else {
-                // Handle error
-                print ("Unsuccessful connection to database")
-                return
-            }
-            
-            Database.default = Database(connectionSQL)
-            
-            let user = expense_tables(customerId: 1, amount: 20000.0, category: "Transportation", entry_date: Date())
-            
-//            UserProfile.findAll { (result: [UserProfile]?, error: RequestError?) in
-//              if let error = error {
-//                              print("Error:", error)
-//                }
-//            }
-            
-//        UserProfile.find(id: 0) { result, error in
-//            if let error = error {
-//                print("Error:", error)
-//            }
-//        }
-            
-            user.save { user, error in
-                if let error = error {
-                    print("Error:", error)
+            filename: filename.absoluteString,
+        poolOptions: ConnectionPoolOptions(initialCapacity: 5, maxCapacity: 20))
+        
+        user_entries_database = connectionSQL
+    }
+    
+    
+    
+    func addToDatabase(category: String, amount: Double) {
+        
+        if user_entries_database != nil {
+            user_entries_database!.getConnection() { connection, error in
+                guard connection != nil else {
+                    // Handle error
+                    print ("Unsuccessful connection to database")
+                    return
                 }
+                
+                Database.default = Database(user_entries_database!)
+                
+                let entry = expense_tables(customerId: 1, amount: amount, category: category, entry_date: Date())
+                
+                entry.save { user, error in
+                    if let error = error {
+                        print("Save Error:", error)
+                    }
+                }
+                
+                connection?.closeConnection()
+                print ("Successfully Saved")
             }
-
+        } else {
+            print ("AddExpenseCVC: Could not save to database")
         }
+    }
+    
+    
+    /**
+        Create add expense view
+     */
+    func createAddExpense() {
+        let expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
+        expenseEntry.backgroundColor = UIColor.red
+        
+        expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry.frame.height/2 - 50, width: expenseEntry.frame.width, height: 100))
+        expenseTextField.text = "500.25"
+        expenseTextField.font = .systemFont(ofSize: 50)
+        expenseTextField.adjustsFontSizeToFitWidth = true
+        expenseTextField.textAlignment  = .center
+        expenseTextField.borderStyle = UITextField.BorderStyle.line
+        expenseTextField.delegate = self
+        expenseTextField.keyboardType = UIKeyboardType.decimalPad
+        
+        expenseEntry.addSubview(expenseTextField)
+        // we don't want the add expense view to scroll with the collection view so we add it to view instead of collection view
+        self.view.addSubview(expenseEntry)
+        
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: expenseEntry.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
 
+        self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
 }

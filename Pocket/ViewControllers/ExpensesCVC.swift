@@ -1,6 +1,7 @@
 import UIKit
 import SQLite3
-
+import SwiftKueryORM
+import SwiftKuerySQLite
 
 var user: User = User()
 
@@ -10,16 +11,20 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     // database
     var db: OpaquePointer?
-    let databaseFileName = "TestDatabase"
-    let databaseFileExtension = "db"
+    let databaseFileName: String  = "TestDatabase"
+    let databaseFileExtension: String  = "db"
     
     
     var uniqueCategories: [String] = []
     var categoryDictionary: [String: CGFloat] = [:]
     
-    let queryDate = "'2019-01-01'"
+    let queryDate: String = "'2019-01-01'"
+    
+    var pieView: PieChart?
     
     
+    
+    var test = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,35 +36,34 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         populateDataArray()
         
-        let pieView = PieChart(
+        pieView = PieChart(
             frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.55),
-            categories: &categoryDictionary)
-        pieView.backgroundColor = UIColor.white
-        self.view.addSubview(pieView)
+            categories: categoryDictionary)
+        pieView!.backgroundColor = UIColor.white
+        self.view.addSubview(pieView!)
         
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: pieView.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
 
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-         
+        print(test)
         
-        self.tabBarController?.delegate = self as? UITabBarControllerDelegate
     }
     
     /**
-        number of sections
+        N0umber of sections
      */
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        print("section")
         return 1
     }
     
     /**
-        number of cells in section
+        Number of cells in section
      */
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // where 1 is the pie view
@@ -67,7 +71,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     /**
-        what each cell is going to display
+        What each cell is going to display
      */
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ExpensesCVCCell
@@ -82,7 +86,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     /**
-        what a specific cell's size should be
+        What a specific cell's size should be
      */
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.frame.width, height: 50)
