@@ -1,5 +1,6 @@
 import UIKit
 import SQLite3
+import SwiftKuery
 import SwiftKueryORM
 import SwiftKuerySQLite
 
@@ -11,8 +12,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     // database
     var db: OpaquePointer?
-    let databaseFileName: String  = "TestDatabase"
-    let databaseFileExtension: String  = "db"
     
     
     var uniqueCategories: [String] = []
@@ -22,9 +21,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     var pieView: PieChart?
     
-    
-    
-    var test = 1
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,15 +46,14 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        print(test)
-        
+
+
     }
     
     /**
-        N0umber of sections
+        Number of sections
      */
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        print("section")
         return 1
     }
     
@@ -93,69 +88,52 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     
-    /**
-        Read database and map each category to its total value
-     */
+    /// Read database and map each category to its total value
     func populateDataArray () {
-        guard let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
-        else {
-            print ("Error opening database file")
-            return
-        }
+//        For semZero all acquire() calls will block and tryAcquire() calls will return false, until you do a release()
+//
+//        For semOne the first acquire() calls will succeed and the rest will block until the first one releases
         
-        // opening ocnnection to database
-        if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
-            print ("Error opening database")
-        }
-        
-        // statement pointer
-        var stmt:OpaquePointer?
-        
-        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_tables"
-        
-        // preparing distinct category query
-        if sqlite3_prepare(db, distinctCategoryQuery, -1, &stmt, nil) != SQLITE_OK {
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print ("Error preparing the database: ", errmsg)
-            return
-        }
-        // traverse through all records
-        var i = 0
-        while sqlite3_step(stmt) == SQLITE_ROW {
-            let categoryDb = String(cString: sqlite3_column_text(stmt, 0))
-            uniqueCategories.append(categoryDb)
-            i += 1
-        }
-        // initialize dictionary for storing total value of each category
-        for element in uniqueCategories {
-            categoryDictionary[element] = 0
-        }
-
-        
-        let userDataQuery = "SELECT * FROM expense_tables"
-        
-        // preparing user data query
-        if sqlite3_prepare(db, userDataQuery, -1, &stmt, nil) != SQLITE_OK {
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print ("Error preparing the database: ", errmsg)
-            return
-        }
-        // traverse through all records
-        i = 0
-        while sqlite3_step(stmt) == SQLITE_ROW {
-//            let customerIdDb = String(cString: sqlite3_column_text(stmt, 0))
-            let amountDb = String(cString: sqlite3_column_text(stmt, 1))
-            let categoryDb = String(cString: sqlite3_column_text(stmt, 2))
-//            probably don't need to read the date at all, and just query database with each load
-//            let dateDb = String(cString: sqlite3_column_text(stmt, 3))
-            
-            guard let amount = NumberFormatter().number(from: amountDb) else {
-                print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
-                return
+        if user_entries_database != nil {
+            user_entries_database!.getConnection() { connection, error in
+                guard connection != nil else {
+                    print ("Unsuccessful connection to database")
+                    return
+                }
+                
+                Database.default = Database(user_entries_database!)
+                ExpenseCategoryTables.getAllCategories() { result, error in
+                    guard let result = result else {
+                        print ("ExpenseCVC error", error!)
+                        connection?.closeConnection()
+                        return
+                    }
+                    
+                    print ("Result: ", result)
+                }
+                
+                connection?.closeConnection()
+                print ("ExpenseCVC: Successfully read from database")
             }
-            user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
-            categoryDictionary[categoryDb]! +=  CGFloat(truncating: amount)
-            user.addExpenseType(expenseType: categoryDb)
+            
+        } else {
+            print ("ExpenseCVC: database is nil")
+        }
+        
+        
+
+//        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_tables"
+//
+//        let userDataQuery = "SELECT * FROM expense_tables"
+//
+//
+//            guard let amount = NumberFormatter().number(from: amountDb) else {
+//                print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
+//                return
+//            }
+//            user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
+//            categoryDictionary[categoryDb]! +=  CGFloat(truncating: amount)
+//            user.addExpenseType(expenseType: categoryDb)
             
 //            let dateFormatter = DateFormatter()
 //            dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -164,7 +142,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //                return
 //            }
 //            user.addDate(date: date)
-            i += 1
-        }
+//            i += 1
+//        }
     }
 }

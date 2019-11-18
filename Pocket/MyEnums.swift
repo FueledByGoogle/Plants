@@ -1,13 +1,14 @@
 import Foundation
 
-
 class MyEnums {
     
     enum TabNames: String {
         case Add, Expenses, Search
     }
     
-    
+    /**
+        Categories of expenses
+     */
     enum Categories: String, CaseIterable {
         case Clothing, Electronics, Entertainment, Food, Furniture, Groceries, Sports, Transportation
     }

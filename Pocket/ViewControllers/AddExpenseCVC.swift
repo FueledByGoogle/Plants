@@ -19,10 +19,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     var expenseTextField: UITextField = UITextField()
     
-    // database
-    let databaseFileName: String = "TestDatabase"
-    let databaseFileExtension: String = "db"
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,33 +92,32 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                     print ("Could not convert number to a float")
                     return
                 }
-            addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: amount)
+            saveToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: amount)
 
             // this reloads that tab each time it is called
 //            tabBarController!.selectedIndex = 1 // go to expense tab
         }
     }
     
-    /**
-        Initialize Database Connections
-     */
+    
+    /// Initialize connection to database and set up connection pool
     func initializeDatabase() {
         
-        guard let filename = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension) else {
+        guard let dbPath = Bundle.main.url(forResource: DatabaseEnum.UserDatabase.fileName.rawValue, withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue) else {
             print ("AddExpenseCVC: Could not initialize Database")
             return
         }
         
         let connectionSQL = SQLiteConnection.createPool(
-            filename: filename.absoluteString,
+            filename: dbPath.absoluteString,
         poolOptions: ConnectionPoolOptions(initialCapacity: 5, maxCapacity: 20))
         
         user_entries_database = connectionSQL
     }
     
     
-    
-    func addToDatabase(category: String, amount: Double) {
+    /// save entry to database
+    func saveToDatabase(category: String, amount: Double) {
         
         if user_entries_database != nil {
             user_entries_database!.getConnection() { connection, error in
@@ -134,8 +129,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 
                 Database.default = Database(user_entries_database!)
                 
-                let entry = expense_tables(customerId: 1, amount: amount, category: category, entry_date: Date())
-                
+                let entry = ExpenseTables(customerId: 1, amount: amount, category: category, entry_date: Date())
                 entry.save { user, error in
                     if let error = error {
                         print("Save Error:", error)
@@ -145,15 +139,14 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 connection?.closeConnection()
                 print ("Successfully Saved")
             }
+            
         } else {
             print ("AddExpenseCVC: Could not save to database")
         }
     }
     
     
-    /**
-        Create add expense view
-     */
+    /// Create add expense view
     func createAddExpense() {
         let expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
         expenseEntry.backgroundColor = UIColor.red
