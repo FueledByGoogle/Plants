@@ -122,14 +122,13 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         if user_entries_database != nil {
             user_entries_database!.getConnection() { connection, error in
                 guard connection != nil else {
-                    // Handle error
                     print ("Unsuccessful connection to database")
                     return
                 }
                 
                 Database.default = Database(user_entries_database!)
                 
-                let entry = ExpenseTables(customerId: 1, amount: amount, category: category, entry_date: Date())
+                let entry = ExpenseTables(customerId: 1, amount: amount, category: category, date: Date.dateToString(date: Date()))
                 entry.save { user, error in
                     if let error = error {
                         print("Save Error:", error)
@@ -137,7 +136,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 }
                 
                 connection?.closeConnection()
-                print ("Successfully Saved")
+                print ("Expense entry successfully saved.")
             }
             
         } else {

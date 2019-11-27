@@ -17,6 +17,8 @@
 		02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */; };
 		022047912100C181002F6E9B /* DSC_1336.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 022047902100C181002F6E9B /* DSC_1336.JPG */; };
 		022047972100CF26002F6E9B /* MyUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022047962100CF26002F6E9B /* MyUtils.swift */; };
+		0221653A23848B7900EECC30 /* TODO.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 0221653923848B7900EECC30 /* TODO.rtf */; };
+		0221653C23848BE600EECC30 /* DatabaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0221653B23848BE600EECC30 /* DatabaseModel.swift */; };
 		02235A422319E9950005B9AC /* testTextImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A412319E9950005B9AC /* testTextImage.jpg */; };
 		02235A48231AF56A0005B9AC /* IMG_9669.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02235A46231AF56A0005B9AC /* IMG_9669.JPG */; };
 		02235A4A231AF6550005B9AC /* IMG_9671.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A49231AF6550005B9AC /* IMG_9671.jpg */; };
@@ -75,6 +77,8 @@
 		02202DC5231C69B200FAAFC4 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		022047902100C181002F6E9B /* DSC_1336.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DSC_1336.JPG; sourceTree = "<group>"; };
 		022047962100CF26002F6E9B /* MyUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyUtils.swift; sourceTree = "<group>"; };
+		0221653923848B7900EECC30 /* TODO.rtf */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; path = TODO.rtf; sourceTree = "<group>"; };
+		0221653B23848BE600EECC30 /* DatabaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseModel.swift; sourceTree = "<group>"; };
 		02235A412319E9950005B9AC /* testTextImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testTextImage.jpg; sourceTree = "<group>"; };
 		02235A46231AF56A0005B9AC /* IMG_9669.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9669.JPG; sourceTree = "<group>"; };
 		02235A49231AF6550005B9AC /* IMG_9671.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9671.jpg; sourceTree = "<group>"; };
@@ -172,6 +176,7 @@
 		021964B52094333F009A43A6 /* Pocket */ = {
 			isa = PBXGroup;
 			children = (
+				0221653923848B7900EECC30 /* TODO.rtf */,
 				021964C22094333F009A43A6 /* Info.plist */,
 				0251C8E52318BE46002E2311 /* GoogleService-Info.plist */,
 				021964B62094333F009A43A6 /* AppDelegate.swift */,
@@ -248,6 +253,7 @@
 			children = (
 				02F2F320237F95F90045F17E /* DatabaseEnums.swift */,
 				0272E10D235E78920046A516 /* UserDatabaseStruct.swift */,
+				0221653B23848BE600EECC30 /* DatabaseModel.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -402,6 +408,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0221653A23848B7900EECC30 /* TODO.rtf in Resources */,
 				021964BE2094333F009A43A6 /* Assets.xcassets in Resources */,
 				02235A48231AF56A0005B9AC /* IMG_9669.JPG in Resources */,
 				022047912100C181002F6E9B /* DSC_1336.JPG in Resources */,
@@ -552,6 +559,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0221653C23848BE600EECC30 /* DatabaseModel.swift in Sources */,
 				021263462322F5E400477342 /* User.swift in Sources */,
 				0272E10E235E78920046A516 /* UserDatabaseStruct.swift in Sources */,
 				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,

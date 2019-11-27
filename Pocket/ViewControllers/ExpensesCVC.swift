@@ -4,7 +4,20 @@ import SwiftKuery
 import SwiftKueryORM
 import SwiftKuerySQLite
 
-var user: User = User()
+
+/*
+  TODO:
+ 
+    after having unique categories
+    sum each one up between the selected dates
+ 
+ 
+ 
+ 
+ 
+    - Don't want to reload data if user has not entered any new ones
+    - Asynchornously read both unique categories and entires between two dates to speed up process?
+ */
 
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -14,8 +27,8 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     var db: OpaquePointer?
     
     
-    var uniqueCategories: [String] = []
-    var categoryDictionary: [String: CGFloat] = [:]
+    var categoriesCount = 0
+    var categoryTotalDict: [String: CGFloat] = [:]
     
     let queryDate: String = "'2019-01-01'"
     
@@ -30,11 +43,11 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
-        populateDataArray()
+        getDatabaseValues()
         
         pieView = PieChart(
             frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.55),
-            categories: categoryDictionary)
+            categories: categoryTotalDict)
         pieView!.backgroundColor = UIColor.white
         self.view.addSubview(pieView!)
         
@@ -61,8 +74,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         Number of cells in section
      */
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // where 1 is the pie view
-        return uniqueCategories.count
+        return categoriesCount
     }
     
     /**
@@ -73,7 +85,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         cell.backgroundColor = UIColor.purple
         
         if indexPath.row < MyEnums.Colours.allCases.count {
-            cell.label.text = Array(categoryDictionary)[indexPath.row].key
+            cell.label.text = Array(categoryTotalDict)[indexPath.row].key
             cell.label.textColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row].rawValue)
         }
         
@@ -89,41 +101,49 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     /// Read database and map each category to its total value
-    func populateDataArray () {
-//        For semZero all acquire() calls will block and tryAcquire() calls will return false, until you do a release()
-//
-//        For semOne the first acquire() calls will succeed and the rest will block until the first one releases
+    func getDatabaseValues () {
+
         
         if user_entries_database != nil {
             user_entries_database!.getConnection() { connection, error in
                 guard connection != nil else {
-                    print ("Unsuccessful connection to database")
+                    print ("Unsuccessful connection to database", error!)
+                    connection?.closeConnection()
                     return
                 }
                 
+// eventually remove: after implementing on app start initialize orm this can be deleted
                 Database.default = Database(user_entries_database!)
-                ExpenseCategoryTables.getAllCategories() { result, error in
-                    guard let result = result else {
-                        print ("ExpenseCVC error", error!)
-                        connection?.closeConnection()
-                        return
-                    }
-                    
-                    print ("Result: ", result)
-                }
+
+// also need to check if return empty list
+                
+                // Get distinct categories
+                let distinctCategories = ExpenseCategoryTables.getAllCategories()
+                self.categoriesCount = distinctCategories!.count
+                
+                
+                
+// also need to check if return empty list
+                print (ExpenseTables.getSumBetweenDates(categoryName: "amount")!)
+                
+                
+                
+                
+                
                 
                 connection?.closeConnection()
                 print ("ExpenseCVC: Successfully read from database")
             }
             
         } else {
-            print ("ExpenseCVC: database is nil")
+            print ("ExpenseCVC: Database is nil")
         }
         
-        
+        /*
+            retrieve category, amount, between date/ on a date
+            
+         */
 
-//        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_tables"
-//
 //        let userDataQuery = "SELECT * FROM expense_tables"
 //
 //
@@ -134,7 +154,8 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //            user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
 //            categoryDictionary[categoryDb]! +=  CGFloat(truncating: amount)
 //            user.addExpenseType(expenseType: categoryDb)
-            
+        
+        
 //            let dateFormatter = DateFormatter()
 //            dateFormatter.dateFormat = "yyyy-MM-dd"
 //            guard let date = dateFormatter.date(from: dateDb) else {
