@@ -2,7 +2,6 @@ import UIKit
 import SQLite3
 
 
-var user: User = User()
 
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
@@ -14,8 +13,8 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let databaseFileExtension = "db"
     
     
-    var uniqueCategories: [String] = []
-    var categoryDictionary: [String: CGFloat] = [:]
+    var categories: [String] = []
+    var categoryTotal: [CGFloat] = []
     
     let queryDate = "'2019-01-01'"
     
@@ -32,7 +31,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         let pieView = PieChart(
             frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.55),
-            categories: &categoryDictionary)
+            categories: &categories, categoryTotal: &categoryTotal)
         pieView.backgroundColor = UIColor.white
         self.view.addSubview(pieView)
         
@@ -55,7 +54,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
      */
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // where 1 is the pie view
-        return uniqueCategories.count
+        return categories.count
     }
     
     /**
@@ -63,10 +62,10 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
      */
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ExpensesCVCCell
-        cell.backgroundColor = UIColor.purple
+        cell.backgroundColor = UIColor.white
         
         if indexPath.row < MyEnums.Colours.allCases.count {
-            cell.label.text = Array(categoryDictionary)[indexPath.row].key
+            cell.label.text = categories[indexPath.row]
             cell.label.textColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row].rawValue)
         }
         
@@ -96,58 +95,44 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
             print ("Error opening database")
         }
-        
         // statement pointer
         var stmt:OpaquePointer?
         
-        let distinctCategoryQuery = "SELECT DISTINCT " + DatabaseEnum.ExpenseTable.category.rawValue
-            + "  FROM " + DatabaseEnum.ExpenseTable.tableName.rawValue
-            + " WHERE " + DatabaseEnum.ExpenseTable.entryDate.rawValue
-            + " between " + queryDate + " AND " + queryDate
         
-        // preparing distinct category query
-        if sqlite3_prepare(db, distinctCategoryQuery, -1, &stmt, nil) != SQLITE_OK {
-            let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print ("Error preparing the database: ", errmsg)
-            return
-        }
-        // traverse through all records
         var i = 0
-        while sqlite3_step(stmt) == SQLITE_ROW {
-            let categoryDb = String(cString: sqlite3_column_text(stmt, 0))
-            uniqueCategories.append(categoryDb)
-            i += 1
-        }
-        // initialize dictionary for storing total value of each category
-        for element in uniqueCategories {
-            categoryDictionary[element] = 0
-        }
-
         
-        let userDataQuery = "SELECT * FROM " + DatabaseEnum.ExpenseTable.tableName.rawValue  + " WHERE entry_date between " + queryDate + " AND " + queryDate
+        
+        let userDataQuery = "SELECT * FROM "
+            + DatabaseEnum.ExpenseTable.tableName.rawValue
+            + " WHERE " + DatabaseEnum.ExpenseTable.entryDate.rawValue
+            + " BETWEEN " + queryDate + " AND " + queryDate
+            + " ORDER BY " + DatabaseEnum.ExpenseTable.category.rawValue
         
         // preparing user data query
-        if sqlite3_prepare(db, userDataQuery, -1, &stmt, nil) != SQLITE_OK {
+        if sqlite3_prepare(db, userDataQuery, -1, &stmt, nil) != SQLITE_OK
+        {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print ("Error preparing the database: ", errmsg)
             return
         }
+        
+        
+        
         // traverse through all records
         i = 0
-        while sqlite3_step(stmt) == SQLITE_ROW {
-//            let customerIdDb = String(cString: sqlite3_column_text(stmt, 0))
+        while sqlite3_step(stmt) == SQLITE_ROW
+        {
             let amountDb = String(cString: sqlite3_column_text(stmt, 1))
             let categoryDb = String(cString: sqlite3_column_text(stmt, 2))
-//            probably don't need to read the date at all, and just query database with each load
-//            let dateDb = String(cString: sqlite3_column_text(stmt, 3))
             
             guard let amount = NumberFormatter().number(from: amountDb) else {
                 print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
                 return
             }
-            user.expenseValue.append(CGFloat(truncating: amount))
-            user.expenseType.append(categoryDb)
-            categoryDictionary[categoryDb]! +=  CGFloat(truncating: amount)
+            
+            categoryTotal.append(CGFloat(truncating: amount))
+            categories.append(categoryDb)
+            
             
             i += 1
         }

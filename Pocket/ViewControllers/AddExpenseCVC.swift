@@ -34,7 +34,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         
         let expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
-        expenseEntry.backgroundColor = UIColor.red
+        expenseEntry.backgroundColor = UIColor.white
         
         expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry.frame.height/2 - 50, width: expenseEntry.frame.width, height: 100))
         expenseTextField.text = "25.6"
@@ -55,11 +55,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 
         self.collectionView.setCollectionViewLayout(layout, animated: false)
         
-        
-        
-        
-        
     }
+    
     
     /**
         number of sections

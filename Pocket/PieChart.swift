@@ -3,15 +3,18 @@ import UIKit
 
 class PieChart: UIView {
     
-    // Array holding category corresponding to its value
-    var categories: [String: CGFloat] = [:]
+    var categories: [String] = []
+    var categoryTotal: [CGFloat] = []
+    
+    
     
     /** catgegories : unique array of categories
         values : total value of each category
      */
-    init(frame: CGRect, categories: inout [String: CGFloat]) {
+    init(frame: CGRect, categories: inout [String], categoryTotal: inout [CGFloat]) {
         super.init(frame: frame)
         self.categories =  categories
+        self.categoryTotal = categoryTotal
     }
     
     required init(coder aDecoder: NSCoder) {
@@ -38,12 +41,12 @@ class PieChart: UIView {
         
         // could be more efficient to add up totals before passing, but since there won't be many categories the run time difference will be negligible.
         var totalValue = CGFloat(0)
-        for (_, value) in categories {
+        for value in categoryTotal {
             totalValue += value
         }
         
         var i = 0
-        for (_, value) in categories {
+        for value in categoryTotal {
             // percentage to determine how much to move by
             let percent = value/totalValue
             let endAngle = startAngle + anglePI2 * percent
