@@ -1,12 +1,11 @@
 import UIKit
 import SQLite3
-import SwiftKueryORM
-import SwiftKuerySQLite
 
 
 
 /*
  TODO:
+    - initialize connection database and create connection pool like when using swift kuery
     - replace total number of cells with unique categories in the future when loading of database data
  */
 
@@ -130,39 +129,28 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     func addToDatabase(category: String, amount: String) {
 
-        
-//        let connection = SQLiteConnection(filename: Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)!.absoluteString)
-//
-//        connection.connect() { result in
-//            guard result.success else {
-//                print ("connection unsuccessful")
-//                return
-//            }
-//            print ("connection successful")
-//            // Use connection
-//        }
-        
-        
-        
-        // open database file
-        guard let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
+        // get file url
+        guard let dbPath = Bundle.main.url(forResource: DatabaseEnum.UserDatabase.fileName.rawValue , withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)
         else {
             print ("Error opening database file")
             return
         }
 
+        // open database
         if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
             print ("Error opening database")
+            return
         }
 
-//        let insertQuery = "INSERT INTO expense_table (customerId, amount, category, entry_date) VALUES (0, " + amount + ", \"" + category + "\", \"" + NSDate().description + "\");"
-        let insertQuery = "INSERT INTO expense_table (customerId, amount, category, entry_date) VALUES (0, ?, ?, \"2019-10-21 23:29:03\" )"
+        let insertQuery = "INSERT INTO "
+            + DatabaseEnum.ExpenseTable.tableName.rawValue
+            + " (customerId, amount, category, entry_date) VALUES (0, ?, ?, \""
+            + Date.dateToString(date: Date()) + "\")"
         
-        print (insertQuery)
         // statement pointer
         var stmt:OpaquePointer?
 
-        sqlite3_reset(stmt)
+        
 
         // preparing query
         if sqlite3_prepare(db, insertQuery, -1, &stmt, nil) != SQLITE_OK {
@@ -188,11 +176,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             return
         }
 
-
-
-
-
-
+        
+        sqlite3_reset(stmt) // must e called if step returns SQLITE_DONE
         //executing the query to insert values
         if sqlite3_step(stmt) != SQLITE_DONE {
             let errmsg = String(cString: sqlite3_errmsg(db)!)

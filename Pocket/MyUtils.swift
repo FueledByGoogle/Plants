@@ -65,8 +65,7 @@ extension UIColor {
 
 extension UIViewController
 {
-    func setupToHideKeyboardOnTapOnView()
-    {
+    func setupToHideKeyboardOnTapOnView() {
         let tap: UITapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(UIViewController.dismissKeyboard))
@@ -78,5 +77,17 @@ extension UIViewController
     @objc func dismissKeyboard()
     {
         view.endEditing(true)
+    }
+}
+
+
+extension Date
+{
+    
+    public static func dateToString(date: Date) -> String {
+        let df = DateFormatter()
+        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        df.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+        return df.string(from: Date())
     }
 }

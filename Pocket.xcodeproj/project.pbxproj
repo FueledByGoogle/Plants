@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		021263462322F5E400477342 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021263452322F5E400477342 /* User.swift */; };
 		021964B72094333F009A43A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964B62094333F009A43A6 /* AppDelegate.swift */; };
-		021964B92094333F009A43A6 /* MenuVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964B82094333F009A43A6 /* MenuVc.swift */; };
 		021964BE2094333F009A43A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 021964BD2094333F009A43A6 /* Assets.xcassets */; };
 		021964CC2094333F009A43A6 /* PlantsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964CB2094333F009A43A6 /* PlantsTests.swift */; };
 		021964D72094333F009A43A6 /* PocketUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964D62094333F009A43A6 /* PocketUITests.swift */; };
@@ -28,10 +27,9 @@
 		0251C8E72318BE46002E2311 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0251C8E52318BE46002E2311 /* GoogleService-Info.plist */; };
 		0251C8E82318BE46002E2311 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0251C8E52318BE46002E2311 /* GoogleService-Info.plist */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
-		02697DC620E287EE0090D7E2 /* PlantInfoVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */; };
-		0272E10523593B280046A516 /* TestDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* TestDatabase.db */; };
+		027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027248DC238F42C1003A23E9 /* DatabaseEnums.swift */; };
+		0272E10523593B280046A516 /* UserDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* UserDatabase.db */; };
 		0272E10C235E6F070046A516 /* SwiftKueryORM in Frameworks */ = {isa = PBXBuildFile; productRef = 0272E10B235E6F070046A516 /* SwiftKueryORM */; };
-		0272E10E235E78920046A516 /* DatabaseStruct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0272E10D235E78920046A516 /* DatabaseStruct.swift */; };
 		0272E111235E7B0A0046A516 /* SwiftKuerySQLite in Frameworks */ = {isa = PBXBuildFile; productRef = 0272E110235E7B0A0046A516 /* SwiftKuerySQLite */; };
 		0286812C2119E94600E0A67E /* Plant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0286812B2119E94600E0A67E /* Plant.swift */; };
 		02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */; };
@@ -65,7 +63,6 @@
 		021263452322F5E400477342 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		021964B32094333F009A43A6 /* Pocket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pocket.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		021964B62094333F009A43A6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		021964B82094333F009A43A6 /* MenuVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuVc.swift; sourceTree = "<group>"; };
 		021964BD2094333F009A43A6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		021964C22094333F009A43A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		021964C72094333F009A43A6 /* PocketTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PocketTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,10 +84,9 @@
 		0251124420E7E7E300C12D56 /* Plants.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Plants.db; sourceTree = "<group>"; };
 		0251C8E52318BE46002E2311 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
-		02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlantInfoVc.swift; sourceTree = "<group>"; };
-		0272E10423593B280046A516 /* TestDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TestDatabase.db; sourceTree = "<group>"; };
+		027248DC238F42C1003A23E9 /* DatabaseEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseEnums.swift; sourceTree = "<group>"; };
+		0272E10423593B280046A516 /* UserDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = UserDatabase.db; sourceTree = "<group>"; };
 		0272E10A235E6EF80046A516 /* Swift-Kuery-ORM-0.6.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Swift-Kuery-ORM-0.6.1"; sourceTree = "<group>"; };
-		0272E10D235E78920046A516 /* DatabaseStruct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseStruct.swift; sourceTree = "<group>"; };
 		0272E10F235E7AFE0046A516 /* Swift-Kuery-SQLite-2.0.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Swift-Kuery-SQLite-2.0.1"; sourceTree = "<group>"; };
 		0286812B2119E94600E0A67E /* Plant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Plant.swift; sourceTree = "<group>"; };
 		02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVCCell.swift; sourceTree = "<group>"; };
@@ -181,7 +177,7 @@
 			children = (
 				0251C8E52318BE46002E2311 /* GoogleService-Info.plist */,
 				021964B62094333F009A43A6 /* AppDelegate.swift */,
-				02DE4EF820E7CE0400300F98 /* Resources */,
+				027248D9238F2B5B003A23E9 /* Database */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
 				02886EE42352B7D8006F7B8D /* Cells */,
 				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
@@ -190,7 +186,7 @@
 				021263472322FB6600477342 /* Classes */,
 				021964C22094333F009A43A6 /* Info.plist */,
 				021964BD2094333F009A43A6 /* Assets.xcassets */,
-				0272E10D235E78920046A516 /* DatabaseStruct.swift */,
+				02DE4EF820E7CE0400300F98 /* Resources */,
 			);
 			path = Pocket;
 			sourceTree = "<group>";
@@ -218,12 +214,18 @@
 			children = (
 				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
-				021964B82094333F009A43A6 /* MenuVc.swift */,
 				0220479B2100EB96002F6E9B /* SearchVc.swift */,
-				02697DC520E287EE0090D7E2 /* PlantInfoVc.swift */,
 				029B4E8621E1DACD00882705 /* TabBar.swift */,
 			);
 			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		027248D9238F2B5B003A23E9 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				027248DC238F42C1003A23E9 /* DatabaseEnums.swift */,
+			);
+			path = Database;
 			sourceTree = "<group>";
 		};
 		02886EE42352B7D8006F7B8D /* Cells */ = {
@@ -248,7 +250,7 @@
 				02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */,
 				022047902100C181002F6E9B /* DSC_1336.JPG */,
 				0251124420E7E7E300C12D56 /* Plants.db */,
-				0272E10423593B280046A516 /* TestDatabase.db */,
+				0272E10423593B280046A516 /* UserDatabase.db */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -410,7 +412,7 @@
 				02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */,
 				0251124520E7E7E300C12D56 /* Plants.db in Resources */,
 				02235A422319E9950005B9AC /* testTextImage.jpg in Resources */,
-				0272E10523593B280046A516 /* TestDatabase.db in Resources */,
+				0272E10523593B280046A516 /* UserDatabase.db in Resources */,
 				0251C8E62318BE46002E2311 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -554,7 +556,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				021263462322F5E400477342 /* User.swift in Sources */,
-				0272E10E235E78920046A516 /* DatabaseStruct.swift in Sources */,
 				0286812C2119E94600E0A67E /* Plant.swift in Sources */,
 				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
@@ -562,9 +563,8 @@
 				02A5B2FD210F6CA100486DE5 /* PlantInfoCell.swift in Sources */,
 				02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */,
 				02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */,
-				02697DC620E287EE0090D7E2 /* PlantInfoVc.swift in Sources */,
+				027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */,
 				02886EE82352C30A006F7B8D /* ExpensesCVCCell.swift in Sources */,
-				021964B92094333F009A43A6 /* MenuVc.swift in Sources */,
 				029B4E8721E1DACD00882705 /* TabBar.swift in Sources */,
 				0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */,
 				023363F120FE417800A99F27 /* SearchCell.swift in Sources */,

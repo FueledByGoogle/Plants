@@ -20,7 +20,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let queryDate = "'2019-01-01'"
     
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
@@ -86,7 +85,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         Read database and map each category to its total value
      */
     func populateDataArray () {
-        guard let dbPath = Bundle.main.url(forResource: databaseFileName, withExtension: databaseFileExtension)
+        guard let dbPath = Bundle.main.url(forResource: DatabaseEnum.UserDatabase.fileName.rawValue, withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)
         else {
             print ("Error opening database file")
             return
@@ -101,7 +100,10 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         // statement pointer
         var stmt:OpaquePointer?
         
-        let distinctCategoryQuery = "SELECT DISTINCT Category FROM expense_table WHERE entry_date between " + queryDate + " AND " + queryDate
+        let distinctCategoryQuery = "SELECT DISTINCT " + DatabaseEnum.ExpenseTable.category.rawValue
+            + "  FROM " + DatabaseEnum.ExpenseTable.tableName.rawValue
+            + " WHERE " + DatabaseEnum.ExpenseTable.entryDate.rawValue
+            + " between " + queryDate + " AND " + queryDate
         
         // preparing distinct category query
         if sqlite3_prepare(db, distinctCategoryQuery, -1, &stmt, nil) != SQLITE_OK {
@@ -122,7 +124,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
 
         
-        let userDataQuery = "SELECT * FROM expense_table WHERE entry_date between " + queryDate + " AND " + queryDate
+        let userDataQuery = "SELECT * FROM " + DatabaseEnum.ExpenseTable.tableName.rawValue  + " WHERE entry_date between " + queryDate + " AND " + queryDate
         
         // preparing user data query
         if sqlite3_prepare(db, userDataQuery, -1, &stmt, nil) != SQLITE_OK {
@@ -143,17 +145,10 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
                 return
             }
-            user.addExpenseValue(expenseValue: CGFloat(truncating: amount))
+            user.expenseValue.append(CGFloat(truncating: amount))
+            user.expenseType.append(categoryDb)
             categoryDictionary[categoryDb]! +=  CGFloat(truncating: amount)
-            user.addExpenseType(expenseType: categoryDb)
             
-//            let dateFormatter = DateFormatter()
-//            dateFormatter.dateFormat = "yyyy-MM-dd"
-//            guard let date = dateFormatter.date(from: dateDb) else {
-//                print ("Error converting entry ", i+1, " in database category \"Date\" to Date format.")
-//                return
-//            }
-//            user.addDate(date: date)
             i += 1
         }
     }
