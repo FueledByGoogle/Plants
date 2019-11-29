@@ -19,7 +19,6 @@ class ExpensesCVCCell: UICollectionViewCell {
         
         
         // for furture if I find a way to draw bezierpaths in custom cells
-        
          
         // draw and position circles
 //        let circleRadius =  self.frame.height*0.1

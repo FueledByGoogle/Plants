@@ -6,7 +6,6 @@ import SQLite3
 /*
  TODO:
     - initialize connection database and create connection pool like when using swift kuery
-    - replace total number of cells with unique categories in the future when loading of database data
  */
 
 class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
@@ -75,7 +74,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     /**
         what each cell is going to display
      */
-    override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
         cell.backgroundColor = UIColor.purple
         
@@ -185,6 +185,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
 
         sqlite3_finalize(stmt)
+        
+        sqlite3_close(db)
     }
     
 }

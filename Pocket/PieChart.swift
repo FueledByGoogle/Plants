@@ -21,6 +21,12 @@ class PieChart: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    /// update data used to generate piechart
+    func updateData(categories: inout [String], categoryTotal: inout [CGFloat]) {
+        self.categories =  categories
+        self.categoryTotal = categoryTotal
+    }
+    
     override func draw(_ rect: CGRect) {
         
         let pieChartSizeReduction  = CGFloat(0.35)

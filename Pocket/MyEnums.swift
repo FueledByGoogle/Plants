@@ -15,9 +15,14 @@ class MyEnums {
     // colours used for each category in pie chart
     enum Colours: Int, CaseIterable {
         case PINK = 0xFF2F92
-        case LIGHT_BLUE = 0x76D6FF
+        case BLUE_LIGHT = 0x76D6FF
+        case YELLOW_LIGHT = 0xf0da81
         case PURPLE = 0x9437FF
-        case LIGHT_YELLOW = 0xf0da81
+        case GREEN_LIGHT = 0x8DB255
+        case BLUE_SKY = 0x4D8FAC
+        case GREEN_DARK = 0x5B8930
+        case RED_ORANGE = 0xDC3023
+        case GREEN_EXTRA_DARK = 0x006442
     }
 
 }
