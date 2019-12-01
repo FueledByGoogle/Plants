@@ -6,6 +6,7 @@ import SQLite3
 /*
  TODO:
     - initialize connection database and create connection pool like when using swift kuery
+    - only let two decimal place entry
  */
 
 class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
@@ -57,23 +58,12 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     
-    /**
-        number of sections
-     */
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    /**
-        number of cells in section
-     */
+    /// number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return MyEnums.Categories.allCases.count
     }
     
-    /**
-        what each cell is going to display
-     */
+    /// what each cell is going to display
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
@@ -84,20 +74,14 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return cell
     }
     
-    
-    /**
-        what a specific cell's size should be
-     */
+    /// what a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 70, height: 70)
     }
     
-    /**
-         on user selection of cell
-     */
+
+    /// on user selection of cell
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-//        let cell = collectionView.cellForItem(at: indexPath) as! AddExpenseCVCCell
         
         // check for correct number of decimals
         if (expenseTextField.text!.filter { $0 == "."}.count) > 1 {
@@ -107,23 +91,22 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 
         // check for invalid characters
         let removedDecimal = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
+        
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: removedDecimal)) == false {
             print ("Entered text that contains unsupported characters ")
-        } else {
-            let expenseUINavController = self.tabBarController!.viewControllers![1] as! UINavigationController
-//            let expenseCVC = expenseUINavController.topViewController as! ExpensesCVC
-            guard Double(expenseTextField.text!) != nil
-                else {
-                    print ("Could not convert number to a float")
+        }
+        else {
+            guard Double(expenseTextField.text!) != nil else {
+                print ("Could not convert number to a float")
                 return
             }
+            
             addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: expenseTextField.text!)
-
-            // this reloads that tab each time it is called
-//            tabBarController!.selectedIndex = 1 // go to expense tab
         }
     }
     
+    
+    /// add amount to database
     func addToDatabase(category: String, amount: String) {
 
         // get file url
@@ -157,15 +140,13 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
 
 
-        //binding the parameters
-
+        //              binding the parameters
         // amount
         if sqlite3_bind_double(stmt, 1, Double(amount)!) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Failure binding amount: \(errmsg)")
             return
         }
-
         // category
         if sqlite3_bind_text(stmt, 2, category, -1, nil) != SQLITE_OK{
             let errmsg = String(cString: sqlite3_errmsg(db)!)
@@ -185,7 +166,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
 
         sqlite3_finalize(stmt)
-        
         sqlite3_close(db)
     }
     

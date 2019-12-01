@@ -22,14 +22,6 @@ class TabBar: UITabBarController {
         let expenseNavcontroller = UINavigationController(rootViewController: expenseController)
         expenseNavcontroller.tabBarItem.title = MyEnums.TabNames.Expenses.rawValue
         
-//        let mainMenuController = Menuvc(collectionViewLayout: layout)
-//        let mainMenuNavcontroller = UINavigationController(rootViewController: mainMenuController)
-//       mainMenuNavcontroller.tabBarItem.title = MyEnums.TabNames.Add.rawValue
-//
-//        let searchController = SearchVc(collectionViewLayout: layout)
-//        let searchNavController = UINavigationController(rootViewController: searchController)
-//        searchNavController.tabBarItem.title = MyEnums.TabNames.Search.rawValue
-        
         viewControllers = [AddExpenseNavController, expenseNavcontroller]
         
     }

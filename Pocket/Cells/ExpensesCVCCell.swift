@@ -3,24 +3,61 @@ import UIKit
 class ExpensesCVCCell: UICollectionViewCell {
     
     
-    //    let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
-    let label: UILabel = {
-        let label = UILabel()
-//        label.translatesAutoresizingMaskIntoConstraints = false // must have
-        return label
-    }()
+    let label = UILabel()
+    let totalLabel = UILabel()
     
     
-    override init(frame: CGRect) {
+    var percentage = 0
+    var indexPathNum = 0
+    
+    
+    override init(frame: CGRect){
         super.init(frame: frame)
         
-        self.addSubview(label)
+        setUpDefaultColors()
         setUpContraints()
         
+    }
+    
+    /// Call this AFTER setting indexPathNum and percentage variables
+    func addViewsWithUpdatedProperties()
+    {
+        label.textColor = UIColor(rgb: MyEnums.Colours.allCases[indexPathNum].rawValue)
         
-        // for furture if I find a way to draw bezierpaths in custom cells
-         
-        // draw and position circles
+        self.addSubview(totalLabel)
+        self.addSubview(label)
+    }
+    
+    
+    func setUpDefaultColors()
+    {
+        totalLabel.textColor = .black
+        
+        totalLabel.backgroundColor = .red
+        label.backgroundColor = .blue
+        self.backgroundColor = .clear
+        
+    }
+    
+    
+    func setUpContraints()
+    {
+        label.frame = CGRect(x: 10, y: 0, width: self.frame.width*0.6, height: self.frame.height)
+        totalLabel.frame = CGRect(x: self.frame.width*0.6+10, y: 0, width: self.frame.width*0.4-10-10, height: self.frame.height)
+        totalLabel.textAlignment = .right
+
+        contentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        contentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        contentView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
+
 //        let circleRadius =  self.frame.height*0.1
 //        let circlePath = UIBezierPath(arcCenter: CGPoint(x: circleRadius*2, y: self.frame.height/2), radius: circleRadius, startAngle: 0, endAngle: CGFloat(Float.pi*2), clockwise: true)
 //        let circleLabel = CAShapeLayer()
@@ -35,19 +72,3 @@ class ExpensesCVCCell: UICollectionViewCell {
 //            print("not enough colours, grey will be used to reprersent the rest of the colours")
 //            circleLabel.fillColor = UIColor(rgb: 0x454545).cgColor
 //        }
-    }
-    
-    
-    func setUpContraints() {
-        label.frame = CGRect(x: self.frame.height*0.1*4, y: 0, width: self.frame.width, height: self.frame.height)
-        
-        contentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        contentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        contentView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}

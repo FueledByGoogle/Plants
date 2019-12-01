@@ -20,6 +20,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let queryDate2 = "'2019-11-30'"
 
     
+    var initialLoad = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,36 +30,35 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
+        if initialLoad == true {initialLoad = false}
         
         populateDataArray()
+
         pieView = PieChart(
-            frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.55),
+            frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height, width: self.view.frame.width, height: self.view.frame.height * 0.55),
             categories: &categories, categoryTotal: &categoryTotal)
         pieView!.backgroundColor = UIColor.white
         self.view.addSubview(pieView!)
         
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
-
+        // Where frame holding cells begin
+        layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
-        categories.removeAll()
-        categoryTotal.removeAll()
-        populateDataArray()
-        pieView?.updateData(categories: &categories, categoryTotal: &categoryTotal)
-        pieView?.setNeedsDisplay()
-        self.collectionView.reloadData() // reloads cells
+        if initialLoad == false {
+            categories.removeAll()
+            categoryTotal.removeAll()
+            populateDataArray()
+            pieView?.updateData(categories: &categories, categoryTotal: &categoryTotal)
+            pieView?.setNeedsDisplay()
+            self.collectionView.reloadData() // reloads cells
+        }
     }
     
-    
-    ///  number of sections
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
     
     /// number of cells
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -69,11 +69,12 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ExpensesCVCCell
-        cell.backgroundColor = UIColor.white
         
-        print (indexPath.row)
+        cell.indexPathNum = indexPath.row
+        
         cell.label.text = categories[indexPath.row]
-        cell.label.textColor = UIColor(rgb: MyEnums.Colours.allCases[indexPath.row].rawValue)
+        cell.totalLabel.text = categoryTotal[indexPath.row].description
+        cell.addViewsWithUpdatedProperties()
 
         return cell
     }
@@ -129,7 +130,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
                 return
             }
-            print (categoryDb)
+            
             categoryTotal.append(CGFloat(truncating: amount))
             categories.append(categoryDb)
             
