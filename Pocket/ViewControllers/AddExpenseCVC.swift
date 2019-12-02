@@ -88,20 +88,28 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             print ("Invalid input, try again")
             return
         }
-
+        
         // check for invalid characters
         let removedDecimal = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: removedDecimal)) == false {
             print ("Entered text that contains unsupported characters ")
+            return
         }
         else {
-            guard Double(expenseTextField.text!) != nil else {
+            
+            guard let numD = Double(expenseTextField.text!) else {
                 print ("Could not convert number to a float")
                 return
             }
             
-            addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: expenseTextField.text!)
+            // round to two decimal places, >= 5 are rounded up
+            guard let roundedNum = String(round(100*numD)/100) else {
+                print ("Could not round number")
+                return
+            }
+            
+            addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: roundedNum)
         }
     }
     
@@ -115,7 +123,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             print ("Error opening database file")
             return
         }
-
+        
         // open database
         if (sqlite3_open(dbPath.absoluteString, &db) != SQLITE_OK) {
             print ("Error opening database")
