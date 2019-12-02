@@ -5,9 +5,8 @@ An IOS app to track your daily expenses.
 
 ## TOOD:
 
-- Pie chart showing percentage current day/week/month expenses in different categories
-- Manul entry and saving of data onto local database of user expenses
-- Search expense on a specific date
+- Expense pie chart tab filter by day/month/year, custom range etc
+- Manual entry and saving of data onto local database of user expenses
 
 
 ## Current progress: 
