@@ -104,11 +104,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             }
             
             // round to two decimal places, >= 5 are rounded up
-            guard let roundedNum = String(round(100*numD)/100) else {
-                print ("Could not round number")
-                return
-            }
-            
+            let roundedNum = String(round(100*numD)/100)
             addToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: roundedNum)
         }
     }
@@ -141,7 +137,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
 
         // preparing query
-        if sqlite3_prepare(db, insertQuery, -1, &stmt, nil) != SQLITE_OK {
+        if sqlite3_prepare_v2(db, insertQuery, -1, &stmt, nil) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error preparing the database: ", errmsg)
             return
@@ -152,28 +148,38 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // amount
         if sqlite3_bind_double(stmt, 1, Double(amount)!) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Failure binding amount: \(errmsg)")
+            print("Error binding amount: \(errmsg)")
             return
         }
+        
         // category
         if sqlite3_bind_text(stmt, 2, category, -1, nil) != SQLITE_OK{
             let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Failure binding category: \(errmsg)")
+            print("Error binding category: \(errmsg)")
             return
         }
 
+        // reset must be called if step returns SQLITE_DONE
+        if sqlite3_reset(stmt) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error resetting prepared statement: \(errmsg)")
+        }
         
-        sqlite3_reset(stmt) // must e called if step returns SQLITE_DONE
-        //executing the query to insert values
+        // executing the query to insert values
         if sqlite3_step(stmt) != SQLITE_DONE {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("failure inserting hero: \(errmsg)")
+            print("Error inserting hero: \(errmsg)")
             return
         } else {
             print("Inserted: " + category + " " + amount + " " + NSDate().description)
         }
-
-        sqlite3_finalize(stmt)
+        
+        // finalize prepared statement to recover memory associated with that prepared statement
+        if sqlite3_finalize(stmt) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("error finalizing prepared statement: \(errmsg)")
+        }
+        
         sqlite3_close(db)
     }
     
