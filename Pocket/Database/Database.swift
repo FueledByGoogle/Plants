@@ -90,7 +90,8 @@ class Database {
             + ", SUM(" + DatabaseEnum.ExpenseTable.amount.rawValue + ") FROM "
             + DatabaseEnum.ExpenseTable.tableName.rawValue
             + " Group BY " + DatabaseEnum.ExpenseTable.category.rawValue
-        if prepare(query: userDataQuery) != true { return false }
+        
+        if prepare(query: userDataQuery) != true { return false }
         
         // traverse through all records
         var i = 0
