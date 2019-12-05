@@ -11,7 +11,7 @@ class PieChart: UIView {
     /** catgegories : unique array of categories
         values : total value of each category
      */
-    init(frame: CGRect, categories: inout [String], categoryTotal: inout [CGFloat]) {
+    init(frame: CGRect, categories: [String], categoryTotal: [CGFloat]) {
         super.init(frame: frame)
         self.categories =  categories
         self.categoryTotal = categoryTotal
@@ -22,7 +22,7 @@ class PieChart: UIView {
     }
     
     /// update data used to generate piechart
-    func updateData(categories: inout [String], categoryTotal: inout [CGFloat]) {
+    func updateData(categories: [String], categoryTotal: [CGFloat]) {
         self.categories =  categories
         self.categoryTotal = categoryTotal
     }
