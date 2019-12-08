@@ -5,7 +5,7 @@ import SQLite3
 /**
     TODO:
     - Convert timezone read from database to user's time
-    - error checking for null global var
+    - Prevent loading if global user databse is not initialize correctly
  */
 
 
@@ -27,20 +27,18 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         if initialLoad == true { initialLoad = false }
         
-        if GLOBAL_userDatabase?.loadCategoriesAndTotals() == true {
-            pieView = PieChart(
-                frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height,
-                              width: self.view.frame.width, height: self.view.frame.height * 0.55),
-                categories: (GLOBAL_userDatabase?.categories)!,
-                categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
-            pieView!.backgroundColor = UIColor.white
-            self.view.addSubview(pieView!)
+        pieView = PieChart(
+            frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height,
+                          width: self.view.frame.width, height: self.view.frame.height * 0.55),
+            categories: (GLOBAL_userDatabase?.categories)!,
+            categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
+        pieView!.backgroundColor = UIColor.white
+        self.view.addSubview(pieView!)
 
-            let layout = UICollectionViewFlowLayout()
-            // Where frame holding cells begin
-            layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
-            self.collectionView.setCollectionViewLayout(layout, animated: false)
-        }
+        let layout = UICollectionViewFlowLayout()
+        // Where frame holding cells begin
+        layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
+        self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
     
@@ -61,8 +59,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /// number of cells
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-// need error check this
         return (GLOBAL_userDatabase?.categories.count)!
     }
     

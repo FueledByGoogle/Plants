@@ -1,7 +1,7 @@
 import UIKit
 import SQLite3
 
-// for now we move our testdatabase to <Application_Home>/Library/Caches directory
+// for testing purposes we move our testdatabase to <Application_Home>/Library/Caches directory
 
 class Database {
     

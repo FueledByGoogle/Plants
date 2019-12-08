@@ -10,7 +10,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     let cellReuseIdentifier = "CategoryCell"
     var expenseTextField: UITextField = UITextField()
-    
+    var expenseEntry: UIView?
     
     
     override func viewDidLoad() {
@@ -20,36 +20,17 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        
+
         // dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         
-        
-        let expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
-        expenseEntry.backgroundColor = UIColor.white
-        
-        expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry.frame.height/2 - 50, width: expenseEntry.frame.width, height: 100))
-        expenseTextField.text = "25.6"
-        expenseTextField.font = .systemFont(ofSize: 50)
-        expenseTextField.adjustsFontSizeToFitWidth = true
-        expenseTextField.textAlignment  = .center
-        expenseTextField.borderStyle = UITextField.BorderStyle.line
-        expenseTextField.delegate = self
-        expenseTextField.keyboardType = UIKeyboardType.decimalPad
-        
-        expenseEntry.addSubview(expenseTextField)
-        // we don't want the add expense view to scroll with the collection view so we add it to view instead of collection view
-        self.view.addSubview(expenseEntry)
-        
+        setupEntryView()
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: expenseEntry.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
-
+        layout.sectionInset = UIEdgeInsets(top: expenseEntry!.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
         
-        
         GLOBAL_userDatabase = Database.init()
-        
     }
     
     
@@ -64,7 +45,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
         cell.backgroundColor = UIColor.purple
-        
         cell.label.text = MyEnums.Categories.allCases[indexPath.item].rawValue
 
         return cell
@@ -87,28 +67,44 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         }
         
         // check for invalid characters
-        let removedDecimal = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
+        let decimalRemoved = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
         
-        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: removedDecimal)) == false {
+        if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: decimalRemoved)) == false {
             print ("Entered text that contains unsupported characters ")
             return
         }
         else {
-            
             guard let numD = Double(expenseTextField.text!) else {
                 print ("Could not convert number to a float")
                 return
             }
-
             // round to two decimal places, >= 5 are rounded up
             let roundedNum = String(round(100*numD)/100)
 
             if GLOBAL_userDatabase?.InsertExpenseToDatabase(
                     category: MyEnums.Categories.allCases[indexPath.item].rawValue,
-                    amount: roundedNum) == false {
-                print ("Failed to add data to database")
-            }
+                    amount: roundedNum) == false {}
         }
+    }
+    
+    func setupEntryView() {
+        expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
+        expenseEntry!.backgroundColor = UIColor.white
+                   
+        expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry!.frame.height/2 - 50, width: expenseEntry!.frame.width, height: 100))
+        
+        expenseTextField.text = "25.6"
+        expenseTextField.font = .systemFont(ofSize: 50)
+        
+        expenseTextField.adjustsFontSizeToFitWidth = true
+        expenseTextField.textAlignment  = .center
+        expenseTextField.borderStyle = UITextField.BorderStyle.line
+        
+        expenseTextField.keyboardType = UIKeyboardType.decimalPad
+        expenseTextField.delegate = self
+
+        expenseEntry!.addSubview(expenseTextField)
+        self.view.addSubview(expenseEntry!)
     }
 
 }
