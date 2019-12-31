@@ -17,29 +17,48 @@ class Database {
 //    let queryDate = "'2019-11-29'"
 //    let queryDate2 = "'2019-11-30'"
     
+    
     init() {
         #if targetEnvironment(simulator)
-            print ("simulator")
+            print ("Simulator")
+            // get file url
+            self.dbUrl = Bundle.main.url(
+                forResource: DatabaseEnum.UserDatabase.fileName.rawValue,
+                withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)
+        
+            if openDb() == true { print ("Database successfully opened.") }
         #else
-            print ("real device")
+        let cacheUrl = try! FileManager().url(for: .cachesDirectory,
+                                                  in: .userDomainMask,
+                                                  appropriateFor: nil,
+                                                  create: true)
+        self.dbUrl = cacheUrl.appendingPathComponent("UserDatabase.db").absoluteURL
+        
+//        if FileManager.default.fileExists(atPath: dbUrl!.path) {
+//            print ("Database file exists")
+//            if openDb() == true { print ("Database successfully opened.") }
+//        } else {
+//            print ("Database file does not exist!")
+        
+        print ("For testing purposes always copy over database file")
+        do {
+            try FileManager.default.removeItem(atPath: dbUrl!.path)
+        } catch {}
+        
+        
+        
+            do {
+                try FileManager.default.copyItem(atPath: Bundle.main.url(forResource: DatabaseEnum.UserDatabase.fileName.rawValue,
+                                                                         withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)!.path,
+                                                 toPath: dbUrl!.path)
+                print ("File successfully copied to cache.")
+                self.dbUrl = cacheUrl.appendingPathComponent("UserDatabase.db").absoluteURL
+                if openDb() == true { print ("Database successfully opened.") }
+            } catch {
+                print("Failed to copy over file.\n", error)
+            }
+//        }
         #endif
-        
-//        print (NSHomeDirectory().)
-        
-        // get file url
-        self.dbUrl = Bundle.main.url(
-            forResource: DatabaseEnum.UserDatabase.fileName.rawValue,
-            withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)
-        
-        if self.dbUrl?.absoluteString == nil {
-            print ("Could not get file url")
-        } else {
-            print ("Database URL: ", dbUrl!)
-        }
-        
-        if openDb() != true {
-            print ("Failed to open database")
-        }
     }
     
     func InsertExpenseToDatabase(category: String, amount: String) -> Bool {
@@ -121,7 +140,7 @@ class Database {
     /// Called before each operation to verify database is set up before performing any operations
     func VerifyDatabaseSetup() -> Bool {
         if dbUrl?.absoluteString == nil {
-            print ("Database set up incorrectly.")
+            print ("Database incorrectly setup. Operation not executed.")
             return false
         }
         return true
@@ -150,15 +169,16 @@ class Database {
     func finalize() -> Bool {
         if sqlite3_finalize(stmt) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
-            print("Esrror occured finalizing prepared statement: \(errmsg)")
+            print("Error occured finalizing prepared statement: \(errmsg)")
             return false
         }
         return true
     }
     
+    /// Opens a database, if it doesn't exist sqlite3_open creates a blank one
     func openDb() -> Bool {
-        if dbUrl != nil && (sqlite3_open(dbUrl!.absoluteString, &db) != SQLITE_OK) {
-            print ("Error opening database")
+        if sqlite3_open(dbUrl!.absoluteString, &db) != SQLITE_OK {
+            print ("Error opening database.")
             return false
         }
         return true
@@ -166,7 +186,7 @@ class Database {
     
     func closeDb() -> Bool {
         if sqlite3_close(db) != SQLITE_OK{
-            print("Error closing database")
+            print("Error closing database.")
             return false
         }
         return true

@@ -1,7 +1,10 @@
 import UIKit
 import SQLite3
 
-
+/*
+ Defaults to current date
+ Allow user to change input date
+ */
 
 
 var GLOBAL_userDatabase: Database?
@@ -16,7 +19,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func viewDidLoad() {
         super.viewDidLoad()
         // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
-        self.navigationItem.title = MyEnums.TabNames.Add.rawValue
+        self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
         self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
@@ -95,6 +98,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         expenseTextField.text = "25.6"
         expenseTextField.font = .systemFont(ofSize: 50)
+        expenseTextField.textColor = .black
         
         expenseTextField.adjustsFontSizeToFitWidth = true
         expenseTextField.textAlignment  = .center

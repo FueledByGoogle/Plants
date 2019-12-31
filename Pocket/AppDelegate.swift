@@ -20,10 +20,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-//        let menuController = MenuVC(collectionViewLayout: UICollectionViewFlowLayout())
-//        window?.rootViewController = UINavigationController(rootViewController: menuController)
-        
-        window?.rootViewController = TabBar()
+        let tabBarController = TabBar()
+        tabBarController.selectedIndex = 1 // set default view to present
+        window?.rootViewController = tabBarController
         return true
     }
     

@@ -4,8 +4,8 @@ import Foundation
 class MyEnums {
     
     enum TabNames: String {
-        case Add = "Add Expense"
-        case Expenses, Search
+        case AddExpense = "Add Expense"
+        case Calendar, Expenses, Search
     }
     
     
