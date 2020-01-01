@@ -15,32 +15,66 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     var pieView : PieChart?
     
-    var initialLoad = true // used to prevent reading database twice on initial load
+    // As each view is added add on its height to the offset so next created view will always be below the previous view when using this offset
+    var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
+    var initialLoad = true // Used to prevent reading database twice on initial load
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
-        self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
-        self.navigationController?.isNavigationBarHidden = true
+        // If background color is not set application may lag between transitions
+//        self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
+//        self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
         if initialLoad == true { initialLoad = false }
         
-        pieView = PieChart(
-            frame: CGRect(x: 0, y: UIApplication.shared.statusBarFrame.height,
-                          width: self.view.frame.width, height: self.view.frame.height * 0.55),
-            categories: (GLOBAL_userDatabase?.categories)!,
-            categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
-        pieView!.backgroundColor = UIColor.white
-        self.view.addSubview(pieView!)
-
-        let layout = UICollectionViewFlowLayout()
+        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
+        
+        setupPieView()
+//        setupDayMonthYearButton()
+        
         // Where frame holding cells begin
+        let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
+    /// Setup pie chart view
+    func setupPieView() {
+        pieView = PieChart(
+            frame: CGRect(x: 0, y: cumulativeYOffset,
+                          width: self.view.frame.width, height: self.view.frame.height * 0.40),
+            categories: (GLOBAL_userDatabase?.categories)!,
+            categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
+        pieView!.backgroundColor = UIColor.white
+        cumulativeYOffset += pieView!.frame.height
+        self.view.addSubview(pieView!)
+    }
+    
+    /// Set up Day, Month, Year button
+    func setupDayMonthYearButton() {
+        let dayButton = UIButton(frame: CGRect(x: 0, y: cumulativeYOffset, width: 50, height: 30))
+//        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
+        dayButton.backgroundColor = .green
+        dayButton.setTitle("Day", for: .normal)
+        dayButton.titleLabel!.numberOfLines = 0;
+        dayButton.titleLabel!.adjustsFontSizeToFitWidth = true
+        dayButton.roundButtonLeftBorders()
+        
+         let monthButton = UIButton(frame: CGRect(x: 0, y: cumulativeYOffset, width: 50, height: 30))
+//        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
+        monthButton.backgroundColor = .green
+        monthButton.setTitle("Month", for: .normal)
+        monthButton.titleLabel!.numberOfLines = 0;
+        monthButton.titleLabel!.adjustsFontSizeToFitWidth = true
+        
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dayButton)
+        
+        cumulativeYOffset += 30
+        
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         if initialLoad == false {
@@ -79,7 +113,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /// what a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.width, height: 50)
+        return CGSize(width: self.view.frame.width, height: 30)
     }
 
 }

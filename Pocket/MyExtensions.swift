@@ -2,7 +2,6 @@ import UIKit
 
 extension UIImage {
     
-    
     func rotate(radians: Float) -> UIImage? {
         var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
         // Trim off the extremely small float value to prevent core graphics from rounding it up
@@ -37,8 +36,7 @@ extension UIColor {
         self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
     }
     
-    /** hex
-     */
+    /// for Hex color code
     convenience init(rgb: Int) {
         self.init(
             red: (rgb >> 16) & 0xFF,
@@ -48,6 +46,27 @@ extension UIColor {
     }
 }
 
+extension UIButton{
+    func roundButtonLeftBorders(){
+        let path = UIBezierPath(roundedRect: bounds,
+                                byRoundingCorners: [.topLeft , .bottomLeft],
+                                cornerRadii: CGSize(width: 8, height: 8))
+        let mask = CAShapeLayer()
+        mask.frame = bounds
+        mask.path = path.cgPath
+        layer.mask = mask
+    }
+    
+    func roundButtonRightBorders(){
+        let path = UIBezierPath(roundedRect: bounds,
+                                byRoundingCorners: [.topRight, .bottomRight],
+                                cornerRadii: CGSize(width: 8, height: 8))
+        let mask = CAShapeLayer()
+        mask.frame = bounds
+        mask.path = path.cgPath
+        layer.mask = mask
+    }
+}
 
 // The pro approach would be to use an extension:
 //extension Dictionary {

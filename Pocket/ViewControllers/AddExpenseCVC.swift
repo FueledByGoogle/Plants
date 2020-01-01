@@ -15,22 +15,24 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var expenseTextField: UITextField = UITextField()
     var expenseEntry: UIView?
     
+    var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // for some reason if you do not set background it lags between transition ¯\_(ツ)_/¯
+        // If background color is not set application may lag between transitions
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
-        self.navigationController?.isNavigationBarHidden = true
+//        self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-
         // dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         
+        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         setupEntryView()
         
+        
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: expenseEntry!.frame.height + self.view.safeAreaInsets.top, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: expenseEntry!.frame.height, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
         
         GLOBAL_userDatabase = Database.init()
@@ -91,7 +93,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     func setupEntryView() {
-        expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.40))
+        expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.40))
         expenseEntry!.backgroundColor = UIColor.white
                    
         expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry!.frame.height/2 - 50, width: expenseEntry!.frame.width, height: 100))
@@ -108,6 +110,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         expenseTextField.delegate = self
 
         expenseEntry!.addSubview(expenseTextField)
+        cumulativeYOffset += expenseEntry!.frame.height
         self.view.addSubview(expenseEntry!)
     }
 

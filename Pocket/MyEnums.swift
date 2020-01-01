@@ -25,5 +25,6 @@ class MyEnums {
         case RED_ORANGE = 0xDC3023
         case PINK_GLAMOUR = 0xff7979
     }
+    
 
 }
