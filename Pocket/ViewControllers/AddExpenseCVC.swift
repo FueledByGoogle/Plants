@@ -2,8 +2,7 @@ import UIKit
 import SQLite3
 
 /*
- Defaults to current date
- Allow user to change input date
+ convert to utc if necessary depending on region for both inserting and retrieving
  */
 
 

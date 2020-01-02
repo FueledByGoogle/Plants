@@ -27,12 +27,19 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
-        if initialLoad == true { initialLoad = false }
-        
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         
+        var (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
+        (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
+        (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
+        (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
+        
+        if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: d1, endingDate: d2) == true
+        {
+            pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
+        }
         setupPieView()
-//        setupDayMonthYearButton()
+        setupDayMonthYearButton()
         
         // Where frame holding cells begin
         let layout = UICollectionViewFlowLayout()
@@ -52,27 +59,75 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.view.addSubview(pieView!)
     }
     
+    /// if possible instead directly call database function
+    @objc func dataFilterButtonPressed(sender: UIButton) {
+        
+        switch sender.tag {
+        case 0:
+            let (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
+            print (d1,d2)
+        case 1:
+            let (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
+            print (d1,d2)
+        case 2:
+            let (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
+            print (d1,d2)
+        case 3:
+            let (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
+            print (d1,d2)
+        default:
+            print ("out of bounds")
+        }
+    }
+    
     /// Set up Day, Month, Year button
     func setupDayMonthYearButton() {
-        let dayButton = UIButton(frame: CGRect(x: 0, y: cumulativeYOffset, width: 50, height: 30))
-//        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
-        dayButton.backgroundColor = .green
-        dayButton.setTitle("Day", for: .normal)
-        dayButton.titleLabel!.numberOfLines = 0;
-        dayButton.titleLabel!.adjustsFontSizeToFitWidth = true
-        dayButton.roundButtonLeftBorders()
         
-         let monthButton = UIButton(frame: CGRect(x: 0, y: cumulativeYOffset, width: 50, height: 30))
-//        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
-        monthButton.backgroundColor = .green
-        monthButton.setTitle("Month", for: .normal)
-        monthButton.titleLabel!.numberOfLines = 0;
-        monthButton.titleLabel!.adjustsFontSizeToFitWidth = true
+        let buttonHeight = 30
+        let buttonWidth = 70
+        let borderLineWidth = CGFloat(4)
         
+        let buttonBackGroundColour = UIColor(rgb: 0xb491c8)
+        let buttonBorderColour = UIColor.purple.cgColor
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: dayButton)
+        let buttonYOffset = Int(self.navigationController!.navigationBar.frame.size.height)/2 - buttonHeight/2
+        var startingButtonXOffset = Int(self.navigationController!.navigationBar.frame.size.width)/2 - buttonWidth*2
         
-        cumulativeYOffset += 30
+        for i in 0...3 {
+            let filterButton = UIButton(frame: CGRect(x: startingButtonXOffset, y: buttonYOffset, width: buttonWidth, height: buttonHeight))
+            //        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
+            filterButton.backgroundColor = buttonBackGroundColour
+            if i == 0 {
+                filterButton.setTitle("Day", for: .normal)
+                filterButton.tag = i
+                filterButton.roundTwoCorners(borderColor: buttonBorderColour, lineWidth: borderLineWidth, cornerRadiiWidth: 8, cornerRadiiHeight: 8, corner1: .topLeft, corner2: .bottomLeft)
+            }
+            else if i == 1 {
+                filterButton.setTitle("Week", for: .normal)
+                filterButton.tag = i
+                filterButton.addBorder(side: .Top, color: buttonBorderColour, width: borderLineWidth/2)
+                filterButton.addBorder(side: .Bottom, color: buttonBorderColour, width: borderLineWidth/2)
+                filterButton.addBorder(side: .Right, color: buttonBorderColour, width: borderLineWidth/2)
+            }
+            else if i == 2 {
+                filterButton.setTitle("Month", for: .normal)
+                filterButton.tag = i
+                filterButton.addBorder(side: .Top, color: buttonBorderColour, width: borderLineWidth/2)
+                filterButton.addBorder(side: .Bottom, color: buttonBorderColour, width: borderLineWidth/2)
+            }
+            else {
+                filterButton.setTitle("Year", for: .normal)
+                filterButton.tag = i
+                filterButton.roundTwoCorners(borderColor: buttonBorderColour, lineWidth: borderLineWidth, cornerRadiiWidth: 8, cornerRadiiHeight: 8, corner1: .topRight, corner2: .bottomRight)
+            }
+            filterButton.titleLabel!.numberOfLines = 1
+            filterButton.titleLabel!.adjustsFontSizeToFitWidth = true
+            
+            filterButton.titleLabel!.lineBreakMode = .byClipping //<-- MAGIC LINE
+            filterButton.addTarget(self, action: #selector(self.dataFilterButtonPressed(sender:)), for: .touchUpInside)
+            startingButtonXOffset += buttonWidth
+            self.navigationController?.navigationBar.addSubview(filterButton)
+        }
         
     }
     
@@ -81,12 +136,16 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             GLOBAL_userDatabase?.categories.removeAll()
             GLOBAL_userDatabase?.categoryTotal.removeAll()
             
-            if GLOBAL_userDatabase?.loadCategoriesAndTotals() == true
+            if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: "2020-01-01", endingDate: "2020-12-30") == true
             {
+print ("not first load")
                 pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
                 pieView?.setNeedsDisplay()
                 self.collectionView.reloadData() // reloads cells
             }
+        } else {
+print ("initial load")
+            initialLoad = false
         }
     }
     

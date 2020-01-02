@@ -14,4 +14,8 @@ class DatabaseEnum {
         case category = "category"
         case entryDate = "entry_date"
     }
+    
+//    enum FilterType {
+//        case Day, Month, Year
+//    }
 }

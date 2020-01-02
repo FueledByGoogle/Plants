@@ -56,8 +56,6 @@
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
 		027248DC238F42C1003A23E9 /* DatabaseEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseEnums.swift; sourceTree = "<group>"; };
 		0272E10423593B280046A516 /* UserDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = UserDatabase.db; sourceTree = "<group>"; };
-		0272E10A235E6EF80046A516 /* Swift-Kuery-ORM-0.6.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Swift-Kuery-ORM-0.6.1"; sourceTree = "<group>"; };
-		0272E10F235E7AFE0046A516 /* Swift-Kuery-SQLite-2.0.1 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "Swift-Kuery-SQLite-2.0.1"; sourceTree = "<group>"; };
 		02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVCCell.swift; sourceTree = "<group>"; };
 		02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesCVCCell.swift; sourceTree = "<group>"; };
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
@@ -134,8 +132,8 @@
 				024B265F23B3F8E900DE1584 /* CalendarCVC.swift */,
 				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
-				0220479B2100EB96002F6E9B /* SearchVc.swift */,
 				029B4E8621E1DACD00882705 /* TabBar.swift */,
+				0220479B2100EB96002F6E9B /* SearchVc.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -143,8 +141,8 @@
 		027248D9238F2B5B003A23E9 /* Database */ = {
 			isa = PBXGroup;
 			children = (
-				027248DC238F42C1003A23E9 /* DatabaseEnums.swift */,
 				0232D92D238F5A710023BFA8 /* Database.swift */,
+				027248DC238F42C1003A23E9 /* DatabaseEnums.swift */,
 			);
 			path = Database;
 			sourceTree = "<group>";
@@ -162,8 +160,6 @@
 		02DE4EF820E7CE0400300F98 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				0272E10F235E7AFE0046A516 /* Swift-Kuery-SQLite-2.0.1 */,
-				0272E10A235E6EF80046A516 /* Swift-Kuery-ORM-0.6.1 */,
 				02235A49231AF6550005B9AC /* IMG_9671.jpg */,
 				02235A46231AF56A0005B9AC /* IMG_9669.JPG */,
 				02235A412319E9950005B9AC /* testTextImage.jpg */,

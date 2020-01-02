@@ -47,25 +47,50 @@ extension UIColor {
 }
 
 extension UIButton{
-    func roundButtonLeftBorders(){
+    func roundTwoCorners(borderColor: CGColor, lineWidth: CGFloat, cornerRadiiWidth: Int, cornerRadiiHeight: Int, corner1: UIRectCorner, corner2: UIRectCorner){
         let path = UIBezierPath(roundedRect: bounds,
-                                byRoundingCorners: [.topLeft , .bottomLeft],
-                                cornerRadii: CGSize(width: 8, height: 8))
-        let mask = CAShapeLayer()
-        mask.frame = bounds
-        mask.path = path.cgPath
-        layer.mask = mask
+                                byRoundingCorners: [corner1 , corner2],
+                                cornerRadii: CGSize(width: cornerRadiiWidth, height: cornerRadiiHeight))
+        // Add rounded corners
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = bounds
+        maskLayer.path = path.cgPath
+        layer.mask = maskLayer
+        
+        
+        // Add border
+        let borderLayer = CAShapeLayer()
+        borderLayer.path = maskLayer.path // Reuse the Bezier path
+        borderLayer.fillColor = UIColor.clear.cgColor
+        borderLayer.strokeColor = borderColor
+        borderLayer.lineWidth = lineWidth
+        borderLayer.frame = bounds
+        layer.addSublayer(borderLayer)
     }
     
-    func roundButtonRightBorders(){
-        let path = UIBezierPath(roundedRect: bounds,
-                                byRoundingCorners: [.topRight, .bottomRight],
-                                cornerRadii: CGSize(width: 8, height: 8))
-        let mask = CAShapeLayer()
-        mask.frame = bounds
-        mask.path = path.cgPath
-        layer.mask = mask
+    
+    public enum UIButtonBorderSide {
+        case Top, Bottom, Left, Right
     }
+    
+    public func addBorder(side: UIButtonBorderSide, color: CGColor, width: CGFloat) {
+        let border = CALayer()
+        border.backgroundColor = color
+        
+        switch side {
+        case .Top:
+            border.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: width)
+        case .Bottom:
+            border.frame = CGRect(x: 0, y: self.frame.size.height - width, width: self.frame.size.width, height: width)
+        case .Left:
+            border.frame = CGRect(x: 0, y: 0, width: width, height: self.frame.size.height)
+        case .Right:
+            border.frame = CGRect(x: self.frame.size.width - width, y: 0, width: width, height: self.frame.size.height)
+        }
+        
+        self.layer.addSublayer(border)
+    }
+    
 }
 
 // The pro approach would be to use an extension:
@@ -103,11 +128,71 @@ extension UIViewController
 extension Date
 {
     
-    public static func dateToString(date: Date) -> String {
-        let df = DateFormatter()
-        df.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        df.timeZone = NSTimeZone(name: "UTC") as TimeZone?
-        return df.string(from: Date())
+    public enum DateTimeInterval {
+        case Day, Week, Month, Year
+    }
+    
+    public static func dateToString(date: Date, format: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        dateFormatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+        return dateFormatter.string(from: date)
+    }
+    
+    
+    // Dates are all in UTC time
+    public static func getStartEndDates(timeInterval: DateTimeInterval) -> (String, String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd 00:00:00"
+        dateFormatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+
+        let dateComponent1: DateComponents? // Used for Month and Year
+        var dateComponent2 = DateComponents() // Used for Day and Week
+        
+        var startDate = Date()
+        var endDate: Date?
+
+        switch timeInterval {
+        
+        case .Day:
+//            print ("Current Day")
+            dateComponent2.day = 1 // 24 hrs in a day
+            endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
+            
+//            print(dateFormatter.string(from: startDate))
+//            print(dateFormatter.string(from: endDate!))
+        case .Week:
+//            print ("Current Week")
+            let gregorian = Calendar(identifier: .gregorian)
+            startDate = gregorian.date(from: gregorian.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
+            dateComponent2.day = 7 // 7 days in a week
+            endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
+            
+//            print(dateFormatter.string(from: startDate))
+//            print(dateFormatter.string(from: endDate!))
+            
+        case .Month:
+//            print ("Current Month")
+            dateComponent1 = Calendar.current.dateComponents([.year, .month], from: Date())
+            startDate = Calendar.current.date(from: dateComponent1!)!
+            dateComponent2.month = 1
+            endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
+            
+//            print(dateFormatter.string(from: startDate))
+//            print(dateFormatter.string(from: endDate!))
+
+        case .Year:
+//            print ("Current year")
+            dateComponent1 = Calendar.current.dateComponents([.year], from: Date())
+            startDate = Calendar.current.date(from: dateComponent1!)!
+            dateComponent2.year = 1
+            endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
+            
+//            print(dateFormatter.string(from: startDate))
+//            print(dateFormatter.string(from: endDate!))
+        }
+        
+        return (dateToString(date: startDate, format: "yyyy-MM-dd 00:00:00"), dateToString(date: endDate!, format: "yyyy-MM-dd 00:00:00"))
     }
 }
 
