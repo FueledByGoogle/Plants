@@ -66,10 +66,15 @@ class Database {
     }
     
     /// Inserts expense amount into the databbase
-    func InsertExpenseToDatabase(category: String, amount: String, date: String) -> Bool {
+    func InsertExpenseToDatabase(category: String, amount: String, date: Date) -> Bool {
         
         if VerifyDatabaseSetup() != true { return false }
         
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        let dateUTC = dateFormatter.string(from: date)
+        print (dateFormatter.string(from: Date()))
         
         let queryString = "INSERT INTO "
             + DatabaseEnum.ExpenseTable.tableName.rawValue
@@ -93,7 +98,7 @@ class Database {
             return false
         }
         // Date
-        if sqlite3_bind_text(stmt, 3, date, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+        if sqlite3_bind_text(stmt, 3, dateUTC, -1, SQLITE_TRANSIENT) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding category: \(errmsg)")
             return false
@@ -104,7 +109,7 @@ class Database {
             print("Error inserting: \(errmsg)")
             return false
         } else {
-            print("Inserted: " + category + ", " + amount + ", " + date)
+            print("Inserted: " + category + ", " + amount + ", " + dateUTC)
         }
         
         if reset() != true { return false }

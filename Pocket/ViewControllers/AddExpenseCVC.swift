@@ -1,13 +1,11 @@
 import UIKit
 import SQLite3
 
-/*
-    
- */
+
 /**
    TODO:
-   - Insert as UTC
-   - Prevent loading if global user databse is not initialize correctly
+    - Prevent loading if global user databse is not initialize correctly
+    - Default set date will not be refreshed when app is left on background and is now on next day
 */
 
 var GLOBAL_userDatabase: Database?
@@ -21,9 +19,11 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     // Used for the Y position of each view section e.g. expense entry -> expense date -> collection view cell begin
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
     
-    let datePicker = UIDatePicker()
+    let datePicker: UIDatePicker = UIDatePicker()
+    let dateFormat: String = "yyyy-MM-dd HH:mm"
     var datePickerTextField: UITextField?
     var datePickerButton: UIButton?
+    var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,20 +31,25 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // If background color is not set application may lag between transitions
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        // dismiss keyboard upon touching outside the keyboard
+        
+        // Dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         
+        // Initialize database
         GLOBAL_userDatabase = Database.init()
         
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
+        
+        // View setup
         setupExpenseEntryView()
         setupDatePicker()
         
+        // Layout
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: cumulativeYOffset, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
-    
+
     /// Sets up expense amount views
     func setupExpenseEntryView() {
         expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.20))
@@ -73,16 +78,17 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     func setupDatePicker() {
         // View
         let datePickerView = UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.1))
-        datePickerView.backgroundColor = UIColor.blue
+        datePickerView.backgroundColor = UIColor.yellow
         self.view.addSubview(datePickerView)
         
         // Text field
         datePickerTextField = UITextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: datePickerView.frame.height))
         datePickerTextField!.textAlignment = .center
         datePickerTextField!.inputView = datePicker
-        // Format date
+        
+        // Format initial display date
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.dateFormat = dateFormat
         datePickerTextField!.text = formatter.string(from: Date())
         
         datePickerView.addSubview(datePickerTextField!)
@@ -103,8 +109,9 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     /// Date picker done button
     @objc func doneDatePicker(){
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        formatter.dateFormat = dateFormat
         datePickerTextField!.text = formatter.string(from: datePicker.date)
+        dateUTC = datePicker.date
         // Dismiss date picker dialog
         self.view.endEditing(true)
     }
@@ -162,7 +169,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             
             if GLOBAL_userDatabase?.InsertExpenseToDatabase(
                     category: MyEnums.Categories.allCases[indexPath.item].rawValue,
-                    amount: roundedNum, date: datePickerTextField!.text!) == false {}
+                    amount: roundedNum, date: dateUTC) == false {}
         }
     }
     

@@ -3,7 +3,6 @@ import SQLite3
 
 /**
     TODO:
-    - Convert user's time to UTC to pull all records from DB
     - For now reloads the expense view every time the tab is pressed except the first load
  */
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
