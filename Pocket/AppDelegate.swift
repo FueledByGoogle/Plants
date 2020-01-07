@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let tabBarController = TabBar()
         tabBarController.selectedIndex = 1 // set default view to present
         window?.rootViewController = tabBarController
+        window?.makeKeyAndVisible()
         return true
     }
     

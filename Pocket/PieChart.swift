@@ -29,12 +29,12 @@ class PieChart: UIView {
     
     override func draw(_ rect: CGRect) {
         
-        let pieChartSizeReduction  = CGFloat(0.35)
+        let pieChartSizeIncrease  = CGFloat(0.45)
         
         //  angle of a complete circle
         let anglePI2 = (CGFloat.pi * 2)
         // radius of the pie chart
-        let radius = min(bounds.size.width, bounds.size.height) * pieChartSizeReduction;
+        let radius = min(bounds.size.width, bounds.size.height) * pieChartSizeIncrease;
         
         // center point of circle
         let viewCenter = CGPoint.init(x: bounds.size.width/2, y: bounds.size.height/2)

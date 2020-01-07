@@ -15,18 +15,16 @@
 		022047912100C181002F6E9B /* DSC_1336.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 022047902100C181002F6E9B /* DSC_1336.JPG */; };
 		022047972100CF26002F6E9B /* MyExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022047962100CF26002F6E9B /* MyExtensions.swift */; };
 		0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0220479B2100EB96002F6E9B /* SearchVc.swift */; };
-		02235A422319E9950005B9AC /* testTextImage.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A412319E9950005B9AC /* testTextImage.jpg */; };
-		02235A48231AF56A0005B9AC /* IMG_9669.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02235A46231AF56A0005B9AC /* IMG_9669.JPG */; };
 		02235A4A231AF6550005B9AC /* IMG_9671.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A49231AF6550005B9AC /* IMG_9671.jpg */; };
 		0232D92E238F5A710023BFA8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232D92D238F5A710023BFA8 /* Database.swift */; };
 		024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B265F23B3F8E900DE1584 /* CalendarCVC.swift */; };
 		024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCell.swift */; };
-		0251124520E7E7E300C12D56 /* Plants.db in Resources */ = {isa = PBXBuildFile; fileRef = 0251124420E7E7E300C12D56 /* Plants.db */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
 		027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027248DC238F42C1003A23E9 /* DatabaseEnums.swift */; };
 		0272E10523593B280046A516 /* UserDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* UserDatabase.db */; };
 		02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */; };
 		02886EE82352C30A006F7B8D /* ExpensesCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */; };
+		0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */; };
 		029B4E8721E1DACD00882705 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B4E8621E1DACD00882705 /* TabBar.swift */; };
 		02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */; };
 /* End PBXBuildFile section */
@@ -46,18 +44,16 @@
 		022047902100C181002F6E9B /* DSC_1336.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DSC_1336.JPG; sourceTree = "<group>"; };
 		022047962100CF26002F6E9B /* MyExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExtensions.swift; sourceTree = "<group>"; };
 		0220479B2100EB96002F6E9B /* SearchVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVc.swift; sourceTree = "<group>"; };
-		02235A412319E9950005B9AC /* testTextImage.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = testTextImage.jpg; sourceTree = "<group>"; };
-		02235A46231AF56A0005B9AC /* IMG_9669.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9669.JPG; sourceTree = "<group>"; };
 		02235A49231AF6550005B9AC /* IMG_9671.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9671.jpg; sourceTree = "<group>"; };
 		0232D92D238F5A710023BFA8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		024B265F23B3F8E900DE1584 /* CalendarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVC.swift; sourceTree = "<group>"; };
 		024B266123B45E0500DE1584 /* CalendarCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCell.swift; sourceTree = "<group>"; };
-		0251124420E7E7E300C12D56 /* Plants.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = Plants.db; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
 		027248DC238F42C1003A23E9 /* DatabaseEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseEnums.swift; sourceTree = "<group>"; };
 		0272E10423593B280046A516 /* UserDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = UserDatabase.db; sourceTree = "<group>"; };
 		02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVCCell.swift; sourceTree = "<group>"; };
 		02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesCVCCell.swift; sourceTree = "<group>"; };
+		0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldDate.swift; sourceTree = "<group>"; };
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plant_picture.JPG; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -94,7 +90,7 @@
 		021964B52094333F009A43A6 /* Pocket */ = {
 			isa = PBXGroup;
 			children = (
-				021964B62094333F009A43A6 /* AppDelegate.swift */,
+				0296F92B23C3DFAB00C92A9E /* ClassExtension */,
 				027248D9238F2B5B003A23E9 /* Database */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
 				02886EE42352B7D8006F7B8D /* Cells */,
@@ -102,8 +98,9 @@
 				022047962100CF26002F6E9B /* MyExtensions.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				021964C22094333F009A43A6 /* Info.plist */,
-				021964BD2094333F009A43A6 /* Assets.xcassets */,
 				02DE4EF820E7CE0400300F98 /* Resources */,
+				021964B62094333F009A43A6 /* AppDelegate.swift */,
+				021964BD2094333F009A43A6 /* Assets.xcassets */,
 			);
 			path = Pocket;
 			sourceTree = "<group>";
@@ -157,15 +154,20 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
+		0296F92B23C3DFAB00C92A9E /* ClassExtension */ = {
+			isa = PBXGroup;
+			children = (
+				0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */,
+			);
+			path = ClassExtension;
+			sourceTree = "<group>";
+		};
 		02DE4EF820E7CE0400300F98 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
 				02235A49231AF6550005B9AC /* IMG_9671.jpg */,
-				02235A46231AF56A0005B9AC /* IMG_9669.JPG */,
-				02235A412319E9950005B9AC /* testTextImage.jpg */,
 				02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */,
 				022047902100C181002F6E9B /* DSC_1336.JPG */,
-				0251124420E7E7E300C12D56 /* Plants.db */,
 				0272E10423593B280046A516 /* UserDatabase.db */,
 			);
 			path = Resources;
@@ -236,12 +238,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				021964BE2094333F009A43A6 /* Assets.xcassets in Resources */,
-				02235A48231AF56A0005B9AC /* IMG_9669.JPG in Resources */,
 				022047912100C181002F6E9B /* DSC_1336.JPG in Resources */,
 				02235A4A231AF6550005B9AC /* IMG_9671.jpg in Resources */,
 				02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */,
-				0251124520E7E7E300C12D56 /* Plants.db in Resources */,
-				02235A422319E9950005B9AC /* testTextImage.jpg in Resources */,
 				0272E10523593B280046A516 /* UserDatabase.db in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -267,6 +266,7 @@
 				0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */,
 				021964B72094333F009A43A6 /* AppDelegate.swift in Sources */,
 				02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */,
+				0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

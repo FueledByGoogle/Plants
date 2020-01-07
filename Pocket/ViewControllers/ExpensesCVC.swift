@@ -1,14 +1,11 @@
 import UIKit
 import SQLite3
 
-
 /**
     TODO:
-    - Convert timezone read from database to user's time
-    - Prevent loading if global user databse is not initialize correctly
+    - Convert user's time to UTC to pull all records from DB
+    - For now reloads the expense view every time the tab is pressed except the first load
  */
-
-
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId: String = "TableViewCellIdentifier"
@@ -17,23 +14,22 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     // As each view is added add on its height to the offset so next created view will always be below the previous view when using this offset
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
-    var initialLoad = true // Used to prevent reading database twice on initial load
+    
+    var refreshView = false // Used to prevent loading view again on first load
+    var lastSelectedButton = Date.DateTimeInterval.Day
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // If background color is not set application may lag between transitions
 //        self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
 //        self.navigationController?.isNavigationBarHidden = true
+        // If background color is not set application may lag between transitions
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         
-        var (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
-        (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
-        (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
-        (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
-        
+        let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
         if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: d1, endingDate: d2) == true
         {
             pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
@@ -47,38 +43,54 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
-    /// Setup pie chart view
-    func setupPieView() {
-        pieView = PieChart(
-            frame: CGRect(x: 0, y: cumulativeYOffset,
-                          width: self.view.frame.width, height: self.view.frame.height * 0.40),
-            categories: (GLOBAL_userDatabase?.categories)!,
-            categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
-        pieView!.backgroundColor = UIColor.white
-        cumulativeYOffset += pieView!.frame.height
-        self.view.addSubview(pieView!)
+    override func viewDidAppear(_ animated: Bool) {
+        //print (refreshView)
+        if refreshView == true {
+            let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
+            reloadData(startDate: d1, endDate: d2)
+        } else {
+            refreshView = true
+        }
     }
     
-    /// if possible instead directly call database function
+    // Updates the view using by loading data from DB
+    func reloadData(startDate: String, endDate: String) {
+        GLOBAL_userDatabase?.categories.removeAll()
+        GLOBAL_userDatabase?.categoryTotal.removeAll()
+        
+        if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate) == true
+        {
+            print ("Expense view refreshed")
+            pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
+            pieView?.setNeedsDisplay()
+            self.collectionView.reloadData() // reloads cells
+        }
+    }
+    
+    /// If possible instead directly call database function
     @objc func dataFilterButtonPressed(sender: UIButton) {
+        var (d1, d2): (String?, String?)
         
         switch sender.tag {
         case 0:
-            let (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
-            print (d1,d2)
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
+            lastSelectedButton = .Day
         case 1:
-            let (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
-            print (d1,d2)
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
+            lastSelectedButton = .Week
         case 2:
-            let (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
-            print (d1,d2)
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
+            lastSelectedButton = .Month
         case 3:
-            let (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
-            print (d1,d2)
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
+            lastSelectedButton = .Year
         default:
             print ("out of bounds")
         }
+        print (d1!,d2!)
+        reloadData(startDate: d1!, endDate: d2!)
     }
+    
     
     /// Set up Day, Month, Year button
     func setupDayMonthYearButton() {
@@ -131,30 +143,23 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        if initialLoad == false {
-            GLOBAL_userDatabase?.categories.removeAll()
-            GLOBAL_userDatabase?.categoryTotal.removeAll()
-            
-            if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: "2020-01-01", endingDate: "2020-12-30") == true
-            {
-print ("not first load")
-                pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
-                pieView?.setNeedsDisplay()
-                self.collectionView.reloadData() // reloads cells
-            }
-        } else {
-print ("initial load")
-            initialLoad = false
-        }
-    }
     
+    /// Setup pie chart view
+    func setupPieView() {
+       pieView = PieChart(
+           frame: CGRect(x: 0, y: cumulativeYOffset,
+                         width: self.view.frame.width, height: self.view.frame.height * 0.35),
+           categories: (GLOBAL_userDatabase?.categories)!,
+           categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
+       pieView!.backgroundColor = UIColor.white
+       cumulativeYOffset += pieView!.frame.height
+       self.view.addSubview(pieView!)
+    }
     
     /// number of cells
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (GLOBAL_userDatabase?.categories.count)!
     }
-    
     
     /// what each cell is going to display
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell

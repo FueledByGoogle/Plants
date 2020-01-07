@@ -2,9 +2,13 @@ import UIKit
 import SQLite3
 
 /*
- convert to utc if necessary depending on region for both inserting and retrieving
+    
  */
-
+/**
+   TODO:
+   - Insert as UTC
+   - Prevent loading if global user databse is not initialize correctly
+*/
 
 var GLOBAL_userDatabase: Database?
 
@@ -14,37 +18,109 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var expenseTextField: UITextField = UITextField()
     var expenseEntry: UIView?
     
+    // Used for the Y position of each view section e.g. expense entry -> expense date -> collection view cell begin
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
+    
+    let datePicker = UIDatePicker()
+    var datePickerTextField: UITextField?
+    var datePickerButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // If background color is not set application may lag between transitions
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
-//        self.navigationController?.isNavigationBarHidden = true
+        // If background color is not set application may lag between transitions
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         // dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         
-        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
-        setupEntryView()
+        GLOBAL_userDatabase = Database.init()
         
+        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
+        setupExpenseEntryView()
+        setupDatePicker()
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: expenseEntry!.frame.height, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: cumulativeYOffset, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
-        
-        GLOBAL_userDatabase = Database.init()
     }
     
+    /// Sets up expense amount views
+    func setupExpenseEntryView() {
+        expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.20))
+        expenseEntry!.backgroundColor = UIColor.white
+        
+        // TextField
+        expenseTextField = UITextField(frame: CGRect(x:0, y: 0, width: expenseEntry!.frame.width, height: self.view.frame.height * 0.20))
+        expenseTextField.text = "25.6"
+        expenseTextField.font = .systemFont(ofSize: 50)
+        expenseTextField.textColor = .black
+        
+        // Text positioning
+        expenseTextField.adjustsFontSizeToFitWidth = true
+        expenseTextField.textAlignment  = .center
+//        expenseTextField.borderStyle = UITextField.BorderStyle.line
+        expenseTextField.keyboardType = UIKeyboardType.decimalPad
+        expenseTextField.delegate = self
+        
+        expenseEntry!.addSubview(expenseTextField)
+        
+        cumulativeYOffset += expenseEntry!.frame.height
+        self.view.addSubview(expenseEntry!)
+    }
     
-    /// number of cells in section
+    /// Sets up date picker entry views
+    func setupDatePicker() {
+        // View
+        let datePickerView = UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.1))
+        datePickerView.backgroundColor = UIColor.blue
+        self.view.addSubview(datePickerView)
+        
+        // Text field
+        datePickerTextField = UITextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: datePickerView.frame.height))
+        datePickerTextField!.textAlignment = .center
+        datePickerTextField!.inputView = datePicker
+        // Format date
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
+        datePickerTextField!.text = formatter.string(from: Date())
+        
+        datePickerView.addSubview(datePickerTextField!)
+        
+        
+        // Toolbar
+        let datePickerToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)) // Height has to be 44 or greater?
+        datePickerToolBar.barStyle = UIBarStyle.default
+        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
+        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
+        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
+        datePickerToolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
+        datePickerToolBar.sizeToFit()
+        // Add toolbar to datepicker keyboard
+        datePickerTextField!.inputAccessoryView = datePickerToolBar
+    }
+    
+    /// Date picker done button
+    @objc func doneDatePicker(){
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        datePickerTextField!.text = formatter.string(from: datePicker.date)
+        // Dismiss date picker dialog
+        self.view.endEditing(true)
+    }
+
+    /// Date picker cancle button
+    @objc func cancelDatePicker(){
+        // Dismiss datepicker dialog
+        self.view.endEditing(true)
+    }
+    
+    /// Number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return MyEnums.Categories.allCases.count
     }
     
-    
-    /// what each cell is going to display
+    /// What each cell is going to display
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
@@ -54,23 +130,21 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return cell
     }
     
-    
-    /// what a specific cell's size should be
+    /// What a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 70, height: 70)
     }
     
-    
-    /// on user selection of cell
+    /// On user selection of cell
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        // check for correct number of decimals
+        // Check for correct number of decimals
         if (expenseTextField.text!.filter { $0 == "."}.count) > 1 {
             print ("Invalid input, try again")
             return
         }
         
-        // check for invalid characters
+        // Check for invalid characters
         let decimalRemoved = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: decimalRemoved)) == false {
@@ -82,35 +156,14 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 print ("Could not convert number to a float")
                 return
             }
-            // round to two decimal places, >= 5 are rounded up
+            // Round to two decimal places, >= 5 are rounded up
             let roundedNum = String(round(100*numD)/100)
 
+            
             if GLOBAL_userDatabase?.InsertExpenseToDatabase(
                     category: MyEnums.Categories.allCases[indexPath.item].rawValue,
-                    amount: roundedNum) == false {}
+                    amount: roundedNum, date: datePickerTextField!.text!) == false {}
         }
     }
     
-    func setupEntryView() {
-        expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.40))
-        expenseEntry!.backgroundColor = UIColor.white
-                   
-        expenseTextField = UITextField(frame: CGRect(x:0, y: expenseEntry!.frame.height/2 - 50, width: expenseEntry!.frame.width, height: 100))
-        
-        expenseTextField.text = "25.6"
-        expenseTextField.font = .systemFont(ofSize: 50)
-        expenseTextField.textColor = .black
-        
-        expenseTextField.adjustsFontSizeToFitWidth = true
-        expenseTextField.textAlignment  = .center
-        expenseTextField.borderStyle = UITextField.BorderStyle.line
-        
-        expenseTextField.keyboardType = UIKeyboardType.decimalPad
-        expenseTextField.delegate = self
-
-        expenseEntry!.addSubview(expenseTextField)
-        cumulativeYOffset += expenseEntry!.frame.height
-        self.view.addSubview(expenseEntry!)
-    }
-
 }

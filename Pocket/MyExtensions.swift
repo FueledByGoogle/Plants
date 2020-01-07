@@ -132,19 +132,15 @@ extension Date
         case Day, Week, Month, Year
     }
     
-    public static func dateToString(date: Date, format: String) -> String {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = format
-        dateFormatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
-        return dateFormatter.string(from: date)
-    }
-    
-    
-    // Dates are all in UTC time
+    /// Get start end dates in user's current time zone
     public static func getStartEndDates(timeInterval: DateTimeInterval) -> (String, String) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd 00:00:00"
-        dateFormatter.timeZone = NSTimeZone(name: "UTC") as TimeZone?
+        let startDateFormatter = DateFormatter()
+        startDateFormatter.dateFormat = "yyyy-MM-dd 00:00"
+        startDateFormatter.timeZone = .current // Use user's current time zone
+        
+        let endDateFormatter = DateFormatter()
+        endDateFormatter.dateFormat = "yyyy-MM-dd 23:59"
+        endDateFormatter.timeZone = .current // Use user's current time zone
 
         let dateComponent1: DateComponents? // Used for Month and Year
         var dateComponent2 = DateComponents() // Used for Day and Week
@@ -155,8 +151,6 @@ extension Date
         switch timeInterval {
         
         case .Day:
-//            print ("Current Day")
-            dateComponent2.day = 1 // 24 hrs in a day
             endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
             
 //            print(dateFormatter.string(from: startDate))
@@ -165,7 +159,7 @@ extension Date
 //            print ("Current Week")
             let gregorian = Calendar(identifier: .gregorian)
             startDate = gregorian.date(from: gregorian.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
-            dateComponent2.day = 7 // 7 days in a week
+            dateComponent2.day = 6 // 7 days in a week
             endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
             
 //            print(dateFormatter.string(from: startDate))
@@ -176,6 +170,7 @@ extension Date
             dateComponent1 = Calendar.current.dateComponents([.year, .month], from: Date())
             startDate = Calendar.current.date(from: dateComponent1!)!
             dateComponent2.month = 1
+            dateComponent2.day = -1
             endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
             
 //            print(dateFormatter.string(from: startDate))
@@ -186,13 +181,14 @@ extension Date
             dateComponent1 = Calendar.current.dateComponents([.year], from: Date())
             startDate = Calendar.current.date(from: dateComponent1!)!
             dateComponent2.year = 1
+            dateComponent2.day = -1
             endDate = Calendar.current.date(byAdding: dateComponent2, to: startDate)
             
 //            print(dateFormatter.string(from: startDate))
 //            print(dateFormatter.string(from: endDate!))
         }
         
-        return (dateToString(date: startDate, format: "yyyy-MM-dd 00:00:00"), dateToString(date: endDate!, format: "yyyy-MM-dd 00:00:00"))
+        return (startDateFormatter.string(from: startDate), endDateFormatter.string(from: endDate!))
     }
 }
 
