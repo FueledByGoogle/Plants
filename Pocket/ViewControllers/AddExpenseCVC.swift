@@ -103,7 +103,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     /// Date picker done button
     @objc func doneDatePicker(){
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
+        formatter.dateFormat = "yyyy-MM-dd HH:mm"
         datePickerTextField!.text = formatter.string(from: datePicker.date)
         // Dismiss date picker dialog
         self.view.endEditing(true)
