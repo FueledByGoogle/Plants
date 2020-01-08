@@ -28,5 +28,9 @@ class TabBar: UITabBarController {
         expenseNavcontroller.tabBarItem.title = MyEnums.TabNames.Expenses.rawValue
         
         viewControllers = [calendarNavController, addExpenseNavController, expenseNavcontroller]
+        
+        self.tabBar.items![0].image = UIImage(systemName: "calendar")
+        self.tabBar.items![1].image = UIImage(systemName: "plus")
+        self.tabBar.items![2].image = UIImage(systemName: "circle")
     }
 }
