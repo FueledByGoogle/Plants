@@ -2,8 +2,10 @@ import UIKit
 import SQLite3
 
 
-/**
-   TODO:
+/*
+    TODO:
+    - Convert all time format up to seconds
+    - Disable pasting
     - Prevent loading if global user databse is not initialize correctly
     - Default set date will not be refreshed when app is left on background and is now on next day
 */
@@ -13,6 +15,7 @@ var GLOBAL_userDatabase: Database?
 class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
     let cellReuseIdentifier = "CategoryCell"
+    
     var expenseTextField: UITextField = UITextField()
     var expenseEntry: UIView?
     
@@ -20,13 +23,14 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
     
     let datePicker: UIDatePicker = UIDatePicker()
-    let dateFormat: String = "yyyy-MM-dd HH:mm"
     var datePickerTextField: UITextField?
     var datePickerButton: UIButton?
     var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
         // If background color is not set application may lag between transitions
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
@@ -88,7 +92,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         // Format initial display date
         let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat
+        formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         datePickerTextField!.text = formatter.string(from: Date())
         
         datePickerView.addSubview(datePickerTextField!)
@@ -109,7 +113,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     /// Date picker done button
     @objc func doneDatePicker(){
         let formatter = DateFormatter()
-        formatter.dateFormat = dateFormat
+        formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         datePickerTextField!.text = formatter.string(from: datePicker.date)
         dateUTC = datePicker.date
         // Dismiss date picker dialog
@@ -167,9 +171,12 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             let roundedNum = String(round(100*numD)/100)
 
             
+            // Convert input into string before sending to be inserted
+            let dateString = Date.formatDateAndTimezoneString(date: datePicker.date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+            
             if GLOBAL_userDatabase?.InsertExpenseToDatabase(
                     category: MyEnums.Categories.allCases[indexPath.item].rawValue,
-                    amount: roundedNum, date: dateUTC) == false {}
+                    amount: roundedNum, dateUTC: dateString) == false {}
         }
     }
     

@@ -66,15 +66,9 @@ class Database {
     }
     
     /// Inserts expense amount into the databbase
-    func InsertExpenseToDatabase(category: String, amount: String, date: Date) -> Bool {
+    func InsertExpenseToDatabase(category: String, amount: String, dateUTC: String) -> Bool {
         
         if VerifyDatabaseSetup() != true { return false }
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        let dateUTC = dateFormatter.string(from: date)
-        print (dateFormatter.string(from: Date()))
         
         let queryString = "INSERT INTO "
             + DatabaseEnum.ExpenseTable.tableName.rawValue

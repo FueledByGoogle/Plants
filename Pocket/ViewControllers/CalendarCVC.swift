@@ -1,5 +1,7 @@
 /*
- Calendar like with list of expenses on that day listed on the bottom
+    TODO:
+    - Swipe left on calendar day to remove an entry
+    - Calendar like with list of expenses on that day listed on the bottom
  Each calendar box shows total expense on that day
  */
 import UIKit
@@ -10,9 +12,10 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     let cellReuseIdentifier = "cellId"
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         self.navigationItem.title = MyEnums.TabNames.Calendar.rawValue
 //        self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
@@ -28,7 +31,8 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /// number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 2
+        
+        return Date.getNumberOfDaysInMonth(date: Date())
     }
     
     
@@ -37,7 +41,7 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCell
         cell.backgroundColor = UIColor.purple
-        cell.label.text = "asdf"
+        cell.label.text = String(indexPath.row+1)
 
         return cell
     }
@@ -45,7 +49,7 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /// what a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.width, height: 70)
+        return CGSize(width: 50, height: 50)
     }
     
 }

@@ -27,6 +27,12 @@
 		0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */; };
 		029B4E8721E1DACD00882705 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B4E8621E1DACD00882705 /* TabBar.swift */; };
 		02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */; };
+		02F2590D23CD053000167904 /* ExtensionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2590C23CD053000167904 /* ExtensionDate.swift */; };
+		02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2590F23CD057E00167904 /* ExtensionUIImage.swift */; };
+		02F2591223CD059600167904 /* ExtensionUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591123CD059600167904 /* ExtensionUIButton.swift */; };
+		02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591323CD05C000167904 /* ExtensionViewController.swift */; };
+		02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591523CD05D300167904 /* ExtensionUIColor.swift */; };
+		02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591723CD05ED00167904 /* ExtensionString.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +62,12 @@
 		0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldDate.swift; sourceTree = "<group>"; };
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plant_picture.JPG; sourceTree = "<group>"; };
+		02F2590C23CD053000167904 /* ExtensionDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDate.swift; sourceTree = "<group>"; };
+		02F2590F23CD057E00167904 /* ExtensionUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIImage.swift; sourceTree = "<group>"; };
+		02F2591123CD059600167904 /* ExtensionUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIButton.swift; sourceTree = "<group>"; };
+		02F2591323CD05C000167904 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
+		02F2591523CD05D300167904 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
+		02F2591723CD05ED00167904 /* ExtensionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,12 +102,12 @@
 		021964B52094333F009A43A6 /* Pocket */ = {
 			isa = PBXGroup;
 			children = (
-				0296F92B23C3DFAB00C92A9E /* ClassExtension */,
 				027248D9238F2B5B003A23E9 /* Database */,
+				0296F92B23C3DFAB00C92A9E /* ClassExtension */,
+				02F2590E23CD055700167904 /* Extensions */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
 				02886EE42352B7D8006F7B8D /* Cells */,
 				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
-				022047962100CF26002F6E9B /* MyExtensions.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				021964C22094333F009A43A6 /* Info.plist */,
 				02DE4EF820E7CE0400300F98 /* Resources */,
@@ -171,6 +183,20 @@
 				0272E10423593B280046A516 /* UserDatabase.db */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		02F2590E23CD055700167904 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				022047962100CF26002F6E9B /* MyExtensions.swift */,
+				02F2590C23CD053000167904 /* ExtensionDate.swift */,
+				02F2591123CD059600167904 /* ExtensionUIButton.swift */,
+				02F2591523CD05D300167904 /* ExtensionUIColor.swift */,
+				02F2590F23CD057E00167904 /* ExtensionUIImage.swift */,
+				02F2591723CD05ED00167904 /* ExtensionString.swift */,
+				02F2591323CD05C000167904 /* ExtensionViewController.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -253,14 +279,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,
+				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
+				02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */,
+				02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */,
 				024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */,
+				02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */,
 				024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
+				02F2591223CD059600167904 /* ExtensionUIButton.swift in Sources */,
 				022047972100CF26002F6E9B /* MyExtensions.swift in Sources */,
 				02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */,
 				02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */,
 				027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */,
 				0232D92E238F5A710023BFA8 /* Database.swift in Sources */,
+				02F2590D23CD053000167904 /* ExtensionDate.swift in Sources */,
 				02886EE82352C30A006F7B8D /* ExpensesCVCCell.swift in Sources */,
 				029B4E8721E1DACD00882705 /* TabBar.swift in Sources */,
 				0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */,

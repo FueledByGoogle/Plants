@@ -15,6 +15,10 @@ class DatabaseEnum {
         case entryDate = "entry_date"
     }
     
+    enum Date: String {
+        case dataFormat = "yyyy-MM-dd HH:mm"
+    }
+    
 //    enum FilterType {
 //        case Day, Month, Year
 //    }

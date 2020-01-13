@@ -1,7 +1,7 @@
 import UIKit
 import SQLite3
 
-/**
+/*
     TODO:
     - For now reloads the expense view every time the tab is pressed except the first load
  */
@@ -20,6 +20,8 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
 //        self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
 //        self.navigationController?.isNavigationBarHidden = true
         // If background color is not set application may lag between transitions
@@ -29,12 +31,13 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         
         let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
+        print(d1,d2)
         if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: d1, endingDate: d2) == true
         {
             pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
         }
         setupPieView()
-        setupDayMonthYearButton()
+        setupDayMonthYearButtons()
         
         // Where frame holding cells begin
         let layout = UICollectionViewFlowLayout()
@@ -52,7 +55,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
     }
     
-    // Updates the view using by loading data from DB
+    // Updates the view. start and end date should be in UTC
     func reloadData(startDate: String, endDate: String) {
         GLOBAL_userDatabase?.categories.removeAll()
         GLOBAL_userDatabase?.categoryTotal.removeAll()
@@ -69,7 +72,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     /// If possible instead directly call database function
     @objc func dataFilterButtonPressed(sender: UIButton) {
         var (d1, d2): (String?, String?)
-        
+
         switch sender.tag {
         case 0:
             (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
@@ -84,23 +87,31 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
             lastSelectedButton = .Year
         default:
-            print ("out of bounds")
+            print ("Time filter out of bounds")
         }
-        print (d1!,d2!)
+        // Only set if colour is already not set
+        if sender.titleColor(for: .normal) != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
+            sender.backgroundColor = UIColor.white
+            sender.setTitleColor(UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue), for: .normal)
+        }
+        
+print (d1!,d2!)
         reloadData(startDate: d1!, endDate: d2!)
     }
     
     
     /// Set up Day, Month, Year button
-    func setupDayMonthYearButton() {
+    func setupDayMonthYearButtons() {
         
+        // Button size
         let buttonHeight = 30
         let buttonWidth = 70
         let borderLineWidth = CGFloat(4)
         
-        let buttonBackGroundColour = UIColor(rgb: 0xb491c8)
-        let buttonBorderColour = UIColor.purple.cgColor
-        
+        // Colours
+        let buttonBackGroundColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        let buttonBorderColour = UIColor(rgb: MyEnums.Colours.ORANGE_MANDARIN.rawValue).cgColor
+        // Offsets
         let buttonYOffset = Int(self.navigationController!.navigationBar.frame.size.height)/2 - buttonHeight/2
         var startingButtonXOffset = Int(self.navigationController!.navigationBar.frame.size.width)/2 - buttonWidth*2
         
