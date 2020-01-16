@@ -27,6 +27,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var datePickerButton: UIButton?
     var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
@@ -53,7 +54,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         layout.sectionInset = UIEdgeInsets(top: cumulativeYOffset, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
-
+    
+    
     /// Sets up expense amount views
     func setupExpenseEntryView() {
         expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.20))
@@ -63,7 +65,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         expenseTextField = UITextField(frame: CGRect(x:0, y: 0, width: expenseEntry!.frame.width, height: self.view.frame.height * 0.20))
         expenseTextField.text = "25.6"
         expenseTextField.font = .systemFont(ofSize: 50)
-        expenseTextField.textColor = .black
+//        expenseTextField.textColor = .black
         
         // Text positioning
         expenseTextField.adjustsFontSizeToFitWidth = true
@@ -77,6 +79,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         cumulativeYOffset += expenseEntry!.frame.height
         self.view.addSubview(expenseEntry!)
     }
+    
     
     /// Sets up date picker entry views
     func setupDatePicker() {
@@ -110,6 +113,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         datePickerTextField!.inputAccessoryView = datePickerToolBar
     }
     
+    
     /// Date picker done button
     @objc func doneDatePicker(){
         let formatter = DateFormatter()
@@ -119,17 +123,20 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // Dismiss date picker dialog
         self.view.endEditing(true)
     }
-
+    
+    
     /// Date picker cancle button
     @objc func cancelDatePicker(){
         // Dismiss datepicker dialog
         self.view.endEditing(true)
     }
     
+    
     /// Number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return MyEnums.Categories.allCases.count
     }
+    
     
     /// What each cell is going to display
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
@@ -141,10 +148,12 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         return cell
     }
     
+    
     /// What a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 70, height: 70)
     }
+    
     
     /// On user selection of cell
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -179,5 +188,4 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                     amount: roundedNum, dateUTC: dateString) == false {}
         }
     }
-    
 }

@@ -9,6 +9,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     let cellId: String = "TableViewCellIdentifier"
     
+    var filterButtons = [UIButton]()
     var pieView : PieChart?
     
     // As each view is added add on its height to the offset so next created view will always be below the previous view when using this offset
@@ -16,6 +17,12 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     var refreshView = false // Used to prevent loading view again on first load
     var lastSelectedButton = Date.DateTimeInterval.Day
+    
+    
+    // Button colours
+    let buttonBorderColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue).cgColor
+    let buttonUnselectedColour = UIColor(rgb: MyEnums.Colours.ORANGE_MANDARIN.rawValue)
+    let buttonSelectedColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
     
     
     override func viewDidLoad() {
@@ -64,39 +71,9 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         {
             print ("Expense view refreshed")
             pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
-            pieView?.setNeedsDisplay()
+            pieView?.setNeedsDisplay() // marks this to be redrawn
             self.collectionView.reloadData() // reloads cells
         }
-    }
-    
-    /// If possible instead directly call database function
-    @objc func dataFilterButtonPressed(sender: UIButton) {
-        var (d1, d2): (String?, String?)
-
-        switch sender.tag {
-        case 0:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
-            lastSelectedButton = .Day
-        case 1:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
-            lastSelectedButton = .Week
-        case 2:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
-            lastSelectedButton = .Month
-        case 3:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
-            lastSelectedButton = .Year
-        default:
-            print ("Time filter out of bounds")
-        }
-        // Only set if colour is already not set
-        if sender.titleColor(for: .normal) != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
-            sender.backgroundColor = UIColor.white
-            sender.setTitleColor(UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue), for: .normal)
-        }
-        
-print (d1!,d2!)
-        reloadData(startDate: d1!, endDate: d2!)
     }
     
     
@@ -108,9 +85,6 @@ print (d1!,d2!)
         let buttonWidth = 70
         let borderLineWidth = CGFloat(4)
         
-        // Colours
-        let buttonBackGroundColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
-        let buttonBorderColour = UIColor(rgb: MyEnums.Colours.ORANGE_MANDARIN.rawValue).cgColor
         // Offsets
         let buttonYOffset = Int(self.navigationController!.navigationBar.frame.size.height)/2 - buttonHeight/2
         var startingButtonXOffset = Int(self.navigationController!.navigationBar.frame.size.width)/2 - buttonWidth*2
@@ -118,7 +92,7 @@ print (d1!,d2!)
         for i in 0...3 {
             let filterButton = UIButton(frame: CGRect(x: startingButtonXOffset, y: buttonYOffset, width: buttonWidth, height: buttonHeight))
             //        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
-            filterButton.backgroundColor = buttonBackGroundColour
+            filterButton.backgroundColor = buttonUnselectedColour
             if i == 0 {
                 filterButton.setTitle("Day", for: .normal)
                 filterButton.tag = i
@@ -149,8 +123,46 @@ print (d1!,d2!)
             filterButton.addTarget(self, action: #selector(self.dataFilterButtonPressed(sender:)), for: .touchUpInside)
             startingButtonXOffset += buttonWidth
             self.navigationController?.navigationBar.addSubview(filterButton)
+            
+            filterButtons.append(filterButton)
+        }
+    }
+    
+    
+    /// If possible instead directly call database function
+    @objc func dataFilterButtonPressed(sender: UIButton) {
+        var (d1, d2): (String?, String?)
+        
+        // Set background colours of selected button
+        for button in filterButtons {
+            button.isSelected = false
+            if button.backgroundColor != buttonUnselectedColour {
+                button.backgroundColor = buttonUnselectedColour
+            }
+        }
+        sender.isSelected = true
+        sender.backgroundColor = buttonSelectedColour
+
+        
+        switch sender.tag {
+        case 0:
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
+            lastSelectedButton = .Day
+        case 1:
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
+            lastSelectedButton = .Week
+        case 2:
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
+            lastSelectedButton = .Month
+        case 3:
+            (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
+            lastSelectedButton = .Year
+        default:
+            print ("Time filter out of bounds")
         }
         
+print (d1!,d2!)
+        reloadData(startDate: d1!, endDate: d2!)
     }
     
     
@@ -166,10 +178,12 @@ print (d1!,d2!)
        self.view.addSubview(pieView!)
     }
     
+    
     /// number of cells
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return (GLOBAL_userDatabase?.categories.count)!
     }
+    
     
     /// what each cell is going to display
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
@@ -184,6 +198,7 @@ print (d1!,d2!)
 
         return cell
     }
+    
     
     /// what a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

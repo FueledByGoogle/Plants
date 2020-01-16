@@ -28,4 +28,10 @@ class CalendarCVCCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+//    override var isHighlighted: Bool {
+//        didSet {
+//            self.contentView.backgroundColor = isHighlighted ? UIColor(white: 217.0/255.0, alpha: 1.0) : nil
+//        }
+//    }
 }
