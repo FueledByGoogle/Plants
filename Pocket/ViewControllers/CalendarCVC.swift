@@ -60,8 +60,8 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
     }
 
-    overr
-    ide func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    
+    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
             cell.backgroundColor = UIColor.white
         }
