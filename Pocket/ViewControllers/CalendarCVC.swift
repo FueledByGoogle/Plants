@@ -9,7 +9,11 @@ import UIKit
 
 class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
     
+    var initialLoad = true
+    
     let cellReuseIdentifier = "cellId"
+    
+    let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,11 +25,20 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.register(CalendarCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 900, right: 0)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView.setCollectionViewLayout(layout, animated: false)
-        
+                
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if initialLoad == true {
+            print (currentDay)
+            self.collectionView(self.collectionView, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
+            self.collectionView.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
+            initialLoad = false
+        }
     }
     
     
@@ -43,6 +56,13 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 //        cell.backgroundColor = UIColor.purple
         cell.layer.borderWidth = 0.1
         cell.label.text = String(indexPath.row+1)
+        
+        // Needed so we when cells are reused we still highlight the correct cell
+        if cell.isSelected {
+            cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        } else {
+            cell.backgroundColor = UIColor.white
+        }
 
         return cell
     }
