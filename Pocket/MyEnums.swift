@@ -18,6 +18,7 @@ class MyEnums {
         case BLUE_LIGHT = 0x76D6FF
         case BLUE_SKY = 0x4D8FAC
         case ORANGE = 0xf0932b
+        case ORANGE_Dark = 0xEEA700
         case ORANGE_PUMPKIN = 0xE98604
         case ORANGE_MANDARIN = 0xEDA421
         case GREEN_EXTRA_DARK = 0x006442

@@ -30,7 +30,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
         // If background color is not set application may lag between transitions

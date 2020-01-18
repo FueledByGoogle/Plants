@@ -27,11 +27,8 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-//        self.navigationItem.title = MyEnums.TabNames.Expenses.rawValue
-//        self.navigationController?.isNavigationBarHidden = true
-        // If background color is not set application may lag between transitions
         self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
         self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
         
@@ -43,14 +40,16 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         {
             pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
         }
+        
         setupPieView()
-        setupDayMonthYearButtons()
+        setupDayFilterButtons()
         
         // Where frame holding cells begin
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
+
     
     override func viewDidAppear(_ animated: Bool) {
         //print (refreshView)
@@ -61,6 +60,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             refreshView = true
         }
     }
+    
     
     // Updates the view. start and end date should be in UTC
     func reloadData(startDate: String, endDate: String) {
@@ -77,90 +77,38 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     
-    /// Set up Day, Month, Year button
-    func setupDayMonthYearButtons() {
+    func setupDayFilterButtons() {
         
-        // Button size
-        let buttonHeight = 30
-        let buttonWidth = 70
-        let borderLineWidth = CGFloat(4)
+        let filters = ["Day" , "Week", "Month", "Year"]
+        let segmentedControl = UISegmentedControl(items: filters)
+        segmentedControl.center = (self.navigationController?.navigationBar.center)!
+        segmentedControl.selectedSegmentIndex = 0
+        segmentedControl.addTarget(self, action: #selector(self.changeDayFilter(_:)), for: .valueChanged)
+        segmentedControl.layer.cornerRadius = 5.0
         
-        // Offsets
-        let buttonYOffset = Int(self.navigationController!.navigationBar.frame.size.height)/2 - buttonHeight/2
-        var startingButtonXOffset = Int(self.navigationController!.navigationBar.frame.size.width)/2 - buttonWidth*2
+        segmentedControl.backgroundColor = UIColor(rgb: 0xFFA302)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)], for: .selected)
         
-        for i in 0...3 {
-            let filterButton = UIButton(frame: CGRect(x: startingButtonXOffset, y: buttonYOffset, width: buttonWidth, height: buttonHeight))
-            //        dayButton.titleLabel!.font = UIFont.systemFont(ofSize: 16)
-            filterButton.backgroundColor = buttonUnselectedColour
-            if i == 0 {
-                filterButton.setTitle("Day", for: .normal)
-                filterButton.tag = i
-                filterButton.roundTwoCorners(borderColor: buttonBorderColour, lineWidth: borderLineWidth, cornerRadiiWidth: 8, cornerRadiiHeight: 8, corner1: .topLeft, corner2: .bottomLeft)
-            }
-            else if i == 1 {
-                filterButton.setTitle("Week", for: .normal)
-                filterButton.tag = i
-                filterButton.addBorder(side: .Top, color: buttonBorderColour, width: borderLineWidth/2)
-                filterButton.addBorder(side: .Bottom, color: buttonBorderColour, width: borderLineWidth/2)
-                filterButton.addBorder(side: .Right, color: buttonBorderColour, width: borderLineWidth/2)
-            }
-            else if i == 2 {
-                filterButton.setTitle("Month", for: .normal)
-                filterButton.tag = i
-                filterButton.addBorder(side: .Top, color: buttonBorderColour, width: borderLineWidth/2)
-                filterButton.addBorder(side: .Bottom, color: buttonBorderColour, width: borderLineWidth/2)
-            }
-            else {
-                filterButton.setTitle("Year", for: .normal)
-                filterButton.tag = i
-                filterButton.roundTwoCorners(borderColor: buttonBorderColour, lineWidth: borderLineWidth, cornerRadiiWidth: 8, cornerRadiiHeight: 8, corner1: .topRight, corner2: .bottomRight)
-            }
-            filterButton.titleLabel!.numberOfLines = 1
-            filterButton.titleLabel!.adjustsFontSizeToFitWidth = true
-            
-            filterButton.titleLabel!.lineBreakMode = .byClipping //<-- MAGIC LINE
-            filterButton.addTarget(self, action: #selector(self.dataFilterButtonPressed(sender:)), for: .touchUpInside)
-            startingButtonXOffset += buttonWidth
-            self.navigationController?.navigationBar.addSubview(filterButton)
-            
-            filterButtons.append(filterButton)
-        }
+        self.navigationController?.navigationBar.addSubview(segmentedControl)
     }
     
     
-    /// If possible instead directly call database function
-    @objc func dataFilterButtonPressed(sender: UIButton) {
+    @objc func changeDayFilter(_ sender: UISegmentedControl) {
         var (d1, d2): (String?, String?)
         
-        // Set background colours of selected button
-        for button in filterButtons {
-            button.isSelected = false
-            if button.backgroundColor != buttonUnselectedColour {
-                button.backgroundColor = buttonUnselectedColour
-            }
-        }
-        sender.isSelected = true
-        sender.backgroundColor = buttonSelectedColour
-
-        
-        switch sender.tag {
+        switch sender.selectedSegmentIndex {
         case 0:
             (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
-            lastSelectedButton = .Day
         case 1:
             (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
-            lastSelectedButton = .Week
         case 2:
             (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
-            lastSelectedButton = .Month
         case 3:
             (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
-            lastSelectedButton = .Year
         default:
             print ("Time filter out of bounds")
         }
-        
 print (d1!,d2!)
         reloadData(startDate: d1!, endDate: d2!)
     }

@@ -11,30 +11,33 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     var initialLoad = true
     
+    var cellWidth = CGFloat(50)
     let cellReuseIdentifier = "cellId"
     
     let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         self.navigationItem.title = MyEnums.TabNames.Calendar.rawValue
 //        self.navigationController?.isNavigationBarHidden = true
         self.collectionView.backgroundColor =  UIColor.white
         self.collectionView.register(CalendarCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
+        cellWidth = self.collectionView.frame.width/7
+        
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 900, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         self.collectionView.setCollectionViewLayout(layout, animated: false)
-                
     }
+    
     
     override func viewDidAppear(_ animated: Bool) {
         if initialLoad == true {
-            print (currentDay)
+//            print (currentDay)
             self.collectionView(self.collectionView, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
             self.collectionView.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
             initialLoad = false
@@ -44,7 +47,6 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /// number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return Date.getNumberOfDaysInMonth(date: Date())
     }
     
@@ -58,10 +60,10 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         cell.label.text = String(indexPath.row+1)
         
         // Needed so we when cells are reused we still highlight the correct cell
-        if cell.isSelected {
+        if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
             cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
-        } else {
-            cell.backgroundColor = UIColor.white
+        } else if cell.backgroundColor != UIColor.white{
+            cell.backgroundColor = .white
         }
 
         return cell
@@ -76,7 +78,7 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
-            cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+            cell.backgroundColor = UIColor(rgb: 0xF4AA00)
         }
     }
 
