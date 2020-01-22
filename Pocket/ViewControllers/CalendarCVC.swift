@@ -15,6 +15,7 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let cellReuseIdentifier = "cellId"
     
     let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
+    var currentSelection: IndexPath?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,13 +35,18 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
-    
     override func viewDidAppear(_ animated: Bool) {
         if initialLoad == true {
 //            print (currentDay)
             self.collectionView(self.collectionView, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
             self.collectionView.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
+            currentSelection = IndexPath(row: Int(currentDay)!-1, section: 0)
             initialLoad = false
+        }
+        else {
+            // Must reselect when coming back from view, otherwise after returning from another clicking another cell will not clear the last selected cell
+            self.collectionView(self.collectionView, didSelectItemAt: currentSelection!)
+            self.collectionView.selectItem(at: currentSelection, animated: true, scrollPosition: .top)
         }
     }
     
@@ -79,6 +85,7 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
             cell.backgroundColor = UIColor(rgb: 0xF4AA00)
+            currentSelection = indexPath
         }
     }
 
