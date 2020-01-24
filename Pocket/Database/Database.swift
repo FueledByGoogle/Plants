@@ -17,8 +17,9 @@ class Database {
     
     var stmt: OpaquePointer?
     
-    var categories: [String] = []
-    var categoryTotal: [CGFloat] = []
+    // Perhaps have a bool array for each view in tab when for when data for that tab needs to be refreshed
+    var needToUpdateData: [String: Bool] = [MyEnums.TabNames.Calendar.rawValue: true,
+                                            MyEnums.TabNames.Expenses.rawValue: true]
     
     let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
@@ -65,6 +66,14 @@ class Database {
         #endif
     }
     
+    
+    // Sets all values to true so other views know data has changed since their last load
+    func updateNeedToUpdateStatus() {
+        for (name, value) in needToUpdateData {
+            needToUpdateData[name] = true
+        }
+    }
+    
     /// Inserts expense amount into the databbase
     func InsertExpenseToDatabase(category: String, amount: String, dateUTC: String) -> Bool {
         
@@ -109,17 +118,19 @@ class Database {
         if reset() != true { return false }
         if finalize() != true { print("Data inserted") }
         
+        updateNeedToUpdateStatus()
         return true
     }
     
     
-    /// Date format without single quotes
-    func loadCategoriesAndTotals(startingDate: String, endingDate: String) -> Bool {
+    /// Query database
+    func loadCategoriesAndTotals(startingDate: String, endingDate: String) -> ([String], [CGFloat]) {
         
-        if VerifyDatabaseSetup() != true { return false }
+        var category: [String] = []
+        var categoryAmount: [CGFloat] = []
         
-        categories.removeAll()
-        categoryTotal.removeAll()
+        if VerifyDatabaseSetup() != true { return  (category, categoryAmount) }
+        
         
         // Note that we do not need single quote when binding
         let queryString = "SELECT " + DatabaseEnum.ExpenseTable.category.rawValue
@@ -128,19 +139,19 @@ class Database {
             + " WHERE " + DatabaseEnum.ExpenseTable.entryDate.rawValue
             + " BETWEEN ? AND ?"
             + " GROUP BY " + DatabaseEnum.ExpenseTable.category.rawValue
-        if prepare(query: queryString) != true { return false }
+        if prepare(query: queryString) != true { return (category, categoryAmount) }
         
         
         // Bind variables
         if sqlite3_bind_text(stmt, 1, startingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding startingDate: \(errmsg)")
-            return false
+            return (category, categoryAmount)
         }
         if sqlite3_bind_text(stmt, 2, endingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
            let errmsg = String(cString: sqlite3_errmsg(db)!)
            print("Error binding endingDate: \(errmsg)")
-           return false
+           return (category, categoryAmount)
         }
         
         // Traverse through all records
@@ -152,16 +163,16 @@ class Database {
             
             guard let amount = NumberFormatter().number(from: amountDb) else {
                 print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
-                return false
+                return (category, categoryAmount)
             }
-            categoryTotal.append(CGFloat(truncating: amount))
-            categories.append(categoryDb)
+            categoryAmount.append(CGFloat(truncating: amount))
+            category.append(categoryDb)
             i += 1
         }
-        if reset() != true { return false }
+        if reset() != true { return (category, categoryAmount) }
         if finalize() != true { print ("Data loaded.") }
         
-        return true
+        return (category, categoryAmount)
     }
     
     

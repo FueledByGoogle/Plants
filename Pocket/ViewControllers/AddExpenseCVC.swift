@@ -16,7 +16,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     let cellReuseIdentifier = "CategoryCell"
     
-    var expenseTextField: UITextField = UITextField()
+    var expenseTextField: UITextField?
     var expenseEntry: UIView?
     
     // Used for the Y position of each view section e.g. expense entry -> expense date -> collection view cell begin
@@ -63,18 +63,18 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         // TextField
         expenseTextField = UITextField(frame: CGRect(x:0, y: 0, width: expenseEntry!.frame.width, height: self.view.frame.height * 0.20))
-        expenseTextField.text = "25.6"
-        expenseTextField.font = .systemFont(ofSize: 50)
+        expenseTextField!.text = "25.6"
+        expenseTextField!.font = .systemFont(ofSize: 50)
 //        expenseTextField.textColor = .black
         
         // Text positioning
-        expenseTextField.adjustsFontSizeToFitWidth = true
-        expenseTextField.textAlignment  = .center
+        expenseTextField!.adjustsFontSizeToFitWidth = true
+        expenseTextField!.textAlignment  = .center
 //        expenseTextField.borderStyle = UITextField.BorderStyle.line
-        expenseTextField.keyboardType = UIKeyboardType.decimalPad
-        expenseTextField.delegate = self
+        expenseTextField!.keyboardType = UIKeyboardType.decimalPad
+        expenseTextField!.delegate = self
         
-        expenseEntry!.addSubview(expenseTextField)
+        expenseEntry!.addSubview(expenseTextField!)
         
         cumulativeYOffset += expenseEntry!.frame.height
         self.view.addSubview(expenseEntry!)
@@ -142,7 +142,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
-        cell.backgroundColor = UIColor.purple
+        cell.backgroundColor = .cyan
         cell.label.text = MyEnums.Categories.allCases[indexPath.item].rawValue
 
         return cell
@@ -159,25 +159,25 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         // Check for correct number of decimals
-        if (expenseTextField.text!.filter { $0 == "."}.count) > 1 {
+        if (expenseTextField!.text!.filter { $0 == "."}.count) > 1 {
             print ("Invalid input, try again")
             return
         }
         
         // Check for invalid characters
-        let decimalRemoved = expenseTextField.text!.replacingOccurrences(of: ".", with: "")
+        let decimalRemoved = expenseTextField!.text!.replacingOccurrences(of: ".", with: "")
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: decimalRemoved)) == false {
             print ("Entered text that contains unsupported characters ")
             return
         }
         else {
-            guard let numD = Double(expenseTextField.text!) else {
+            guard let num = Double(expenseTextField!.text!) else {
                 print ("Could not convert number to a float")
                 return
             }
             // Round to two decimal places, >= 5 are rounded up
-            let roundedNum = String(round(100*numD)/100)
+            let roundedNum = String(round(100*num)/100)
 
             
             // Convert input into string before sending to be inserted

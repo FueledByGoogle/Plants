@@ -15,7 +15,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     // As each view is added add on its height to the offset so next created view will always be below the previous view when using this offset
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
     
-    var refreshView = false // Used to prevent loading view again on first load
+    var firstLoad = true // Used to prevent loading view again on first load
     var lastSelectedButton = Date.DateTimeInterval.Day
     
     
@@ -23,6 +23,11 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     let buttonBorderColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue).cgColor
     let buttonUnselectedColour = UIColor(rgb: MyEnums.Colours.ORANGE_MANDARIN.rawValue)
     let buttonSelectedColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+    
+    
+    // Data
+    var categories: [String] = []
+    var categoryTotal: [CGFloat] = []
     
     
     override func viewDidLoad() {
@@ -34,12 +39,12 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         
-        let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
-        print(d1,d2)
-        if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: d1, endingDate: d2) == true
-        {
-            pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
-        }
+//        let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
+//        print(d1,d2)
+//        if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: d1, endingDate: d2) != nil
+//        {
+//            pieView?.updateData(categories: categories, categoryTotal: categoryTotal)
+//        }
         
         setupPieView()
         setupDayFilterButtons()
@@ -52,27 +57,11 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 
     
     override func viewDidAppear(_ animated: Bool) {
-        //print (refreshView)
-        if refreshView == true {
+        if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] == true {
             let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
             reloadData(startDate: d1, endDate: d2)
-        } else {
-            refreshView = true
-        }
-    }
-    
-    
-    // Updates the view. start and end date should be in UTC
-    func reloadData(startDate: String, endDate: String) {
-        GLOBAL_userDatabase?.categories.removeAll()
-        GLOBAL_userDatabase?.categoryTotal.removeAll()
-        
-        if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate) == true
-        {
-            print ("Expense view refreshed")
-            pieView?.updateData(categories: GLOBAL_userDatabase!.categories, categoryTotal: GLOBAL_userDatabase!.categoryTotal)
-            pieView?.setNeedsDisplay() // marks this to be redrawn
-            self.collectionView.reloadData() // reloads cells
+            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] = false
+            print (GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue])
         }
     }
     
@@ -91,6 +80,19 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)], for: .selected)
         
         self.navigationController?.navigationBar.addSubview(segmentedControl)
+    }
+    
+    
+    // Updates the view. start and end date should be in UTC
+    func reloadData(startDate: String, endDate: String) {
+        categories.removeAll()
+        categoryTotal.removeAll()
+print ("View refreshed")
+        (categories, categoryTotal) = (GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate))!
+        
+        pieView?.updateData(categories: categories, categoryTotal: categoryTotal)
+        pieView?.setNeedsDisplay() // marks this to be redrawn
+        self.collectionView.reloadData() // reloads cells
     }
     
     
@@ -119,8 +121,8 @@ print (d1!,d2!)
        pieView = PieChart(
            frame: CGRect(x: 0, y: cumulativeYOffset,
                          width: self.view.frame.width, height: self.view.frame.height * 0.35),
-           categories: (GLOBAL_userDatabase?.categories)!,
-           categoryTotal: (GLOBAL_userDatabase?.categoryTotal)!)
+           categories: categories,
+           categoryTotal: categoryTotal)
        pieView!.backgroundColor = UIColor.white
        cumulativeYOffset += pieView!.frame.height
        self.view.addSubview(pieView!)
@@ -129,7 +131,7 @@ print (d1!,d2!)
     
     /// number of cells
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return (GLOBAL_userDatabase?.categories.count)!
+        return categories.count
     }
     
     
@@ -140,8 +142,8 @@ print (d1!,d2!)
         
         cell.indexPathNum = indexPath.row
         
-        cell.label.text = GLOBAL_userDatabase?.categories[indexPath.row]
-        cell.totalLabel.text = GLOBAL_userDatabase?.categoryTotal[indexPath.row].description
+        cell.label.text = categories[indexPath.row]
+        cell.totalLabel.text = categoryTotal[indexPath.row].description
         cell.addViewsWithUpdatedProperties()
 
         return cell

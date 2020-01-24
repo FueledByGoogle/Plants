@@ -62,8 +62,8 @@ class PieChart: UIView {
             ctx?.addArc(center: viewCenter, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: false)
             
             // fill color of piece
-            if i < MyEnums.Colours.allCases.count {
-                ctx?.setFillColor(UIColor(rgb: MyEnums.Colours.allCases[i].rawValue).cgColor)
+            if i < PieChartEnums.Colours.allCases.count {
+                ctx?.setFillColor(UIColor(rgb: PieChartEnums.Colours.allCases[i].rawValue).cgColor)
             } else {
                 print("not enough colours, grey will be used to reprersent the rest of the colours")
                 ctx?.setFillColor(UIColor(rgb: 0x454545).cgColor)

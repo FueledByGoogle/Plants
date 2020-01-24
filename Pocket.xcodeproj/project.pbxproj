@@ -18,7 +18,8 @@
 		02235A4A231AF6550005B9AC /* IMG_9671.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A49231AF6550005B9AC /* IMG_9671.jpg */; };
 		0232D92E238F5A710023BFA8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232D92D238F5A710023BFA8 /* Database.swift */; };
 		024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B265F23B3F8E900DE1584 /* CalendarCVC.swift */; };
-		024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCell.swift */; };
+		024B266223B45E0500DE1584 /* CalendarCVCCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCalendarCell.swift */; };
+		024E34FA23D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E34F923D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
 		027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027248DC238F42C1003A23E9 /* DatabaseEnums.swift */; };
 		0272E10523593B280046A516 /* UserDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* UserDatabase.db */; };
@@ -53,7 +54,8 @@
 		02235A49231AF6550005B9AC /* IMG_9671.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9671.jpg; sourceTree = "<group>"; };
 		0232D92D238F5A710023BFA8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		024B265F23B3F8E900DE1584 /* CalendarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVC.swift; sourceTree = "<group>"; };
-		024B266123B45E0500DE1584 /* CalendarCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCell.swift; sourceTree = "<group>"; };
+		024B266123B45E0500DE1584 /* CalendarCVCCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCalendarCell.swift; sourceTree = "<group>"; };
+		024E34F923D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCalendarListCell.swift; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
 		027248DC238F42C1003A23E9 /* DatabaseEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseEnums.swift; sourceTree = "<group>"; };
 		0272E10423593B280046A516 /* UserDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = UserDatabase.db; sourceTree = "<group>"; };
@@ -159,7 +161,8 @@
 		02886EE42352B7D8006F7B8D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				024B266123B45E0500DE1584 /* CalendarCVCCell.swift */,
+				024B266123B45E0500DE1584 /* CalendarCVCCalendarCell.swift */,
+				024E34F923D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift */,
 				02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */,
 				02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */,
 			);
@@ -282,7 +285,8 @@
 				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
 				02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */,
 				02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */,
-				024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */,
+				024E34FA23D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift in Sources */,
+				024B266223B45E0500DE1584 /* CalendarCVCCalendarCell.swift in Sources */,
 				02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */,
 				024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,

@@ -22,7 +22,7 @@ class ExpensesCVCCell: UICollectionViewCell {
     /// Call this AFTER setting indexPathNum and percentage variables
     func addViewsWithUpdatedProperties()
     {
-        label.textColor = UIColor(rgb: MyEnums.Colours.allCases[indexPathNum].rawValue)
+        label.textColor = UIColor(rgb: PieChartEnums.Colours.allCases[indexPathNum].rawValue)
         
         self.addSubview(totalLabel)
         self.addSubview(label)
@@ -34,7 +34,7 @@ class ExpensesCVCCell: UICollectionViewCell {
         totalLabel.textColor = .black
         
         totalLabel.backgroundColor = .red
-        label.backgroundColor = .blue
+        label.backgroundColor = .white
         self.backgroundColor = .clear
         
     }
