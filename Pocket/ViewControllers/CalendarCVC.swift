@@ -7,13 +7,12 @@
 import UIKit
 
 
-class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITextFieldDelegate {
+class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,   UITextFieldDelegate {
     
     var initialLoad = true
     
     var cellWidth = CGFloat(50)
     let cellReuseIdentifier = "cellId"
-    let cellListIdentifier = "cellList"
     
     let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
     var currentSelection: IndexPath?
@@ -23,77 +22,61 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        self.navigationItem.title = MyEnums.TabNames.Calendar.rawValue
-//        self.navigationController?.isNavigationBarHidden = true
-        self.collectionView.backgroundColor =  UIColor.white
+    
+    
+    
+    func viewDidLoad() {
+        self.dataSource = self
+        self.delegate = self
         
-        self.collectionView.register(CalendarCVCCalendarCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        self.collectionView.register(CalendarListCell.self, forCellWithReuseIdentifier: cellListIdentifier)
+        self.backgroundColor =  UIColor.white
+        self.register(CalendarCVCCalendarCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
-        cellWidth = self.collectionView.frame.width/7
+        cellWidth = self.frame.width/7
         
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        self.collectionView.setCollectionViewLayout(layout, animated: false)
+        
+        print ("Calendar Collection View Loaded")
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    
+    
+    func viewDidAppear(_ animated: Bool) {
         if initialLoad == true {
 //            print (currentDay)
-            self.collectionView(self.collectionView, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
-            self.collectionView.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
+            self.collectionView(self, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
+            self.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
             currentSelection = IndexPath(row: Int(currentDay)!-1, section: 0)
             initialLoad = false
         }
         else {
             // Must reselect when coming back from view, otherwise after returning from another clicking another cell will not clear the last selected cell
-            self.collectionView(self.collectionView, didSelectItemAt: currentSelection!)
-            self.collectionView.selectItem(at: currentSelection, animated: true, scrollPosition: .top)
+            self.collectionView(self, didSelectItemAt: currentSelection!)
+            self.selectItem(at: currentSelection, animated: true, scrollPosition: .top)
         }
     }
     
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
-    }
     
     /// number of cells in section
-    override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if section == 0 {
-            return Date.getNumberOfDaysInMonth(date: Date())
-        } else {
-            return 5
-        }
+    func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return Date.getNumberOfDaysInMonth(date: Date())
     }
     
     
     /// what each cell is going to display
-    override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
+    func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        if indexPath.section == 0 {
-            let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCalendarCell
-    //        cell.backgroundColor = UIColor.purple
-            cell.layer.borderWidth = 0.1
-            cell.label.text = String(indexPath.row+1)
-            
-            // Needed so we when cells are reused we still highlight the correct cell
-            if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
-                cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
-            } else if cell.backgroundColor != UIColor.white{
-                cell.backgroundColor = .white
-            }
-            return cell
+        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCalendarCell
+//        cell.backgroundColor = UIColor.purple
+        cell.layer.borderWidth = 0.1
+        cell.label.text = String(indexPath.row+1)
+        
+        // Needed so we when cells are reused we still highlight the correct cell
+        if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
+            cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        } else if cell.backgroundColor != UIColor.white{
+            cell.backgroundColor = .white
         }
-        else {
-            let cell = collection.dequeueReusableCell(withReuseIdentifier: cellListIdentifier, for: indexPath) as! CalendarListCell
-            cell.label.text = String(indexPath.row)
-            return cell
-        }
+        return cell
     }
     
     
@@ -101,14 +84,14 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if indexPath.section == 0 {
-            return CGSize(width: self.collectionView.frame.width/7, height: self.collectionView.frame.width/7);
+            return CGSize(width: self.frame.width/7, height: self.frame.width/7);
         } else {
-            return CGSize(width: self.collectionView.frame.width, height: 30)
+            return CGSize(width: self.frame.width, height: 30)
         }
     }
     
     
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
             cell.backgroundColor = UIColor(rgb: 0xF4AA00)
             currentSelection = indexPath
@@ -116,9 +99,10 @@ class CalendarCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
 
     
-    override func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
             cell.backgroundColor = UIColor.white
         }
     }
+    
 }

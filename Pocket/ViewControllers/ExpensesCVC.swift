@@ -1,10 +1,8 @@
 import UIKit
 import SQLite3
 
-/*
-    TODO:
-    - For now reloads the expense view every time the tab is pressed except the first load
- */
+
+
 class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId: String = "TableViewCellIdentifier"
@@ -39,13 +37,6 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         
-//        let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
-//        print(d1,d2)
-//        if GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: d1, endingDate: d2) != nil
-//        {
-//            pieView?.updateData(categories: categories, categoryTotal: categoryTotal)
-//        }
-        
         setupPieView()
         setupDayFilterButtons()
         
@@ -61,7 +52,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
             let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
             reloadData(startDate: d1, endDate: d2)
             GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] = false
-            print (GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue])
+//            print (GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue])
         }
     }
     

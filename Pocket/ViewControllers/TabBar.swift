@@ -15,9 +15,6 @@ class TabBar: UITabBarController {
         
         let layout = UICollectionViewFlowLayout()
         
-        let calendarController = CalendarCVC(collectionViewLayout: layout)
-        let calendarNavController = UINavigationController(rootViewController: calendarController)
-        calendarNavController.tabBarItem.title = MyEnums.TabNames.Calendar.rawValue
         
         let addExpenseController = AddExpenseCVC(collectionViewLayout: layout)
         let addExpenseNavController = UINavigationController(rootViewController: addExpenseController)
@@ -27,7 +24,11 @@ class TabBar: UITabBarController {
         let expenseNavcontroller = UINavigationController(rootViewController: expenseController)
         expenseNavcontroller.tabBarItem.title = MyEnums.TabNames.Expenses.rawValue
         
-        viewControllers = [calendarNavController, addExpenseNavController, expenseNavcontroller]
+        let calendarView = CalendarView()
+        let calendarViewController = UINavigationController(rootViewController: calendarView)
+        calendarViewController.tabBarItem.title = MyEnums.TabNames.Calendar.rawValue
+        
+        viewControllers = [calendarViewController, addExpenseNavController, expenseNavcontroller]
         self.tabBar.tintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
         
     }

@@ -7,7 +7,6 @@ import SQLite3
     - Convert all time format up to seconds
     - Disable pasting
     - Prevent loading if global user databse is not initialize correctly
-    - Default set date will not be refreshed when app is left on background and is now on next day
 */
 
 var GLOBAL_userDatabase: Database?

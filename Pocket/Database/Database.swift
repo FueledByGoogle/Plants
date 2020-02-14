@@ -69,7 +69,7 @@ class Database {
     
     // Sets all values to true so other views know data has changed since their last load
     func updateNeedToUpdateStatus() {
-        for (name, value) in needToUpdateData {
+        for (name, _) in needToUpdateData {
             needToUpdateData[name] = true
         }
     }
