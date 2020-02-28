@@ -22,6 +22,7 @@
 		024E34FA23D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E34F923D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift */; };
 		024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E34FB23DB71260059AA0A /* CalendarView.swift */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
+		02671EA12409AEF10074AF8C /* CalendarTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02671EA02409AEF10074AF8C /* CalendarTVCell.swift */; };
 		027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 027248DC238F42C1003A23E9 /* DatabaseEnums.swift */; };
 		0272E10523593B280046A516 /* UserDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* UserDatabase.db */; };
 		02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */; };
@@ -35,6 +36,7 @@
 		02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591323CD05C000167904 /* ExtensionViewController.swift */; };
 		02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591523CD05D300167904 /* ExtensionUIColor.swift */; };
 		02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591723CD05ED00167904 /* ExtensionString.swift */; };
+		02F8515823F72F1F0059743E /* CalendarTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F8515723F72F1F0059743E /* CalendarTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +61,7 @@
 		024E34F923D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCalendarListCell.swift; sourceTree = "<group>"; };
 		024E34FB23DB71260059AA0A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
+		02671EA02409AEF10074AF8C /* CalendarTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTVCell.swift; sourceTree = "<group>"; };
 		027248DC238F42C1003A23E9 /* DatabaseEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseEnums.swift; sourceTree = "<group>"; };
 		0272E10423593B280046A516 /* UserDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = UserDatabase.db; sourceTree = "<group>"; };
 		02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVCCell.swift; sourceTree = "<group>"; };
@@ -72,6 +75,7 @@
 		02F2591323CD05C000167904 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
 		02F2591523CD05D300167904 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
 		02F2591723CD05ED00167904 /* ExtensionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
+		02F8515723F72F1F0059743E /* CalendarTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -144,6 +148,7 @@
 			children = (
 				024E34FB23DB71260059AA0A /* CalendarView.swift */,
 				024B265F23B3F8E900DE1584 /* CalendarCVC.swift */,
+				02F8515723F72F1F0059743E /* CalendarTableView.swift */,
 				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
 				029B4E8621E1DACD00882705 /* TabBar.swift */,
@@ -168,6 +173,7 @@
 				024E34F923D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift */,
 				02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */,
 				02886EE72352C30A006F7B8D /* ExpensesCVCCell.swift */,
+				02671EA02409AEF10074AF8C /* CalendarTVCell.swift */,
 			);
 			path = Cells;
 			sourceTree = "<group>";
@@ -288,6 +294,7 @@
 				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
 				024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */,
 				02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */,
+				02671EA12409AEF10074AF8C /* CalendarTVCell.swift in Sources */,
 				02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */,
 				024E34FA23D8E3F10059AA0A /* CalendarCVCCalendarListCell.swift in Sources */,
 				024B266223B45E0500DE1584 /* CalendarCVCCalendarCell.swift in Sources */,
@@ -307,6 +314,7 @@
 				021964B72094333F009A43A6 /* AppDelegate.swift in Sources */,
 				02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */,
 				0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */,
+				02F8515823F72F1F0059743E /* CalendarTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

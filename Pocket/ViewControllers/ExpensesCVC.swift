@@ -1,5 +1,4 @@
 import UIKit
-import SQLite3
 
 
 
@@ -135,7 +134,7 @@ print (d1!,d2!)
         
         cell.label.text = categories[indexPath.row]
         cell.totalLabel.text = categoryTotal[indexPath.row].description
-        cell.addViewsWithUpdatedProperties()
+        cell.addViewsWithUpdatedProperties() // must be called after setting name and amount
 
         return cell
     }

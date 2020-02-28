@@ -1,13 +1,7 @@
-/*
-    TODO:
-    - Calendar like with list of expenses on that day listed on the bottom
-    - Swipe left on calendar day to remove an entry
-    - Each calendar box shows total expense on that day
- */
 import UIKit
 
 
-class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource,   UITextFieldDelegate {
+class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
     var initialLoad = true
     
@@ -21,7 +15,6 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     // List Data
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
-    
     
     
     

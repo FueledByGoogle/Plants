@@ -19,7 +19,7 @@ class ExpensesCVCCell: UICollectionViewCell {
         
     }
     
-    /// Call this AFTER setting indexPathNum and percentage variables
+    /// Add label views [Call this AFTER setting indexPathNum and percentage variables]
     func addViewsWithUpdatedProperties()
     {
         label.textColor = UIColor(rgb: PieChartEnums.Colours.allCases[indexPathNum].rawValue)
