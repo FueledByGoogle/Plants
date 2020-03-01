@@ -13,3 +13,8 @@ An IOS app to track your daily expenses.
 - Data entry, date and category may be chosen by user
 - Custom pie chart drawn from data that dynamically assigns a colour to a category, and displayed along with a chart legend.
 - Update pie chart view based on filter of current day, week, month, or year.
+
+
+![Calendar](/MarkdownImages/Calendar.png)
+![AddExpenses](/MarkdownImages/AddExpenses.png)
+![Expeneses](/MarkdownImages/Expenses.png)
