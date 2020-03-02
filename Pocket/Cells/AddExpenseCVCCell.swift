@@ -5,7 +5,7 @@ class AddExpenseCVCCell: UICollectionViewCell {
     //    let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
     let label: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false // must have
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     

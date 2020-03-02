@@ -16,7 +16,6 @@ class ExpensesCVCCell: UICollectionViewCell {
         
         setUpDefaultColors()
         setUpContraints()
-        
     }
     
     /// Add label views [Call this AFTER setting indexPathNum and percentage variables]
