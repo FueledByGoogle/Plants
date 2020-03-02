@@ -10,13 +10,12 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     var categoryTotal: [CGFloat] = []
     
     
-    let cellId = "MyCell"
+    let cellId = "TableViewcell"
     
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self
         self.backgroundColor = .orange
-        
         self.register(CalendarTVCell.self, forCellReuseIdentifier: cellId)
         
         print ("Calendar table view loaded")
@@ -28,7 +27,9 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     func reloadData(startDate: String, endDate: String) {
         categories.removeAll()
         categoryTotal.removeAll()
-print ("Calendar table refreshed")
+        
+        print ("Calendar table refreshed")
+        
         (categories, categoryTotal) = (GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate))!
         
         self.reloadData()
@@ -43,10 +44,12 @@ print ("Calendar table refreshed")
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
         cell.label.text = categories[indexPath.row]
+        cell.totalLabel.text = categoryTotal[indexPath.row].description
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 50
     }
+    
 }

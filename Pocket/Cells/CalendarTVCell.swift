@@ -1,51 +1,42 @@
 import UIKit
 
+
 class CalendarTVCell: UITableViewCell {
     
     
-    let label = UILabel()
+    let label: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.backgroundColor = .red
+        // resizes view automatically to fit text
+//        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     
-    var percentage = 0
-    var indexPathNum = 0
+    
+    let totalLabel: UILabel = {
+        let totalLabel = UILabel()
+        totalLabel.textColor = .black
+        totalLabel.backgroundColor = .blue
+        return totalLabel
+    }()
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setUpDefaultColors()
-        setUpContraints()
-        addViews()
-    }
-    
-    
-    func addViews()
-    {
+        
+        self.addSubview(totalLabel)
         self.addSubview(label)
     }
     
-    
-    func setUpDefaultColors()
-    {
-        label.textColor = .black
-        label.backgroundColor = .red
-//        label.backgroundColor = .white
-//        self.backgroundColor = .clear
-        
-    }
-    
-    
-    func setUpContraints()
-    {
-//        label.textAlignment = .center
+    // We must set frame size here because if we set frame size during init the width has not been set yet to be the table view cell width, so we would get an incorrect width and height value
+    override func layoutSubviews() {
         label.frame = CGRect(x: 0, y: 0, width: self.frame.width*0.6, height: self.frame.height)
-
-        contentView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
-        contentView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        contentView.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
-        contentView.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
+        totalLabel.frame = CGRect(x: self.frame.width*0.6, y: 0, width: self.frame.width*0.4, height: self.frame.height)
+        totalLabel.textAlignment = .right
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
