@@ -3,18 +3,19 @@
 An IOS app to track your daily expenses.
 
 
-## TODO:
+## Current Work In Progress:
 
-- Calendar view that displays list of that expenses on a particular chosen day
+- Calendar view that displays list of expenses made on a selected date
 
 
-## Current progress: 
+## Current Progress: 
 
-- Data entry, date and category may be chosen by user
+- User can choose a date, amount, to enter into database
 - Custom pie chart drawn from data that dynamically assigns a colour to a category, and displayed along with a chart legend.
 - Update pie chart view based on filter of current day, week, month, or year.
 
 
-![Calendar](/MarkdownImages/Calendar.png)
-![AddExpenses](/MarkdownImages/AddExpenses.png)
-![Expeneses](/MarkdownImages/Expenses.png)
+
+<img src="/MarkdownImages/Calendar.png" width="300"/>
+<img src="/MarkdownImages/AddExpenses.png" width="300"/>
+<img src="/MarkdownImages/Expenses.png" width="300"/>
