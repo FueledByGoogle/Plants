@@ -11,7 +11,7 @@ extension Date
         case UTC, LocalZone
     }
     
-    // Get number of days in a month
+    /// Get number of days in a month
     public static func getNumberOfDaysInMonth(date: Date) -> Int {
         
         let calendar = Calendar.current
@@ -34,7 +34,6 @@ extension Date
         return dateFormatter.string(from: date)
     }
     
-/// Returning current date
     public static func formatDateAndTimezone(date: Date, dateFormat: String, timeZone: TimeZones) -> Date {
 //
 //        let dateFormatter = DateFormatter()
@@ -57,7 +56,7 @@ extension Date
     
     /// Get start end dates  in UTC time
     /// Currently filtering by CURRENT, day, week, month, year (NOT from a chosen date)
-    public static func getStartEndDates(timeInterval: DateTimeInterval) -> (String, String) {
+    public static func getStartEndDatesString(referenceDate: Date, timeInterval: DateTimeInterval) -> (String, String) {
         
         var dateComponentDayWeek = DateComponents() // Used for Day and Week
         let dateComponentMonthYear: DateComponents? // Used for Month and Year
@@ -95,5 +94,45 @@ extension Date
         return (
            startDateString,
            formatDateAndTimezoneString(date: endDate!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC))
+    }
+    
+    
+    /// Get start end dates  in UTC time
+    /// Currently filtering by CURRENT, day, week, month, year (NOT from a chosen date)
+    public static func getStartEndDate(referenceDate: Date, timeInterval: DateTimeInterval) -> (Date, Date) {
+        
+        var dateComponentDayWeek = DateComponents() // Used for Day and Week
+        let dateComponentMonthYear: DateComponents? // Used for Month and Year
+        
+        var startDate = referenceDate
+        var endDate: Date?
+        
+        switch timeInterval {
+        
+        case .Day:
+            dateComponentDayWeek.day = 1
+            endDate = Calendar.current.date(byAdding: dateComponentDayWeek, to: startDate)
+            
+        case .Week: // Week start is Sunday
+            let gregorian = Calendar(identifier: .gregorian)
+            startDate = gregorian.date(from: gregorian.dateComponents([.yearForWeekOfYear, .weekOfYear], from: Date()))!
+            dateComponentDayWeek.day = 7
+            endDate = Calendar.current.date(byAdding: dateComponentDayWeek, to: startDate)
+            
+        case .Month:
+            dateComponentMonthYear = Calendar.current.dateComponents([.year, .month], from: Date())
+            startDate = Calendar.current.date(from: dateComponentMonthYear!)!
+            dateComponentDayWeek.month = 1
+            endDate = Calendar.current.date(byAdding: dateComponentDayWeek, to: startDate)
+            
+        case .Year:
+            dateComponentMonthYear = Calendar.current.dateComponents([.year], from: Date())
+            startDate = Calendar.current.date(from: dateComponentMonthYear!)!
+            dateComponentDayWeek.year = 1
+            endDate = Calendar.current.date(byAdding: dateComponentDayWeek, to: startDate)
+        }
+        
+        
+        return (startDate, endDate!)
     }
 }

@@ -48,7 +48,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidAppear(_ animated: Bool) {
         if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] == true {
-            let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
+            let (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: lastSelectedButton)
             reloadData(startDate: d1, endDate: d2)
             GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] = false
 //            print (GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue])
@@ -91,13 +91,13 @@ print ("View refreshed")
         
         switch sender.selectedSegmentIndex {
         case 0:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Day)
+            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Day)
         case 1:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Week)
+            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Week)
         case 2:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Month)
+            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Month)
         case 3:
-            (d1, d2) = Date.getStartEndDates(timeInterval: .Year)
+            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Year)
         default:
             print ("Time filter out of bounds")
         }

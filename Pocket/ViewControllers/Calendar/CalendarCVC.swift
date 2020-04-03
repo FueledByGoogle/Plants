@@ -9,14 +9,17 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     let cellReuseIdentifier = "cellId"
     
     let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
-    var currentSelection: IndexPath?
+    var lastSelected: IndexPath?
     
     
     // List Data
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
     
+    var startingDate: Date?
     
+    // Used to update table view
+    var calendarTableView: CalendarTableView?
     
     func viewDidLoad() {
         self.dataSource = self
@@ -29,22 +32,23 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         
         
         print ("Calendar Collection View Loaded")
+        
+        let (startDate, _) = Date.getStartEndDate(referenceDate: Date(), timeInterval: .Month)
+        startingDate = startDate
     }
-    
     
     
     func viewDidAppear(_ animated: Bool) {
         if initialLoad == true {
-//            print (currentDay)
             self.collectionView(self, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
             self.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
-            currentSelection = IndexPath(row: Int(currentDay)!-1, section: 0)
+            lastSelected = IndexPath(row: Int(currentDay)!-1, section: 0)
             initialLoad = false
         }
         else {
             // Must reselect when coming back from view, otherwise after returning from another clicking another cell will not clear the last selected cell
-            self.collectionView(self, didSelectItemAt: currentSelection!)
-            self.selectItem(at: currentSelection, animated: true, scrollPosition: .top)
+            self.collectionView(self, didSelectItemAt: lastSelected!)
+            self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
         }
     }
     
@@ -62,6 +66,15 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
 //        cell.backgroundColor = UIColor.purple
         cell.layer.borderWidth = 0.1
         cell.label.text = String(indexPath.row+1)
+
+        
+        // Set cell date (Store as a date string)
+        var dateComponent = DateComponents()
+        dateComponent.day = indexPath.row
+        // Set date associated with cell
+        cell.date = Calendar.current.date(byAdding: dateComponent, to: startingDate!)!
+        
+//        print (cell.date)
         
         // Needed so we when cells are reused we still highlight the correct cell
         if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
@@ -69,6 +82,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         } else if cell.backgroundColor != UIColor.white{
             cell.backgroundColor = .white
         }
+
         return cell
     }
     
@@ -87,7 +101,23 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
             cell.backgroundColor = UIColor(rgb: 0xF4AA00)
-            currentSelection = indexPath
+            lastSelected = indexPath
+            
+            
+            var dateComponent = DateComponents()
+            dateComponent.minute = 1439
+            let endDate = Calendar.current.date(byAdding: dateComponent, to: cell.date)
+            
+            let s1 = Date.formatDateAndTimezoneString(date: cell.date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+            let s2 = Date.formatDateAndTimezoneString(date: endDate!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+            
+            
+            print (s1, s2)
+            
+            // convert to string format
+            calendarTableView?.reloadData(startDate: s1 , endDate: s2)
+            
+            
         }
     }
 
@@ -97,5 +127,4 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             cell.backgroundColor = UIColor.white
         }
     }
-    
 }

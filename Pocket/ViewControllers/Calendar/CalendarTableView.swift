@@ -12,6 +12,8 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     
     let cellId = "TableViewcell"
     
+    var currentDate = ""
+    
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self

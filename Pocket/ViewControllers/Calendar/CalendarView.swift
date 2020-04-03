@@ -9,7 +9,7 @@ import UIKit
 
 class CalendarView: UIViewController {
     
-    var calendarCVCView: CalendarCVC?
+    var collectionView: CalendarCVC?
     var tableView: CalendarTableView?
     
     override func viewDidLoad() {
@@ -26,24 +26,23 @@ class CalendarView: UIViewController {
         layout.minimumLineSpacing = 0
         
         
-        calendarCVCView = CalendarCVC(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width/7*5 + self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
-        calendarCVCView!.viewDidLoad()
-        calendarCVCView!.setCollectionViewLayout(layout, animated: false)
+        collectionView = CalendarCVC(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width/7*5 + self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
+        collectionView!.viewDidLoad()
+        collectionView!.setCollectionViewLayout(layout, animated: false)
         
         
-        
-        tableView = CalendarTableView(frame: CGRect(x: 0, y: calendarCVCView!.frame.maxY + 1, width: self.view.frame.width, height: self.view.frame.height - calendarCVCView!.frame.height - self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height))
+        tableView = CalendarTableView(frame: CGRect(x: 0, y: collectionView!.frame.maxY + 1, width: self.view.frame.width, height: self.view.frame.height - collectionView!.frame.height - self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height))
         tableView?.viewDidLoad()
         
+        collectionView?.calendarTableView = tableView
         
-        
-        self.view.addSubview(calendarCVCView!)
+        self.view.addSubview(collectionView!)
         self.view.addSubview(tableView!)
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
-        calendarCVCView?.viewDidAppear(true)
+        collectionView?.viewDidAppear(true)
         
         // we want to tell table view to update view
         if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true {
