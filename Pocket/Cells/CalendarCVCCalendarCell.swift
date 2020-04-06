@@ -9,11 +9,11 @@ class CalendarCVCCalendarCell: UICollectionViewCell {
         return label
     }()
     
-    
-    var date: Date = {
-        var date = Date()
-        return date
-    }()
+    var date = 0
+//    var date: Date = {
+//        var date = Date()
+//        return date
+//    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)

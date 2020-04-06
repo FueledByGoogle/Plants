@@ -124,6 +124,7 @@ class Database {
     
     
     /// Query database
+    /// StartingDate, Ending Date should be according to the format in DatabaseEnum "yyyy-MM-dd HH:mm"
     func loadCategoriesAndTotals(startingDate: String, endingDate: String) -> ([String], [CGFloat]) {
         
         var category: [String] = []

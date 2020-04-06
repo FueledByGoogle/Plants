@@ -11,8 +11,19 @@ extension Date
         case UTC, LocalZone
     }
     
+
+    
+    public static func findMonthAsNum(date: Date) -> Int {
+        
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.month], from: date)
+        
+        return components.month!
+    }
+    
+    
     /// Get number of days in a month
-    public static func getNumberOfDaysInMonth(date: Date) -> Int {
+    public static func findNumOfDaysInMonth(date: Date) -> Int {
         
         let calendar = Calendar.current
         // Calculate start and end of the current month
@@ -22,6 +33,18 @@ extension Date
         
         return numDays
     }
+    /// Get number of days in a month
+    public static func findNumOfDaysInMonth(year: Int, month: Int) -> Int {
+        
+        let dateComponents = DateComponents(year: year, month: month)
+        let calendar = Calendar.current
+        let date = calendar.date(from: dateComponents)!
+
+        let range = calendar.range(of: .day, in: .month, for: date)!
+        let numDays = range.count
+        return numDays
+    }
+    
     
     /// Converts date to string
     /// - parameters date: current date

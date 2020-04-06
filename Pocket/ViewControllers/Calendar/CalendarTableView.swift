@@ -25,7 +25,7 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         reloadData(startDate: "2020-01-01 20:00", endDate: "2020-12-30 20:00")
     }
     
-    // Updates the view. start and end date should be in UTC
+    /// Updates the view. start and end date should be in UTC
     func reloadData(startDate: String, endDate: String) {
         categories.removeAll()
         categoryTotal.removeAll()

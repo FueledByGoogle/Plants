@@ -1,9 +1,3 @@
-/*
-   TODO:
-   - Calendar like with list of expenses on that day listed on the bottom
-   - Swipe left on calendar day to remove an entry
-   - Each calendar box shows total expense on that day
-*/
 import UIKit
 
 
@@ -71,7 +65,7 @@ class CalendarView: UIViewController {
 
         // Format initial display date
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM yyyy"
+        formatter.dateFormat = "MMMM yyyy"
         datePickerTextField!.text = formatter.string(from: Date())
         datePickerTextField?.textColor = .white
         datePickerTextField?.font = .boldSystemFont(ofSize: 18)
@@ -94,7 +88,19 @@ class CalendarView: UIViewController {
     /// Date picker done button
     @objc func doneDatePicker(){
 
-        datePickerTextField!.text = String(format: "%@ %d", datePicker.months[datePicker.month-1], datePicker.year)
+        let newDate = String(format: "%@ %d", datePicker.months[datePicker.month-1], datePicker.year)
+        
+        if datePickerTextField!.text != newDate {
+            datePickerTextField!.text = newDate
+            
+            // update collection view properties
+            collectionView?.selectedMonth = datePicker.month
+            collectionView?.setNumOfDays = Date.findNumOfDaysInMonth(year: datePicker.year, month: datePicker.month)
+            collectionView?.reloadData()
+        }
+        else {
+             print ("same")
+        }
         
         // Dismiss date picker dialog
         self.navigationController?.navigationBar.endEditing(true)

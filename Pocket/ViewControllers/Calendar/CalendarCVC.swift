@@ -1,6 +1,10 @@
 import UIKit
 
-
+/*
+ Collection view holds current year and month
+ Then using the selected cell the three values, date, month, year is combined
+ to create the start and end date to send to query the database
+ */
 class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
     var initialLoad = true
@@ -16,25 +20,26 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
     
-    var startingDate: Date?
-    
     // Used to update table view
     var calendarTableView: CalendarTableView?
+    
+    
+    var selectedYear = ""
+    var selectedMonth = Date.findMonthAsNum(date: Date())
+    var setNumOfDays = Date.findNumOfDaysInMonth(date: Date()) // Used to see which cells need to be hidden
     
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self
-        
         self.backgroundColor =  UIColor.white
         self.register(CalendarCVCCalendarCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
-        
         cellWidth = self.frame.width/7
         
-        
-        print ("Calendar Collection View Loaded")
-        
+        // set selected year
         let (startDate, _) = Date.getStartEndDate(referenceDate: Date(), timeInterval: .Month)
-        startingDate = startDate
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY"
+        selectedYear = dateFormatter.string(from: startDate)
     }
     
     
@@ -50,12 +55,17 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             self.collectionView(self, didSelectItemAt: lastSelected!)
             self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
         }
+        
+        
+        print ("current month", selectedMonth)
+        print ("number of days in month", setNumOfDays)
     }
     
     
     /// number of cells in section
     func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Date.getNumberOfDaysInMonth(date: Date())
+//        return Date.getNumberOfDaysInMonth(date: Date())
+        return 31 // we will hide ones we do not need
     }
     
     
@@ -64,15 +74,17 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCalendarCell
 //        cell.backgroundColor = UIColor.purple
+        
+        
         cell.layer.borderWidth = 0.1
         cell.label.text = String(indexPath.row+1)
 
-        
+        cell.date = indexPath.row+1
         // Set cell date (Store as a date string)
-        var dateComponent = DateComponents()
-        dateComponent.day = indexPath.row
+//            var dateComponent = DateComponents()
+//            dateComponent.day = indexPath.row
         // Set date associated with cell
-        cell.date = Calendar.current.date(byAdding: dateComponent, to: startingDate!)!
+//            cell.date = Calendar.current.date(byAdding: dateComponent, to: startingDate!)!
         
 //        print (cell.date)
         
@@ -81,6 +93,13 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
         } else if cell.backgroundColor != UIColor.white{
             cell.backgroundColor = .white
+        }
+        
+        // hide cell if it is not in the current month
+        if (indexPath.row+1 > setNumOfDays) {
+            cell.isHidden = true
+        } else {
+            cell.isHidden = false
         }
 
         return cell
@@ -103,21 +122,27 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             cell.backgroundColor = UIColor(rgb: 0xF4AA00)
             lastSelected = indexPath
             
+            // Specify date components
+            var dateComponents = DateComponents()
+            dateComponents.year = Int(selectedYear)
+            dateComponents.month = selectedMonth
+            dateComponents.day = cell.date
+            dateComponents.timeZone = TimeZone(abbreviation: "UTC") // Japan Standard Time
             
-            var dateComponent = DateComponents()
-            dateComponent.minute = 1439
-            let endDate = Calendar.current.date(byAdding: dateComponent, to: cell.date)
+            let d1 = Calendar.current.date(from: dateComponents)
             
-            let s1 = Date.formatDateAndTimezoneString(date: cell.date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
-            let s2 = Date.formatDateAndTimezoneString(date: endDate!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
             
+            var dateComponentAdd = DateComponents()
+            dateComponentAdd.minute = 1439
+            let d2 = Calendar.current.date(byAdding: dateComponentAdd, to: d1!)
+            
+            // Convert to string
+            let s1 = Date.formatDateAndTimezoneString(date: d1!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+            let s2 = Date.formatDateAndTimezoneString(date: d2!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
             
             print (s1, s2)
             
-            // convert to string format
             calendarTableView?.reloadData(startDate: s1 , endDate: s2)
-            
-            
         }
     }
 

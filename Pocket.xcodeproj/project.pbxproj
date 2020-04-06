@@ -115,7 +115,7 @@
 			children = (
 				021964B62094333F009A43A6 /* AppDelegate.swift */,
 				027248D9238F2B5B003A23E9 /* Database */,
-				0296F92B23C3DFAB00C92A9E /* ClassExtension */,
+				0296F92B23C3DFAB00C92A9E /* CustomClass */,
 				02F2590E23CD055700167904 /* Extensions */,
 				0220479A2100EB6B002F6E9B /* ViewControllers */,
 				02886EE42352B7D8006F7B8D /* Cells */,
@@ -178,13 +178,13 @@
 			path = Cells;
 			sourceTree = "<group>";
 		};
-		0296F92B23C3DFAB00C92A9E /* ClassExtension */ = {
+		0296F92B23C3DFAB00C92A9E /* CustomClass */ = {
 			isa = PBXGroup;
 			children = (
 				0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */,
 				020C4ADA24374B1D000DCC58 /* MonthYearPickerView.swift */,
 			);
-			path = ClassExtension;
+			path = CustomClass;
 			sourceTree = "<group>";
 		};
 		02DDC4CC243681E200276F8A /* Calendar */ = {
