@@ -55,10 +55,6 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             self.collectionView(self, didSelectItemAt: lastSelected!)
             self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
         }
-        
-        
-        print ("current month", selectedMonth)
-        print ("number of days in month", setNumOfDays)
     }
     
     
@@ -78,15 +74,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         
         cell.layer.borderWidth = 0.1
         cell.label.text = String(indexPath.row+1)
-
         cell.date = indexPath.row+1
-        // Set cell date (Store as a date string)
-//            var dateComponent = DateComponents()
-//            dateComponent.day = indexPath.row
-        // Set date associated with cell
-//            cell.date = Calendar.current.date(byAdding: dateComponent, to: startingDate!)!
-        
-//        print (cell.date)
         
         // Needed so we when cells are reused we still highlight the correct cell
         if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
@@ -127,22 +115,17 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             dateComponents.year = Int(selectedYear)
             dateComponents.month = selectedMonth
             dateComponents.day = cell.date
-            dateComponents.timeZone = TimeZone(abbreviation: "UTC") // Japan Standard Time
+            dateComponents.timeZone = TimeZone.current
             
-            let d1 = Calendar.current.date(from: dateComponents)
+            let selectedDate = Calendar.current.date(from: dateComponents)
             
+            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
+//            print (startDate, endDate)
             
-            var dateComponentAdd = DateComponents()
-            dateComponentAdd.minute = 1439
-            let d2 = Calendar.current.date(byAdding: dateComponentAdd, to: d1!)
-            
-            // Convert to string
-            let s1 = Date.formatDateAndTimezoneString(date: d1!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
-            let s2 = Date.formatDateAndTimezoneString(date: d2!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
-            
-            print (s1, s2)
-            
-            calendarTableView?.reloadData(startDate: s1 , endDate: s2)
+//            let (s1, s2) = Date.getStartEndDate(referenceDate: selectedDate!, timeInterval: .Day)
+//            print (s1, s2)
+ 
+            calendarTableView?.reloadData(startDate: startDate, endDate: endDate)
         }
     }
 

@@ -22,15 +22,13 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         
         print ("Calendar table view loaded")
         
-        reloadData(startDate: "2020-01-01 20:00", endDate: "2020-12-30 20:00")
+//        reloadData(startDate: "2020-01-01 20:00", endDate: "2020-12-30 20:00")
     }
     
     /// Updates the view. start and end date should be in UTC
     func reloadData(startDate: String, endDate: String) {
         categories.removeAll()
         categoryTotal.removeAll()
-        
-        print ("Calendar table refreshed")
         
         (categories, categoryTotal) = (GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate))!
         
