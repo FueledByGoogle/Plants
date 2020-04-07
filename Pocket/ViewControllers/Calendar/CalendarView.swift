@@ -96,10 +96,24 @@ class CalendarView: UIViewController {
             // update collection view properties
             collectionView?.selectedMonth = datePicker.month
             collectionView?.setNumOfDays = Date.findNumOfDaysInMonth(year: datePicker.year, month: datePicker.month)
-            collectionView?.reloadData()
-        }
-        else {
-             print ("same")
+            collectionView?.reloadData() // MUST be before highlighting below, otherwise the highlight will be "cleared"
+            // select first item of the month when changing to a new month
+            collectionView?.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
+            collectionView?.collectionView(collectionView!.self, didSelectItemAt: IndexPath(item: 0, section: 0))
+            collectionView?.lastSelected = IndexPath(row: 0, section: 0)
+            
+            // Specify date components
+            var dateComponents = DateComponents()
+            dateComponents.year = datePicker.year
+            dateComponents.month = datePicker.month
+            dateComponents.day = 1
+            dateComponents.timeZone = TimeZone.current
+            
+            let selectedDate = Calendar.current.date(from: dateComponents)
+            
+            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
+            tableView?.reloadData(startDate: startDate, endDate: endDate)
+            
         }
         
         // Dismiss date picker dialog
