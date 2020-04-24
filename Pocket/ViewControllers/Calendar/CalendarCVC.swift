@@ -119,13 +119,13 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             
             let selectedDate = Calendar.current.date(from: dateComponents)
             
-            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
+//            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
 //            print (startDate, endDate)
             
 //            let (s1, s2) = Date.getStartEndDate(referenceDate: selectedDate!, timeInterval: .Day)
 //            print (s1, s2)
  
-            calendarTableView?.reloadData(startDate: startDate, endDate: endDate)
+            calendarTableView?.reloadData(referenceDate: selectedDate!)
         }
     }
 

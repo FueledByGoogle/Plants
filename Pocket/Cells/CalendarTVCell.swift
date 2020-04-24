@@ -21,6 +21,8 @@ class CalendarTVCell: UITableViewCell {
         return totalLabel
     }()
     
+    var date = "null"
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

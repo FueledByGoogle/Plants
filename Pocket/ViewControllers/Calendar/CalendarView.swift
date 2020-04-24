@@ -10,7 +10,7 @@ class CalendarView: UIViewController {
     let datePicker: MonthYearPickerView = MonthYearPickerView()
     var datePickerTextField: UITextField?
     var datePickerButton: UIButton?
-    var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
+//    var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,8 +111,8 @@ class CalendarView: UIViewController {
             
             let selectedDate = Calendar.current.date(from: dateComponents)
             
-            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
-            tableView?.reloadData(startDate: startDate, endDate: endDate)
+//            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
+            tableView?.reloadData(referenceDate: selectedDate!)
             
         }
         

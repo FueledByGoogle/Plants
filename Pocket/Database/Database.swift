@@ -177,6 +177,65 @@ class Database {
     }
     
     
+    /// Returns all expenses from beginning to the end of a day
+    func loadExpensesOnDay(referenceDate: Date) -> ([String], [CGFloat], [String]) {
+        
+        
+        let (startingDate, endingDate) = Date.getStartEndDatesString(referenceDate: referenceDate, timeInterval: .Day)
+        
+        var category: [String] = []
+        var categoryAmount: [CGFloat] = []
+        var date: [String] = []
+        
+        if VerifyDatabaseSetup() != true { return  (category, categoryAmount, date) }
+        
+        
+        // Note that we do not need single quote when binding
+        let queryString = "SELECT ExpenseTable.category, ExpenseTable.amount, ExpenseTable.entry_date FROM ExpenseTable WHERE ExpenseTable.entry_date BETWEEN ? AND ?"
+        
+        if prepare(query: queryString) != true { return (category, categoryAmount, date) }
+        
+        
+        // Bind variables
+        if sqlite3_bind_text(stmt, 1, startingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding startingDate: \(errmsg)")
+            return (category, categoryAmount, date)
+        }
+        if sqlite3_bind_text(stmt, 2, endingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+           let errmsg = String(cString: sqlite3_errmsg(db)!)
+           print("Error binding endingDate: \(errmsg)")
+           return (category, categoryAmount, date)
+        }
+
+        
+        // Traverse through all records
+        var i = 0
+        while sqlite3_step(stmt) == SQLITE_ROW
+        {
+            let categoryDb = String(cString: sqlite3_column_text(stmt, 0))
+            let amountDb = String(cString: sqlite3_column_text(stmt, 1))
+            let dateDb = String(cString: sqlite3_column_text(stmt, 2))
+            
+            guard let amount = NumberFormatter().number(from: amountDb) else {
+                print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
+                return (category, categoryAmount, date)
+            }
+            category.append(categoryDb)
+            categoryAmount.append(CGFloat(truncating: amount))
+            date.append(dateDb)
+            i += 1
+        }
+        if reset() != true { return (category, categoryAmount, date) }
+        if finalize() != true { print ("Data loaded.") }
+        
+        return (category, categoryAmount, date)
+        
+        
+        
+    }
+    
+    
     /// Called before each operation to verify database is set up before performing any operations
     func VerifyDatabaseSetup() -> Bool {
         if dbUrl?.absoluteString == nil {

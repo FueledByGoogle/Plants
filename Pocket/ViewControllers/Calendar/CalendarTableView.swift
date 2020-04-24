@@ -6,8 +6,9 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     
     
     // Data
-    var categories: [String] = []
-    var categoryTotal: [CGFloat] = []
+    var expenseCategory: [String] = []
+    var expenseAmount: [CGFloat] = []
+    var expenseDate: [String] = []
     
     
     let cellId = "TableViewcell"
@@ -21,35 +22,59 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         self.register(CalendarTVCell.self, forCellReuseIdentifier: cellId)
         
         print ("Calendar table view loaded")
-        
-//        reloadData(startDate: "2020-01-01 20:00", endDate: "2020-12-30 20:00")
     }
     
     /// Updates the view. start and end date should be in UTC
-    func reloadData(startDate: String, endDate: String) {
-        categories.removeAll()
-        categoryTotal.removeAll()
+    func reloadData(referenceDate: Date) {
+        expenseCategory.removeAll()
+        expenseAmount.removeAll()
         
-        (categories, categoryTotal) = (GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate))!
+        (expenseCategory, expenseAmount, expenseDate) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
         
+        currentDate = Date.formatDateAndTimezoneString(date: referenceDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         self.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return categories.count
+        return expenseCategory.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
-        cell.label.text = categories[indexPath.row]
-        cell.totalLabel.text = categoryTotal[indexPath.row].description
+        cell.label.text = expenseCategory[indexPath.row]
+        cell.totalLabel.text = expenseAmount[indexPath.row].description
+        cell.date = expenseDate[indexPath.row]
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
+    }
+    
+
+    
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        
+        if editingStyle == .delete {
+            expenseCategory.remove(at: indexPath.row)
+            expenseAmount.remove(at: indexPath.row)
+            expenseDate.remove(at: indexPath.row)
+            
+            print ("Current Date: ", currentDate)
+            
+            
+            if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
+                print (cell.date)
+            }
+            
+            self.deleteRows(at: [indexPath], with: .automatic)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
     }
     
 }
