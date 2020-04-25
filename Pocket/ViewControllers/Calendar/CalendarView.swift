@@ -19,21 +19,19 @@ class CalendarView: UIViewController {
 //        self.navigationItem.title = MyEnums.TabNames.Calendar.rawValue
         self.view.backgroundColor = .black
         
-        
         setupDatePicker()
-        
         
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         
-        
+        // Collection view setup
         collectionView = CalendarCVC(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width/7*5 + self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
         collectionView!.viewDidLoad()
         collectionView!.setCollectionViewLayout(layout, animated: false)
         
-        
+        // Table view setup
         tableView = CalendarTableView(frame: CGRect(x: 0, y: collectionView!.frame.maxY + 1, width: self.view.frame.width, height: self.view.frame.height - collectionView!.frame.height - self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height))
         tableView?.viewDidLoad()
         
@@ -49,15 +47,14 @@ class CalendarView: UIViewController {
         
         // we want to tell table view to update view
         if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true {
-//                let (d1, d2) = Date.getStartEndDates(timeInterval: lastSelectedButton)
-//                reloadData(startDate: d1, endDate: d2)
-//                GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
+            
+            tableView?.reloadData(referenceDate: collectionView!.selectedDate)
+            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
         }
     }
     
     /// Sets up date picker entry views
     func setupDatePicker() {
-        
         // Text field
         datePickerTextField = UITextField(frame: CGRect(x: 0, y: 0, width: (self.navigationController?.navigationBar.frame.width)!, height: (self.navigationController?.navigationBar.frame.height)!))
         datePickerTextField!.textAlignment = .center

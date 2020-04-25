@@ -47,7 +47,6 @@ extension Date
     
     
     /// Converts date to string
-    /// - parameters date: current date
     public static func formatDateAndTimezoneString(date: Date, dateFormat: String, timeZone: TimeZones) -> String {
 
         let dateFormatter = DateFormatter()

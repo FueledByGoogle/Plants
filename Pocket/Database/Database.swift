@@ -178,36 +178,33 @@ class Database {
     
     
     /// Returns all expenses from beginning to the end of a day
-    func loadExpensesOnDay(referenceDate: Date) -> ([String], [CGFloat], [String]) {
+    func loadExpensesOnDay(referenceDate: Date) -> ([String], [CGFloat], [Int]) {
         
         
         let (startingDate, endingDate) = Date.getStartEndDatesString(referenceDate: referenceDate, timeInterval: .Day)
         
         var category: [String] = []
         var categoryAmount: [CGFloat] = []
-        var date: [String] = []
+        var rowId: [Int] = []
         
-        if VerifyDatabaseSetup() != true { return  (category, categoryAmount, date) }
-        
+        if VerifyDatabaseSetup() != true { return  (category, categoryAmount, rowId) }
         
         // Note that we do not need single quote when binding
-        let queryString = "SELECT ExpenseTable.category, ExpenseTable.amount, ExpenseTable.entry_date FROM ExpenseTable WHERE ExpenseTable.entry_date BETWEEN ? AND ?"
+        let queryString = "SELECT ExpenseTable.category, ExpenseTable.amount, ExpenseTable.rowId FROM ExpenseTable WHERE ExpenseTable.entry_date BETWEEN ? AND ?"
         
-        if prepare(query: queryString) != true { return (category, categoryAmount, date) }
-        
+        if prepare(query: queryString) != true { return (category, categoryAmount, rowId) }
         
         // Bind variables
         if sqlite3_bind_text(stmt, 1, startingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding startingDate: \(errmsg)")
-            return (category, categoryAmount, date)
+            return (category, categoryAmount, rowId)
         }
         if sqlite3_bind_text(stmt, 2, endingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
            let errmsg = String(cString: sqlite3_errmsg(db)!)
            print("Error binding endingDate: \(errmsg)")
-           return (category, categoryAmount, date)
+           return (category, categoryAmount, rowId)
         }
-
         
         // Traverse through all records
         var i = 0
@@ -215,24 +212,63 @@ class Database {
         {
             let categoryDb = String(cString: sqlite3_column_text(stmt, 0))
             let amountDb = String(cString: sqlite3_column_text(stmt, 1))
-            let dateDb = String(cString: sqlite3_column_text(stmt, 2))
+            let rowIdDb = String(cString: sqlite3_column_text(stmt, 2))
             
+            // Format to NSNumber
             guard let amount = NumberFormatter().number(from: amountDb) else {
                 print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
-                return (category, categoryAmount, date)
+                return (category, categoryAmount, rowId)
             }
+            guard let rowIdNum = NumberFormatter().number(from: rowIdDb) else {
+                print ("Error converting entry ", i+1, " in database category \"rowId\" to NSNumber format.")
+                return (category, categoryAmount, rowId)
+            }
+            
             category.append(categoryDb)
             categoryAmount.append(CGFloat(truncating: amount))
-            date.append(dateDb)
+            rowId.append(Int(truncating: rowIdNum))
             i += 1
         }
-        if reset() != true { return (category, categoryAmount, date) }
+        if reset() != true { return (category, categoryAmount, rowId) }
         if finalize() != true { print ("Data loaded.") }
         
-        return (category, categoryAmount, date)
+        return (category, categoryAmount, rowId)
+    }
+    
+    
+    /// Delete based on rowId
+    func deleteExpenseEntry(rowId: Int) -> Bool {
         
+        if VerifyDatabaseSetup() != true { return false }
         
+        let queryString = "DELETE FROM ExpenseTable WHERE ROWID = ?"
+        if prepare(query: queryString) != true { return false }
+
         
+        //              Binding the parameters
+        // Note: Column out of index maybe caused by quotes single/doubble outside of question marks
+        
+        // Category
+        if sqlite3_bind_text(stmt, 1, String(rowId), -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding category: \(errmsg)")
+            return false
+        }
+        
+        // Execute the query to insert values
+        if sqlite3_step(stmt) != SQLITE_DONE {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error deleting row from database: \(errmsg)")
+            return false
+        } else {
+            print("Deleted row with rowId: ", rowId)
+        }
+        
+        if reset() != true { return false }
+        if finalize() != true { print("Data inserted") }
+        
+        updateNeedToUpdateStatus()
+        return true
     }
     
     

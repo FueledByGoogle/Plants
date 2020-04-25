@@ -12,18 +12,16 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     var cellWidth = CGFloat(50)
     let cellReuseIdentifier = "cellId"
     
-    let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
-    var lastSelected: IndexPath?
     
+    var lastSelected: IndexPath? // Used to highlight last selected cell
     
     // List Data
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
     
-    // Used to update table view
-    var calendarTableView: CalendarTableView?
+    var calendarTableView: CalendarTableView? // Used to update table view
     
-    
+    var selectedDate = Date.formatDateAndTimezone(date: Date(), dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
     var selectedYear = ""
     var selectedMonth = Date.findMonthAsNum(date: Date())
     var setNumOfDays = Date.findNumOfDaysInMonth(date: Date()) // Used to see which cells need to be hidden
@@ -45,6 +43,8 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     
     func viewDidAppear(_ animated: Bool) {
         if initialLoad == true {
+            let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
+            
             self.collectionView(self, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
             self.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
             lastSelected = IndexPath(row: Int(currentDay)!-1, section: 0)
@@ -60,7 +60,6 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     
     /// number of cells in section
     func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        return Date.getNumberOfDaysInMonth(date: Date())
         return 31 // we will hide ones we do not need
     }
     
@@ -117,15 +116,8 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             dateComponents.day = cell.date
             dateComponents.timeZone = TimeZone.current
             
-            let selectedDate = Calendar.current.date(from: dateComponents)
-            
-//            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
-//            print (startDate, endDate)
-            
-//            let (s1, s2) = Date.getStartEndDate(referenceDate: selectedDate!, timeInterval: .Day)
-//            print (s1, s2)
- 
-            calendarTableView?.reloadData(referenceDate: selectedDate!)
+            selectedDate = Calendar.current.date(from: dateComponents)!
+            calendarTableView?.reloadData(referenceDate: selectedDate)
         }
     }
 
