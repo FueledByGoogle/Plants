@@ -1,6 +1,6 @@
 # Pocket
 
-An IOS app to track your daily expenses.
+An IOS app to track your daily expenses. All UI designed programmatically rather than using Apple's visual interface builder storyboard.
 
 
 ## Current Work In Progress:
