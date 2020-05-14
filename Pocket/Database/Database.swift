@@ -46,8 +46,8 @@ class Database {
 //            if openDb() == true { print ("Database successfully opened.") }
 //        } else {
 //            print ("Database file does not exist!")
-        
-        print ("For testing purposes program always copy over database file")
+        // We copy over our test database if one does not exist.
+        print ("For testing purposes we always copy over test database")
         do {
             try FileManager.default.removeItem(atPath: dbUrl!.path)
         } catch {}
