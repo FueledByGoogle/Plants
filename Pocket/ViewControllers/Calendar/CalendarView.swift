@@ -10,13 +10,11 @@ class CalendarView: UIViewController {
     let datePicker: MonthYearPickerView = MonthYearPickerView()
     var datePickerTextField: UITextField?
     var datePickerButton: UIButton?
-//    var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-//        self.navigationItem.title = MyEnums.TabNames.Calendar.rawValue
         self.view.backgroundColor = .black
         
         setupDatePicker()
@@ -35,7 +33,7 @@ class CalendarView: UIViewController {
         tableView = CalendarTableView(frame: CGRect(x: 0, y: collectionView!.frame.maxY + 1, width: self.view.frame.width, height: self.view.frame.height - collectionView!.frame.height - self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height))
         tableView?.viewDidLoad()
         
-        collectionView?.calendarTableView = tableView
+        collectionView?.calendarTableView = tableView // "pass" table view to collection view
         
         self.view.addSubview(collectionView!)
         self.view.addSubview(tableView!)
@@ -47,7 +45,6 @@ class CalendarView: UIViewController {
         
         // we want to tell table view to update view
         if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true {
-            
             tableView?.reloadData(referenceDate: collectionView!.selectedDate)
             GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
         }
@@ -106,17 +103,13 @@ class CalendarView: UIViewController {
             dateComponents.day = 1
             dateComponents.timeZone = TimeZone.current
             
-            let selectedDate = Calendar.current.date(from: dateComponents)
-            
-//            let (startDate, endDate) = Date.getStartEndDatesString(referenceDate: selectedDate!, timeInterval: .Day)
-            tableView?.reloadData(referenceDate: selectedDate!)
-            
+            tableView?.reloadData(referenceDate: Calendar.current.date(from: dateComponents)!)
         }
         
         // Dismiss date picker dialog
         self.navigationController?.navigationBar.endEditing(true)
     }
-    
+
     
     /// Date picker cancle button
     @objc func cancelDatePicker(){

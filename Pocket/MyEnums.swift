@@ -5,7 +5,7 @@ class MyEnums {
     
     enum TabNames: String {
         case AddExpense = "Add Expense"
-        case Calendar, Expenses, Search
+        case Calendar, Charts
     }
     
     

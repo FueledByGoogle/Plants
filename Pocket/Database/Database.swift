@@ -19,7 +19,7 @@ class Database {
     
     // Perhaps have a bool array for each view in tab when for when data for that tab needs to be refreshed
     var needToUpdateData: [String: Bool] = [MyEnums.TabNames.Calendar.rawValue: true,
-                                            MyEnums.TabNames.Expenses.rawValue: true]
+                                            MyEnums.TabNames.Charts.rawValue: true]
     
     let SQLITE_TRANSIENT = unsafeBitCast(-1, to: sqlite3_destructor_type.self)
     let SQLITE_STATIC = unsafeBitCast(0, to: sqlite3_destructor_type.self)
@@ -74,8 +74,12 @@ class Database {
         }
     }
     
-    /// Inserts expense amount into the databbase
-    func InsertExpenseToDatabase(category: String, amount: String, dateUTC: String) -> Bool {
+    /// Inserts expense amount into the database, date is converted to UTC
+    func InsertExpenseToDatabase(category: String, amount: String, date: Date) -> Bool {
+        
+        // Convert input into string before sending to be inserted
+        let dateString = Date.formatDateAndTimezoneString(date: date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+        
         
         if VerifyDatabaseSetup() != true { return false }
         
@@ -101,7 +105,7 @@ class Database {
             return false
         }
         // Date
-        if sqlite3_bind_text(stmt, 3, dateUTC, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+        if sqlite3_bind_text(stmt, 3, dateString, -1, SQLITE_TRANSIENT) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding category: \(errmsg)")
             return false
@@ -112,7 +116,7 @@ class Database {
             print("Error inserting: \(errmsg)")
             return false
         } else {
-            print("Inserted: " + category + ", " + amount + ", " + dateUTC)
+            print("Inserted: " + category + ", " + amount + ", " + dateString)
         }
         
         if reset() != true { return false }

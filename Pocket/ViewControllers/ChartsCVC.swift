@@ -2,7 +2,7 @@ import UIKit
 
 
 
-class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     let cellId: String = "TableViewCellIdentifier"
     
@@ -47,10 +47,10 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
 
     
     override func viewDidAppear(_ animated: Bool) {
-        if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] == true {
+        if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Charts.rawValue] == true {
             let (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: lastSelectedButton)
             reloadData(startDate: d1, endDate: d2)
-            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] = false
+            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Charts.rawValue] = false
 //            print (GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue])
         }
     }
@@ -77,7 +77,7 @@ class ExpensesCVC: UICollectionViewController, UICollectionViewDelegateFlowLayou
     func reloadData(startDate: String, endDate: String) {
         categories.removeAll()
         categoryTotal.removeAll()
-print ("View refreshed")
+        print ("View refreshed")
         (categories, categoryTotal) = (GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate))!
         
         pieView?.updateData(categories: categories, categoryTotal: categoryTotal)
@@ -101,7 +101,7 @@ print ("View refreshed")
         default:
             print ("Time filter out of bounds")
         }
-print (d1!,d2!)
+        print (d1!,d2!)
         reloadData(startDate: d1!, endDate: d2!)
     }
     

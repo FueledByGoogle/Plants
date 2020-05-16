@@ -13,7 +13,7 @@
 		021964BE2094333F009A43A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 021964BD2094333F009A43A6 /* Assets.xcassets */; };
 		02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DBC231B32DC00FAAFC4 /* MyEnums.swift */; };
 		02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC5231C69B200FAAFC4 /* PieChart.swift */; };
-		02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */; };
+		02202DC7231C69B200FAAFC4 /* ChartsCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */; };
 		022047912100C181002F6E9B /* DSC_1336.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 022047902100C181002F6E9B /* DSC_1336.JPG */; };
 		022047972100CF26002F6E9B /* MyExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022047962100CF26002F6E9B /* MyExtensions.swift */; };
 		0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0220479B2100EB96002F6E9B /* SearchVc.swift */; };
@@ -52,7 +52,7 @@
 		021964D62094333F009A43A6 /* PocketUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketUITests.swift; sourceTree = "<group>"; };
 		021964D82094333F009A43A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		02202DBC231B32DC00FAAFC4 /* MyEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnums.swift; sourceTree = "<group>"; };
-		02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpensesCVC.swift; sourceTree = "<group>"; };
+		02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsCVC.swift; sourceTree = "<group>"; };
 		02202DC5231C69B200FAAFC4 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		022047902100C181002F6E9B /* DSC_1336.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DSC_1336.JPG; sourceTree = "<group>"; };
 		022047962100CF26002F6E9B /* MyExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExtensions.swift; sourceTree = "<group>"; };
@@ -151,7 +151,7 @@
 			children = (
 				02DDC4CC243681E200276F8A /* Calendar */,
 				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
-				02202DC4231C69B200FAAFC4 /* ExpensesCVC.swift */,
+				02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */,
 				029B4E8621E1DACD00882705 /* TabBar.swift */,
 				0220479B2100EB96002F6E9B /* SearchVc.swift */,
 			);
@@ -302,7 +302,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				02202DC7231C69B200FAAFC4 /* ExpensesCVC.swift in Sources */,
+				02202DC7231C69B200FAAFC4 /* ChartsCVC.swift in Sources */,
 				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
 				024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */,
 				02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */,

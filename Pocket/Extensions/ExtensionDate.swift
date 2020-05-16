@@ -10,7 +10,6 @@ extension Date
     public enum TimeZones : String{
         case UTC, LocalZone
     }
-    
 
     
     public static func findMonthAsNum(date: Date) -> Int {
@@ -56,14 +55,9 @@ extension Date
         return dateFormatter.string(from: date)
     }
     
+    /// F
     public static func formatDateAndTimezone(date: Date, dateFormat: String, timeZone: TimeZones) -> Date {
-//
-//        let dateFormatter = DateFormatter()
-//        dateFormatter.dateFormat = dateFormat
-//        dateFormatter.timeZone = TimeZone(identifier: timeZone.rawValue)
-//        dateFormatter.defaultDate = date
-//
-//        return Date()
+
         let timezone = TimeZone.current
         let seconds = -TimeInterval(timezone.secondsFromGMT(for: date))
         return Date(timeInterval: seconds, since: date)
@@ -160,10 +154,6 @@ extension Date
             endDate = Calendar.current.date(byAdding: dateComponentDayWeek, to: startDate)
         }
         
-//        let startDateString =  formatDateAndTimezoneString(date: startDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         return (startDate, endDate!)
-//        return (
-//           startDateString,
-//           formatDateAndTimezoneString(date: endDate!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC))
     }
 }

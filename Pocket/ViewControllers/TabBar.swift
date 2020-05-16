@@ -15,21 +15,31 @@ class TabBar: UITabBarController {
         
         let layout = UICollectionViewFlowLayout()
         
+        let calendarView = CalendarView()
+        let calendarViewController = UINavigationController(rootViewController: calendarView)
+        calendarViewController.tabBarItem.title = MyEnums.TabNames.Calendar.rawValue
         
         let addExpenseController = AddExpenseCVC(collectionViewLayout: layout)
         let addExpenseNavController = UINavigationController(rootViewController: addExpenseController)
         addExpenseNavController.tabBarItem.title = MyEnums.TabNames.AddExpense.rawValue
         
-        let expenseController = ExpensesCVC(collectionViewLayout: layout)
-        let expenseNavcontroller = UINavigationController(rootViewController: expenseController)
-        expenseNavcontroller.tabBarItem.title = MyEnums.TabNames.Expenses.rawValue
+        let charts = ChartsCVC(collectionViewLayout: layout)
+        let chartsNavcontroller = UINavigationController(rootViewController: charts)
+        chartsNavcontroller.tabBarItem.title = MyEnums.TabNames.Charts.rawValue
         
-        let calendarView = CalendarView()
-        let calendarViewController = UINavigationController(rootViewController: calendarView)
-        calendarViewController.tabBarItem.title = MyEnums.TabNames.Calendar.rawValue
         
-        viewControllers = [calendarViewController, addExpenseNavController, expenseNavcontroller]
+        
+        
+        if #available(iOS 13.0, *) {
+            calendarViewController.tabBarItem.image = UIImage(systemName: "calendar")
+            addExpenseNavController.tabBarItem.image = UIImage(systemName: "plus")
+            chartsNavcontroller.tabBarItem.image = UIImage(systemName: "chart.pie")
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        
+        viewControllers = [calendarViewController, addExpenseNavController, chartsNavcontroller]
         self.tabBar.tintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
-        
     }
 }

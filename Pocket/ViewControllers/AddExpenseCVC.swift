@@ -64,7 +64,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         expenseTextField = UITextField(frame: CGRect(x:0, y: 0, width: expenseEntry!.frame.width, height: self.view.frame.height * 0.20))
         expenseTextField!.text = "25.6"
         expenseTextField!.font = .systemFont(ofSize: 50)
-//        expenseTextField.textColor = .black
         
         // Text positioning
         expenseTextField!.adjustsFontSizeToFitWidth = true
@@ -72,7 +71,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
 //        expenseTextField.borderStyle = UITextField.BorderStyle.line
         expenseTextField!.keyboardType = UIKeyboardType.decimalPad
         expenseTextField!.delegate = self
-        
         expenseEntry!.addSubview(expenseTextField!)
         
         cumulativeYOffset += expenseEntry!.frame.height
@@ -96,7 +94,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         datePickerTextField!.text = formatter.string(from: Date())
-        
         datePickerView.addSubview(datePickerTextField!)
         
         
@@ -178,13 +175,9 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             // Round to two decimal places, >= 5 are rounded up
             let roundedNum = String(round(100*num)/100)
 
-            
-            // Convert input into string before sending to be inserted
-            let dateString = Date.formatDateAndTimezoneString(date: datePicker.date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
-            
             if GLOBAL_userDatabase?.InsertExpenseToDatabase(
                     category: MyEnums.Categories.allCases[indexPath.item].rawValue,
-                    amount: roundedNum, dateUTC: dateString) == false {}
+                    amount: roundedNum, date: datePicker.date) == false {}
         }
     }
 }

@@ -4,12 +4,10 @@ import UIKit
 // not sure if cells are loading properly but for now just testing display
 class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
-    
     // Data
     var expenseCategory: [String] = []
     var expenseAmount: [CGFloat] = []
     var expenseRowId: [Int] = []
-    
     
     let cellId = "TableViewcell"
     
@@ -65,7 +63,7 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
                     self.deleteRows(at: [indexPath], with: .automatic)
                     
                     // Flag need to refresh
-                    GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue] = true
+                    GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Charts.rawValue] = true
                     GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = true
                 }
             }

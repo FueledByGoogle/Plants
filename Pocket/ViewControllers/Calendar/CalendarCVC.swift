@@ -12,15 +12,14 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     var cellWidth = CGFloat(50)
     let cellReuseIdentifier = "cellId"
     
-    
-    var lastSelected: IndexPath? // Used to highlight last selected cell
-    
     // List Data
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
     
     var calendarTableView: CalendarTableView? // Used to update table view
     
+    // Selection properties
+    var lastSelected: IndexPath? // Used to highlight last selected cell
     var selectedDate = Date.formatDateAndTimezone(date: Date(), dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
     var selectedYear = ""
     var selectedMonth = Date.findMonthAsNum(date: Date())
