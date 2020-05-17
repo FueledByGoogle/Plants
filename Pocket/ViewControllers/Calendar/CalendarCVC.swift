@@ -1,9 +1,8 @@
 import UIKit
 
 /*
- Collection view holds current year and month
- Then using the selected cell the three values, date, month, year is combined
- to create the start and end date to send to query the database
+    Collection view holds current year and month.
+    Then using the selected cell the three values date, month, and year is used to create the start and end date to send to query the database.
  */
 class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
@@ -116,7 +115,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             dateComponents.timeZone = TimeZone.current
             
             selectedDate = Calendar.current.date(from: dateComponents)!
-            calendarTableView?.reloadData(referenceDate: selectedDate)
+            calendarTableView?.reloadData(referenceDate: selectedDate) // refresh table view
         }
     }
 

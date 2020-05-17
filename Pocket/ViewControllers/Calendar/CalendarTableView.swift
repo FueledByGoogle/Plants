@@ -1,13 +1,16 @@
 import UIKit
 
-
-// not sure if cells are loading properly but for now just testing display
+/*
+    Table view is initially refreshed with current day, further refreshes are called from calendar collection view
+ */
 class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     // Data
+    var expenseRowId: [Int] = []
     var expenseCategory: [String] = []
     var expenseAmount: [CGFloat] = []
-    var expenseRowId: [Int] = []
+    var expenseName: [String] = []
+    var expenseNotes: [String] = []
     
     let cellId = "TableViewcell"
     
@@ -25,7 +28,10 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         expenseCategory.removeAll()
         expenseAmount.removeAll()
         
-        (expenseCategory, expenseAmount, expenseRowId) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
+        // Populate variables
+        (expenseCategory, expenseAmount, expenseRowId, expenseName, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
+        
+//        print(expenseName, expenseNotes)
         
         currentDate = Date.formatDateAndTimezoneString(date: referenceDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         self.reloadData()
@@ -39,9 +45,11 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
-        cell.label.text = expenseCategory[indexPath.row]
-        cell.totalLabel.text = expenseAmount[indexPath.row].description
         cell.rowId = expenseRowId[indexPath.row]
+        cell.name.text = expenseName[indexPath.row]
+        cell.category.text = expenseCategory[indexPath.row]
+        cell.notes.text = expenseNotes[indexPath.row]
+        cell.amount.text = expenseAmount[indexPath.row].description
         return cell
     }
     
@@ -54,12 +62,13 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         
         if editingStyle == .delete {
-            
             if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
                 if (GLOBAL_userDatabase?.deleteExpenseEntry(rowId: cell.rowId))! {
-                    expenseCategory.remove(at: indexPath.row)
-                    expenseAmount.remove(at: indexPath.row)
                     expenseRowId.remove(at: indexPath.row)
+                    expenseName.remove(at: indexPath.row)
+                    expenseCategory.remove(at: indexPath.row)
+                    expenseNotes.remove(at: indexPath.row)
+                    expenseAmount.remove(at: indexPath.row)
                     self.deleteRows(at: [indexPath], with: .automatic)
                     
                     // Flag need to refresh

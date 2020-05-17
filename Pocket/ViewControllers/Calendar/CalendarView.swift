@@ -28,7 +28,6 @@ class CalendarView: UIViewController {
         collectionView = CalendarCVC(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width/7*5 + self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
         collectionView!.viewDidLoad()
         collectionView!.setCollectionViewLayout(layout, animated: false)
-        
         // Table view setup
         tableView = CalendarTableView(frame: CGRect(x: 0, y: collectionView!.frame.maxY + 1, width: self.view.frame.width, height: self.view.frame.height - collectionView!.frame.height - self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height))
         tableView?.viewDidLoad()
@@ -56,7 +55,6 @@ class CalendarView: UIViewController {
         datePickerTextField = UITextField(frame: CGRect(x: 0, y: 0, width: (self.navigationController?.navigationBar.frame.width)!, height: (self.navigationController?.navigationBar.frame.height)!))
         datePickerTextField!.textAlignment = .center
         datePickerTextField!.inputView = datePicker
-
         // Format initial display date
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"

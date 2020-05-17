@@ -15,8 +15,10 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     let cellReuseIdentifier = "CategoryCell"
     
-    var expenseTextField: UITextField?
     var expenseEntry: UIView?
+    var amountEntry: UITextField?
+    var descriptionEntry: UITextField?
+    var notesEntry: UITextField?
     
     // Used for the Y position of each view section e.g. expense entry -> expense date -> collection view cell begin
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
@@ -32,8 +34,10 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
-        // If background color is not set application may lag between transitions
-        self.collectionView.backgroundColor =  UIColor(rgb: 0xe8e8e8)
+        self.navigationController?.setToolbarHidden(true, animated: true)
+//        self.navigationController?.navigationBar.isHidden = true
+        
+        self.collectionView.backgroundColor =  .white  // If background color is not set application may lag between transitions
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
         // Dismiss keyboard upon touching outside the keyboard
@@ -42,51 +46,95 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // Initialize database
         GLOBAL_userDatabase = Database.init()
         
-        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
-        
         // View setup
-        setupExpenseEntryView()
-        setupDatePicker()
+        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
+        setupExpenseDataEntry()
         
         // Layout
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: cumulativeYOffset, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: (datePickerTextField?.frame.maxY)!, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
     }
     
     
+    
     /// Sets up expense amount views
-    func setupExpenseEntryView() {
-        expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.20))
-        expenseEntry!.backgroundColor = UIColor.white
-        
-        // TextField
-        expenseTextField = UITextField(frame: CGRect(x:0, y: 0, width: expenseEntry!.frame.width, height: self.view.frame.height * 0.20))
-        expenseTextField!.text = "25.6"
-        expenseTextField!.font = .systemFont(ofSize: 50)
-        
-        // Text positioning
-        expenseTextField!.adjustsFontSizeToFitWidth = true
-        expenseTextField!.textAlignment  = .center
-//        expenseTextField.borderStyle = UITextField.BorderStyle.line
-        expenseTextField!.keyboardType = UIKeyboardType.decimalPad
-        expenseTextField!.delegate = self
-        expenseEntry!.addSubview(expenseTextField!)
-        
-        cumulativeYOffset += expenseEntry!.frame.height
+    func setupExpenseDataEntry() {
+        expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.30))
+        cumulativeYOffset += (expenseEntry?.frame.height)!
         self.view.addSubview(expenseEntry!)
-    }
-    
-    
-    /// Sets up date picker entry views
-    func setupDatePicker() {
-        // View
-        let datePickerView = UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.1))
-        datePickerView.backgroundColor = UIColor.yellow
-        self.view.addSubview(datePickerView)
         
+        
+        // Expense amount input field
+        amountEntry = UITextField(frame: CGRect(x:0,
+                                                y: 0,
+                                                width: self.view.frame.width,
+                                                height: expenseEntry!.frame.height * 0.55))
+        amountEntry!.text = "25.6"
+        amountEntry!.font = .systemFont(ofSize: 50)
+        amountEntry!.adjustsFontSizeToFitWidth = true
+        amountEntry!.textAlignment  = .center
+        amountEntry!.keyboardType = UIKeyboardType.decimalPad
+        amountEntry!.delegate = self
+        expenseEntry!.addSubview(amountEntry!)
+        
+        
+        // Expense name label
+        let descriptionLabel = UILabel(frame: CGRect(x: 0,
+                                                     y: (amountEntry?.frame.height)!,
+                                                     width: self.view.frame.width * 0.30,
+                                                     height: expenseEntry!.frame.height * 0.15))
+        descriptionLabel.text = "Description: "
+        descriptionLabel.font = .systemFont(ofSize: 16)
+        descriptionLabel.textAlignment = .center
+//        descriptionLabel.sizeToFit()
+        expenseEntry?.addSubview(descriptionLabel)
+        // Expense name input field
+        descriptionEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
+                                                     y: (amountEntry?.frame.maxY)!,
+                                              width: self.view.frame.width - descriptionLabel.frame.width,
+                                              height: descriptionLabel.frame.height))
+        descriptionEntry?.placeholder = "Movie tickets"
+        descriptionEntry!.font = .systemFont(ofSize: 14)
+        descriptionEntry!.textAlignment = .center
+        expenseEntry!.addSubview(descriptionEntry!)
+        
+        
+        // Expense notes label
+        let notesLabel = UILabel(frame: CGRect(x: 0,
+                                               y: descriptionLabel.frame.maxY,
+                                               width: descriptionLabel.frame.width,
+                                               height: descriptionLabel.frame.height))
+        notesLabel.text = "Notes: "
+        notesLabel.font = .systemFont(ofSize: 16)
+        notesLabel.textAlignment = .center
+        expenseEntry!.addSubview(notesLabel)
+        // Expense notes input field
+        notesEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
+                                               y: descriptionLabel.frame.maxY,
+                                               width: (descriptionEntry?.frame.width)!,
+                                               height: descriptionLabel.frame.height))
+        notesEntry?.placeholder = "Cinema on sunset avenue"
+        notesEntry!.font = .systemFont(ofSize: 14)
+        notesEntry!.textAlignment  = .center
+        expenseEntry!.addSubview(notesEntry!)
+    
+        
+        
+        
+        // Label
+        let dateLabel = UILabel(frame: CGRect(x: 0,
+                                              y: notesLabel.frame.maxY,
+                                              width: descriptionLabel.frame.width,
+                                              height: descriptionLabel.frame.height))
+        dateLabel.text = "Date: "
+        dateLabel.textAlignment = .center
+        expenseEntry?.addSubview(dateLabel)
         // Text field
-        datePickerTextField = UITextField(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: datePickerView.frame.height))
+        datePickerTextField = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
+                                                        y:  notesLabel.frame.maxY,
+                                                        width: (descriptionEntry?.frame.width)!,
+                                                        height: descriptionLabel.frame.height))
         datePickerTextField!.textAlignment = .center
         datePickerTextField!.inputView = datePicker
         
@@ -94,7 +142,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         datePickerTextField!.text = formatter.string(from: Date())
-        datePickerView.addSubview(datePickerTextField!)
+        expenseEntry?.addSubview(datePickerTextField!)
         
         
         // Toolbar
@@ -151,33 +199,34 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     
-    /// On user selection of cell
+    /// On user selection of category cell
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        // Check for correct number of decimals
-        if (expenseTextField!.text!.filter { $0 == "."}.count) > 1 {
+        // Entry validation
+        if (amountEntry!.text!.filter { $0 == "."}.count) > 1 { // Check for correct number of decimals
             print ("Invalid input, try again")
             return
         }
+        let decimalRemoved = amountEntry!.text!.replacingOccurrences(of: ".", with: "") // Check for invalid characters
         
-        // Check for invalid characters
-        let decimalRemoved = expenseTextField!.text!.replacingOccurrences(of: ".", with: "")
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: decimalRemoved)) == false {
             print ("Entered text that contains unsupported characters ")
             return
         }
         else {
-            guard let num = Double(expenseTextField!.text!) else {
+            guard let num = Double(amountEntry!.text!) else {
                 print ("Could not convert number to a float")
                 return
             }
-            // Round to two decimal places, >= 5 are rounded up
-            let roundedNum = String(round(100*num)/100)
+            let roundedNum = String(round(100*num)/100) // Round to two decimal places, >= 5 are rounded up
 
-            if GLOBAL_userDatabase?.InsertExpenseToDatabase(
-                    category: MyEnums.Categories.allCases[indexPath.item].rawValue,
-                    amount: roundedNum, date: datePicker.date) == false {}
+            
+            if (descriptionEntry?.text?.trimmingCharacters(in: .whitespaces).isEmpty)! {
+                print ("Empty!")
+            }
+            
+            if GLOBAL_userDatabase?.InsertExpenseToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: roundedNum, date: datePicker.date, description: (descriptionEntry?.text)!, notes: (notesEntry?.text)!) == false {}
         }
     }
 }
