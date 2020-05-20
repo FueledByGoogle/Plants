@@ -7,15 +7,12 @@ class CalendarView: UIViewController {
     var tableView: CalendarTableView?
     
     
-    let datePicker: MonthYearPickerView = MonthYearPickerView()
+    let datePicker: UIDatePickerMonthYear = UIDatePickerMonthYear()
     var datePickerTextField: UITextField?
     var datePickerButton: UIButton?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        self.view.backgroundColor = .black
         
         setupDatePicker()
         
@@ -33,6 +30,18 @@ class CalendarView: UIViewController {
         tableView?.viewDidLoad()
         
         collectionView?.calendarTableView = tableView // "pass" table view to collection view
+        
+        
+        
+        
+        if #available(iOS 13.0, *) {
+            self.view.backgroundColor = UIColor.systemGray6
+            collectionView?.backgroundColor = UIColor.clear
+            tableView?.backgroundColor = UIColor.systemGray5
+            self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
+        } else {
+            // Fallback on earlier versions
+        }
         
         self.view.addSubview(collectionView!)
         self.view.addSubview(tableView!)
@@ -59,10 +68,14 @@ class CalendarView: UIViewController {
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
         datePickerTextField!.text = formatter.string(from: Date())
-        datePickerTextField?.textColor = .white
         datePickerTextField?.font = .boldSystemFont(ofSize: 18)
-
+        if #available(iOS 13.0, *) { // colors
+            datePickerTextField?.textColor = UIColor.label
+        } else {
+            // Fallback on earlier versions
+        }
         self.navigationController?.navigationBar.addSubview(datePickerTextField!)
+
 
         // Toolbar
         let datePickerToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)) // Height has to be 44 or greater?

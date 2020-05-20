@@ -1,6 +1,6 @@
 import UIKit
 
-class ExpensesCVCCell: UICollectionViewCell {
+class ChartsCVCCell: UICollectionViewCell {
     
     
     let label = UILabel()
@@ -21,7 +21,7 @@ class ExpensesCVCCell: UICollectionViewCell {
     /// Add label views [Call this AFTER setting indexPathNum and percentage variables]
     func addViewsWithUpdatedProperties()
     {
-        label.textColor = UIColor(rgb: PieChartEnums.Colours.allCases[indexPathNum].rawValue)
+        label.textColor = UIColor(rgb: CategoryColourEnum.Colours.allCases[indexPathNum].rawValue)
         
         self.addSubview(totalLabel)
         self.addSubview(label)
@@ -30,12 +30,13 @@ class ExpensesCVCCell: UICollectionViewCell {
     
     func setUpDefaultColors()
     {
-        totalLabel.textColor = .black
+        if #available(iOS 13.0, *) { // Colors
+            totalLabel.textColor = UIColor.label
+        } else {
+            // Fallback on earlier versions
+        }
         
-        totalLabel.backgroundColor = .red
-        label.backgroundColor = .white
         self.backgroundColor = .clear
-        
     }
     
     

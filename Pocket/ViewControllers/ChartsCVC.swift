@@ -15,24 +15,21 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     var firstLoad = true // Used to prevent loading view again on first load
     var lastSelectedButton = Date.DateTimeInterval.Day
     
-    
     // Button colours
     let buttonBorderColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue).cgColor
     let buttonUnselectedColour = UIColor(rgb: MyEnums.Colours.ORANGE_MANDARIN.rawValue)
     let buttonSelectedColour = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
     
-    
     // Data
     var categories: [String] = []
     var categoryTotal: [CGFloat] = []
     
+    let segmentedControl = UISegmentedControl(items: ["Day" , "Week", "Month", "Year"])
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
-        self.collectionView.backgroundColor = UIColor(rgb: 0xe8e8e8)
-        self.collectionView?.register(ExpensesCVCCell.self, forCellWithReuseIdentifier: cellId)
+        
+        self.collectionView?.register(ChartsCVCCell.self, forCellWithReuseIdentifier: cellId)
         
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         
@@ -43,6 +40,16 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
+        
+        if #available(iOS 13.0, *) {
+            self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
+            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.label]
+            self.view.backgroundColor = UIColor.systemGray6
+            pieView?.backgroundColor = UIColor.clear
+            self.collectionView.backgroundColor = UIColor.clear
+        } else {
+            // Fallback on earlier versions
+        }
     }
 
     
@@ -57,19 +64,32 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     
     
     func setupDayFilterButtons() {
-        
-        let filters = ["Day" , "Week", "Month", "Year"]
-        let segmentedControl = UISegmentedControl(items: filters)
         segmentedControl.center = (self.navigationController?.navigationBar.center)!
         segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(self.changeDayFilter(_:)), for: .valueChanged)
         segmentedControl.layer.cornerRadius = 5.0
         
-        segmentedControl.backgroundColor = UIColor(rgb: 0xFFA302)
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
-        segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)], for: .selected)
+        
+        if #available(iOS 13.0, *) {
+            segmentedControl.backgroundColor = UIColor.systemGray5
+            segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.label], for: .normal)
+//            segmentedControl.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)], for: .selected) // selected text color
+        } else {
+        }
         
         self.navigationController?.navigationBar.addSubview(segmentedControl)
+    }
+    
+    
+    /// Setup pie chart view
+    func setupPieView() {
+       pieView = PieChart(
+           frame: CGRect(x: 0, y: cumulativeYOffset,
+                         width: self.view.frame.width, height: self.view.frame.height * 0.35),
+           categories: categories,
+           categoryTotal: categoryTotal)
+       cumulativeYOffset += pieView!.frame.height
+       self.view.addSubview(pieView!)
     }
     
     
@@ -106,18 +126,6 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     }
     
     
-    /// Setup pie chart view
-    func setupPieView() {
-       pieView = PieChart(
-           frame: CGRect(x: 0, y: cumulativeYOffset,
-                         width: self.view.frame.width, height: self.view.frame.height * 0.35),
-           categories: categories,
-           categoryTotal: categoryTotal)
-       pieView!.backgroundColor = UIColor.white
-       cumulativeYOffset += pieView!.frame.height
-       self.view.addSubview(pieView!)
-    }
-    
     
     /// number of cells
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -128,7 +136,7 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     /// what each cell is going to display
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ExpensesCVCCell
+        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! ChartsCVCCell
         
         cell.indexPathNum = indexPath.row
         

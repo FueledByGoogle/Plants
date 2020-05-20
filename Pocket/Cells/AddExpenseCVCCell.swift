@@ -5,7 +5,10 @@ class AddExpenseCVCCell: UICollectionViewCell {
     //    let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
     let label: UILabel = {
         let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = UIColor.black
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
     
@@ -13,8 +16,6 @@ class AddExpenseCVCCell: UICollectionViewCell {
         super.init(frame: frame)
         
         self.addSubview(label)
-        label.textAlignment = .center
-        
         setUpContraints()
     }
     

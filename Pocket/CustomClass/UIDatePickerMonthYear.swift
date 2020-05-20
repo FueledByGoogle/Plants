@@ -3,7 +3,7 @@
 // By default, it selects the current month (localized translation based on current locale) and year and shows up to 15 years in the future
 import UIKit
 
-class MonthYearPickerView: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource {
+class UIDatePickerMonthYear: UIPickerView, UIPickerViewDelegate, UIPickerViewDataSource {
     
     var months: [String]!
     var years: [Int]!

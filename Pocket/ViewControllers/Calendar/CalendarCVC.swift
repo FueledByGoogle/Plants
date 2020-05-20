@@ -27,7 +27,6 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self
-        self.backgroundColor =  UIColor.white
         self.register(CalendarCVCCalendarCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         cellWidth = self.frame.width/7
         
@@ -36,6 +35,8 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY"
         selectedYear = dateFormatter.string(from: startDate)
+        
+        
     }
     
     
@@ -66,32 +67,36 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCalendarCell
-//        cell.backgroundColor = UIColor.purple
-        
         
         cell.layer.borderWidth = 0.1
         cell.label.text = String(indexPath.row+1)
         cell.date = indexPath.row+1
         
-        // Needed so we when cells are reused we still highlight the correct cell
-        if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue) {
-            cell.backgroundColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
-        } else if cell.backgroundColor != UIColor.white{
-            cell.backgroundColor = .white
+        if #available(iOS 13.0, *) { // Needed so we when cells are reused we still highlight the correct cell
+            if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue) {
+                cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
+            } else if cell.backgroundColor != UIColor.systemGray6{
+                cell.backgroundColor = UIColor.systemGray6
+            }
+        } else {
+            if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue) {
+               cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
+            } else if cell.backgroundColor != UIColor.white{
+               cell.backgroundColor = .white
+            }
         }
         
-        // hide cell if it is not in the current month
+        // Hide cell if it is not in the current month
         if (indexPath.row+1 > setNumOfDays) {
             cell.isHidden = true
         } else {
             cell.isHidden = false
         }
-
         return cell
     }
     
     
-    /// what a specific cell's size should be
+    /// What a specific cell's size should be
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if indexPath.section == 0 {
@@ -104,7 +109,8 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
-            cell.backgroundColor = UIColor(rgb: 0xF4AA00)
+            cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
+            cell.label.textColor = UIColor.white
             lastSelected = indexPath
             
             // Specify date components
@@ -122,7 +128,13 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
-            cell.backgroundColor = UIColor.white
+            if #available(iOS 13.0, *) {
+                cell.label.textColor = UIColor.label
+                cell.backgroundColor = UIColor.systemGray6
+            } else {
+                cell.label.textColor = UIColor.black
+                cell.backgroundColor = UIColor.white
+            }
         }
     }
 }

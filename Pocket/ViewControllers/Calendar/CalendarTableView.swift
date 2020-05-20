@@ -19,7 +19,6 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self
-        self.backgroundColor = .orange
         self.register(CalendarTVCell.self, forCellReuseIdentifier: cellId)
     }
     
@@ -46,16 +45,22 @@ class CalendarTableView: UITableView, UITableViewDataSource, UITableViewDelegate
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
         cell.rowId = expenseRowId[indexPath.row]
-        cell.name.text = expenseName[indexPath.row]
-        cell.category.text = expenseCategory[indexPath.row]
+        cell.categoryAndName.text = expenseCategory[indexPath.row] + ": " + expenseName[indexPath.row]
         cell.notes.text = expenseNotes[indexPath.row]
         cell.amount.text = expenseAmount[indexPath.row].description
+        if #available(iOS 13.0, *) {
+            cell.backgroundColor = UIColor.systemGray6
+        } else {
+            // Fallback on earlier versions
+        }
+        
+//        cell.backgroundColor = .blue
         return cell
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 50
+        return 65
     }
 
     

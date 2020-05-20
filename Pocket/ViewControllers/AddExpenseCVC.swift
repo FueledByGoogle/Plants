@@ -2,12 +2,6 @@ import UIKit
 import SQLite3
 
 
-/*
-    TODO:
-    - Convert all time format up to seconds
-    - Disable pasting
-    - Prevent loading if global user databse is not initialize correctly
-*/
 
 var GLOBAL_userDatabase: Database?
 
@@ -24,36 +18,42 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
     
     let datePicker: UIDatePicker = UIDatePicker()
-    var datePickerTextField: UITextField?
+    var dateEntry: UITextField?
     var datePickerButton: UIButton?
     var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: MyEnums.Colours.ORANGE_Dark.rawValue)
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.white]
+        // Initialize database
+               GLOBAL_userDatabase = Database.init()
+        
+        
+       
+        
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
         self.navigationController?.setToolbarHidden(true, animated: true)
-//        self.navigationController?.navigationBar.isHidden = true
-        
-        self.collectionView.backgroundColor =  .white  // If background color is not set application may lag between transitions
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
         // Dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
-        
-        // Initialize database
-        GLOBAL_userDatabase = Database.init()
-        
         // View setup
         cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         setupExpenseDataEntry()
         
         // Layout
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: (datePickerTextField?.frame.maxY)!, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: (dateEntry?.frame.maxY)!, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
+        
+        // Colors
+        if #available(iOS 13.0, *) {
+            self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
+            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.label]
+            self.collectionView.backgroundColor =  UIColor.systemGray6
+        } else {
+           // Fallback on earlier versions
+        }
     }
     
     
@@ -121,8 +121,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
         
         
-        
-        // Label
+        // Date label
         let dateLabel = UILabel(frame: CGRect(x: 0,
                                               y: notesLabel.frame.maxY,
                                               width: descriptionLabel.frame.width,
@@ -131,18 +130,18 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         dateLabel.textAlignment = .center
         expenseEntry?.addSubview(dateLabel)
         // Text field
-        datePickerTextField = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
+        dateEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
                                                         y:  notesLabel.frame.maxY,
                                                         width: (descriptionEntry?.frame.width)!,
                                                         height: descriptionLabel.frame.height))
-        datePickerTextField!.textAlignment = .center
-        datePickerTextField!.inputView = datePicker
+        dateEntry!.textAlignment = .center
+        dateEntry!.inputView = datePicker
         
         // Format initial display date
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
-        datePickerTextField!.text = formatter.string(from: Date())
-        expenseEntry?.addSubview(datePickerTextField!)
+        dateEntry!.text = formatter.string(from: Date())
+        expenseEntry?.addSubview(dateEntry!)
         
         
         // Toolbar
@@ -154,7 +153,16 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         datePickerToolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
         datePickerToolBar.sizeToFit()
         // Add toolbar to datepicker keyboard
-        datePickerTextField!.inputAccessoryView = datePickerToolBar
+        dateEntry!.inputAccessoryView = datePickerToolBar
+        
+        
+        // Colors
+        if #available(iOS 13.0, *) {
+            descriptionEntry?.textColor = UIColor.systemGray
+            notesEntry?.textColor = UIColor.systemGray
+        } else {
+            // Fallback on earlier versions
+        }
     }
     
     
@@ -162,7 +170,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     @objc func doneDatePicker(){
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
-        datePickerTextField!.text = formatter.string(from: datePicker.date)
+        dateEntry!.text = formatter.string(from: datePicker.date)
         dateUTC = datePicker.date
         // Dismiss date picker dialog
         self.view.endEditing(true)
@@ -186,7 +194,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
-        cell.backgroundColor = .cyan
+        cell.backgroundColor = UIColor(rgb: CategoryColourEnum.Colours.allCases[indexPath.row].rawValue)
         cell.label.text = MyEnums.Categories.allCases[indexPath.item].rawValue
 
         return cell
@@ -220,11 +228,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
                 return
             }
             let roundedNum = String(round(100*num)/100) // Round to two decimal places, >= 5 are rounded up
-
-            
-            if (descriptionEntry?.text?.trimmingCharacters(in: .whitespaces).isEmpty)! {
-                print ("Empty!")
-            }
             
             if GLOBAL_userDatabase?.InsertExpenseToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: roundedNum, date: datePicker.date, description: (descriptionEntry?.text)!, notes: (notesEntry?.text)!) == false {}
         }

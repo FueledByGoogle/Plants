@@ -5,6 +5,8 @@ An IOS app to track your daily expenses. All UI designed programmatically rather
 
 ## Current Work In Progress:
 
+- Consistent colour association with all colors across all views
+- Edit an existing entry from calendar view
 - Choose custom date for pie view
 - Draw my own UI icons 
 
@@ -15,6 +17,8 @@ An IOS app to track your daily expenses. All UI designed programmatically rather
 - User can choose a date, amount, to enter into database
 - Custom pie chart drawn from data that dynamically assigns a colour to a category, and displayed along with a chart legend.
 - Update pie chart view based on filter of current day, week, month, or year.
+- Consistent dark/light mode colour switching
+
 
 
 

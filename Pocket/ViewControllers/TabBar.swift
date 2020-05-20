@@ -28,8 +28,6 @@ class TabBar: UITabBarController {
         chartsNavcontroller.tabBarItem.title = MyEnums.TabNames.Charts.rawValue
         
         
-        
-        
         if #available(iOS 13.0, *) {
             calendarViewController.tabBarItem.image = UIImage(systemName: "calendar")
             addExpenseNavController.tabBarItem.image = UIImage(systemName: "plus")
@@ -38,8 +36,7 @@ class TabBar: UITabBarController {
             // Fallback on earlier versions
         }
         
-        
         viewControllers = [calendarViewController, addExpenseNavController, chartsNavcontroller]
-        self.tabBar.tintColor = UIColor(rgb: MyEnums.Colours.ORANGE_PUMPKIN.rawValue)
+        self.tabBar.tintColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
     }
 }
