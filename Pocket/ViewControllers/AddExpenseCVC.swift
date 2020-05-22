@@ -15,7 +15,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     var notesEntry: UITextField?
     
     // Used for the Y position of each view section e.g. expense entry -> expense date -> collection view cell begin
-    var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
+    var cumulativeYOffset = CGFloat(0)
     
     let datePicker: UIDatePicker = UIDatePicker()
     var dateEntry: UITextField?
@@ -25,12 +25,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Initialize database
-               GLOBAL_userDatabase = Database.init()
-        
-        
-       
-        
+        GLOBAL_userDatabase = Database.init()
+        self.edgesForExtendedLayout = [] // So our content always appears below navigation bar
         self.navigationItem.title = MyEnums.TabNames.AddExpense.rawValue
         self.navigationController?.setToolbarHidden(true, animated: true)
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
@@ -38,12 +34,11 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         // Dismiss keyboard upon touching outside the keyboard
         self.setupToHideKeyboardOnTapOnView()
         // View setup
-        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
         setupExpenseDataEntry()
         
         // Layout
         let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: (dateEntry?.frame.maxY)!, left: 0, bottom: 0, right: 0)
+        layout.sectionInset = UIEdgeInsets(top: ((dateEntry?.frame.maxY)!+5.0), left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
         
         // Colors
@@ -60,7 +55,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     /// Sets up expense amount views
     func setupExpenseDataEntry() {
-        expenseEntry =  UIView(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: self.view.frame.height * 0.30))
+        expenseEntry =  UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height * 0.30))
         cumulativeYOffset += (expenseEntry?.frame.height)!
         self.view.addSubview(expenseEntry!)
         

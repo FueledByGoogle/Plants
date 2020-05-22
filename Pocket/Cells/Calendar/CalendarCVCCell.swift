@@ -1,6 +1,6 @@
 import UIKit
 
-class CalendarCVCCalendarCell: UICollectionViewCell {
+class CalendarCVCCell: UICollectionViewCell {
     
     //    let nameLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 30))
     let label: UILabel = {

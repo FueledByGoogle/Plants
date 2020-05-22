@@ -5,10 +5,13 @@ An IOS app to track your daily expenses. All UI designed programmatically rather
 
 ## Current Work In Progress:
 
-- Consistent colour association with all colors across all views
 - Edit an existing entry from calendar view
 - Choose custom date for pie view
 - Draw my own UI icons 
+
+## Bugs
+
+- Highlighted calendar cell text colour not reverting back correctly upon switching to another month while date picker tool is up
 
 
 ## Currently Completed: 

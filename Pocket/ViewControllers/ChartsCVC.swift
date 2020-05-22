@@ -10,7 +10,6 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     var pieView : PieChart?
     
     // As each view is added add on its height to the offset so next created view will always be below the previous view when using this offset
-    var cumulativeYOffset = UIApplication.shared.statusBarFrame.height
     
     var firstLoad = true // Used to prevent loading view again on first load
     var lastSelectedButton = Date.DateTimeInterval.Day
@@ -28,10 +27,8 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         self.collectionView?.register(ChartsCVCCell.self, forCellWithReuseIdentifier: cellId)
-        
-        cumulativeYOffset += self.navigationController!.navigationBar.frame.height
+        self.edgesForExtendedLayout = [] // So our content always appears below navigation bar
         
         setupPieView()
         setupDayFilterButtons()
@@ -41,15 +38,12 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         layout.sectionInset = UIEdgeInsets(top: pieView!.frame.height, left: 0, bottom: 0, right: 0)
         self.collectionView.setCollectionViewLayout(layout, animated: false)
         
-        if #available(iOS 13.0, *) {
-            self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
-            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.label]
-            self.view.backgroundColor = UIColor.systemGray6
-            pieView?.backgroundColor = UIColor.clear
-            self.collectionView.backgroundColor = UIColor.clear
-        } else {
-            // Fallback on earlier versions
-        }
+        // Colors
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.label]
+        self.view.backgroundColor = UIColor.systemGray6
+        pieView?.backgroundColor = UIColor.clear
+        self.collectionView.backgroundColor = UIColor.clear
     }
 
     
@@ -84,11 +78,10 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     /// Setup pie chart view
     func setupPieView() {
        pieView = PieChart(
-           frame: CGRect(x: 0, y: cumulativeYOffset,
+           frame: CGRect(x: 0, y: 0,
                          width: self.view.frame.width, height: self.view.frame.height * 0.35),
            categories: categories,
            categoryTotal: categoryTotal)
-       cumulativeYOffset += pieView!.frame.height
        self.view.addSubview(pieView!)
     }
     

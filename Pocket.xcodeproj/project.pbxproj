@@ -11,16 +11,18 @@
 		020C4ADB24374B1D000DCC58 /* UIDatePickerMonthYear.swift in Sources */ = {isa = PBXBuildFile; fileRef = 020C4ADA24374B1D000DCC58 /* UIDatePickerMonthYear.swift */; };
 		021964B72094333F009A43A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964B62094333F009A43A6 /* AppDelegate.swift */; };
 		021964BE2094333F009A43A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 021964BD2094333F009A43A6 /* Assets.xcassets */; };
+		021ABB72247785D000B20F81 /* CalendarEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021ABB71247785D000B20F81 /* CalendarEdit.swift */; };
+		021ABB7524779C5700B20F81 /* CalendarEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021ABB7424779C5700B20F81 /* CalendarEditCell.swift */; };
+		021ABB77247890EB00B20F81 /* ExtensionUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021ABB76247890EB00B20F81 /* ExtensionUITableViewCell.swift */; };
 		02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DBC231B32DC00FAAFC4 /* MyEnums.swift */; };
 		02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC5231C69B200FAAFC4 /* PieChart.swift */; };
 		02202DC7231C69B200FAAFC4 /* ChartsCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */; };
 		022047912100C181002F6E9B /* DSC_1336.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 022047902100C181002F6E9B /* DSC_1336.JPG */; };
-		022047972100CF26002F6E9B /* MyExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 022047962100CF26002F6E9B /* MyExtensions.swift */; };
 		0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0220479B2100EB96002F6E9B /* SearchVc.swift */; };
 		02235A4A231AF6550005B9AC /* IMG_9671.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A49231AF6550005B9AC /* IMG_9671.jpg */; };
 		0232D92E238F5A710023BFA8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232D92D238F5A710023BFA8 /* Database.swift */; };
 		024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B265F23B3F8E900DE1584 /* CalendarCVC.swift */; };
-		024B266223B45E0500DE1584 /* CalendarCVCCalendarCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCalendarCell.swift */; };
+		024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCell.swift */; };
 		024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E34FB23DB71260059AA0A /* CalendarView.swift */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
 		02671EA12409AEF10074AF8C /* CalendarTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02671EA02409AEF10074AF8C /* CalendarTVCell.swift */; };
@@ -35,10 +37,10 @@
 		02F2590D23CD053000167904 /* ExtensionDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2590C23CD053000167904 /* ExtensionDate.swift */; };
 		02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2590F23CD057E00167904 /* ExtensionUIImage.swift */; };
 		02F2591223CD059600167904 /* ExtensionUIButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591123CD059600167904 /* ExtensionUIButton.swift */; };
-		02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591323CD05C000167904 /* ExtensionViewController.swift */; };
+		02F2591423CD05C000167904 /* ExtensionUIViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591323CD05C000167904 /* ExtensionUIViewController.swift */; };
 		02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591523CD05D300167904 /* ExtensionUIColor.swift */; };
 		02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F2591723CD05ED00167904 /* ExtensionString.swift */; };
-		02F8515823F72F1F0059743E /* CalendarTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F8515723F72F1F0059743E /* CalendarTableView.swift */; };
+		02F8515823F72F1F0059743E /* CalendarTV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02F8515723F72F1F0059743E /* CalendarTV.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,16 +54,18 @@
 		021964CD2094333F009A43A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		021964D62094333F009A43A6 /* PocketUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketUITests.swift; sourceTree = "<group>"; };
 		021964D82094333F009A43A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		021ABB71247785D000B20F81 /* CalendarEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEdit.swift; sourceTree = "<group>"; };
+		021ABB7424779C5700B20F81 /* CalendarEditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEditCell.swift; sourceTree = "<group>"; };
+		021ABB76247890EB00B20F81 /* ExtensionUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUITableViewCell.swift; sourceTree = "<group>"; };
 		02202DBC231B32DC00FAAFC4 /* MyEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnums.swift; sourceTree = "<group>"; };
 		02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsCVC.swift; sourceTree = "<group>"; };
 		02202DC5231C69B200FAAFC4 /* PieChart.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieChart.swift; sourceTree = "<group>"; };
 		022047902100C181002F6E9B /* DSC_1336.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DSC_1336.JPG; sourceTree = "<group>"; };
-		022047962100CF26002F6E9B /* MyExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyExtensions.swift; sourceTree = "<group>"; };
 		0220479B2100EB96002F6E9B /* SearchVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVc.swift; sourceTree = "<group>"; };
 		02235A49231AF6550005B9AC /* IMG_9671.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9671.jpg; sourceTree = "<group>"; };
 		0232D92D238F5A710023BFA8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		024B265F23B3F8E900DE1584 /* CalendarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVC.swift; sourceTree = "<group>"; };
-		024B266123B45E0500DE1584 /* CalendarCVCCalendarCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCalendarCell.swift; sourceTree = "<group>"; };
+		024B266123B45E0500DE1584 /* CalendarCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCell.swift; sourceTree = "<group>"; };
 		024E34FB23DB71260059AA0A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
 		02671EA02409AEF10074AF8C /* CalendarTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTVCell.swift; sourceTree = "<group>"; };
@@ -76,10 +80,10 @@
 		02F2590C23CD053000167904 /* ExtensionDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDate.swift; sourceTree = "<group>"; };
 		02F2590F23CD057E00167904 /* ExtensionUIImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIImage.swift; sourceTree = "<group>"; };
 		02F2591123CD059600167904 /* ExtensionUIButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIButton.swift; sourceTree = "<group>"; };
-		02F2591323CD05C000167904 /* ExtensionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionViewController.swift; sourceTree = "<group>"; };
+		02F2591323CD05C000167904 /* ExtensionUIViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIViewController.swift; sourceTree = "<group>"; };
 		02F2591523CD05D300167904 /* ExtensionUIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUIColor.swift; sourceTree = "<group>"; };
 		02F2591723CD05ED00167904 /* ExtensionString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionString.swift; sourceTree = "<group>"; };
-		02F8515723F72F1F0059743E /* CalendarTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTableView.swift; sourceTree = "<group>"; };
+		02F8515723F72F1F0059743E /* CalendarTV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarTV.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -148,6 +152,16 @@
 			path = PocketUITests;
 			sourceTree = "<group>";
 		};
+		021ABB7324779C3000B20F81 /* Calendar */ = {
+			isa = PBXGroup;
+			children = (
+				024B266123B45E0500DE1584 /* CalendarCVCCell.swift */,
+				02671EA02409AEF10074AF8C /* CalendarTVCell.swift */,
+				021ABB7424779C5700B20F81 /* CalendarEditCell.swift */,
+			);
+			path = Calendar;
+			sourceTree = "<group>";
+		};
 		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -172,8 +186,7 @@
 		02886EE42352B7D8006F7B8D /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				024B266123B45E0500DE1584 /* CalendarCVCCalendarCell.swift */,
-				02671EA02409AEF10074AF8C /* CalendarTVCell.swift */,
+				021ABB7324779C3000B20F81 /* Calendar */,
 				02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */,
 				02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */,
 			);
@@ -194,7 +207,8 @@
 			children = (
 				024E34FB23DB71260059AA0A /* CalendarView.swift */,
 				024B265F23B3F8E900DE1584 /* CalendarCVC.swift */,
-				02F8515723F72F1F0059743E /* CalendarTableView.swift */,
+				02F8515723F72F1F0059743E /* CalendarTV.swift */,
+				021ABB71247785D000B20F81 /* CalendarEdit.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -213,14 +227,14 @@
 		02F2590E23CD055700167904 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				022047962100CF26002F6E9B /* MyExtensions.swift */,
 				02F2590C23CD053000167904 /* ExtensionDate.swift */,
 				02F2591123CD059600167904 /* ExtensionUIButton.swift */,
 				02F2591523CD05D300167904 /* ExtensionUIColor.swift */,
 				02F2590F23CD057E00167904 /* ExtensionUIImage.swift */,
 				02F2591723CD05ED00167904 /* ExtensionString.swift */,
-				02F2591323CD05C000167904 /* ExtensionViewController.swift */,
+				02F2591323CD05C000167904 /* ExtensionUIViewController.swift */,
 				02AB81C924708FCA009588C2 /* ExtensionUITextField.swift */,
+				021ABB76247890EB00B20F81 /* ExtensionUITableViewCell.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -306,21 +320,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				02202DC7231C69B200FAAFC4 /* ChartsCVC.swift in Sources */,
+				021ABB7524779C5700B20F81 /* CalendarEditCell.swift in Sources */,
 				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
 				024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */,
-				02F2591423CD05C000167904 /* ExtensionViewController.swift in Sources */,
+				02F2591423CD05C000167904 /* ExtensionUIViewController.swift in Sources */,
 				02671EA12409AEF10074AF8C /* CalendarTVCell.swift in Sources */,
 				02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */,
 				020C4ADB24374B1D000DCC58 /* UIDatePickerMonthYear.swift in Sources */,
-				024B266223B45E0500DE1584 /* CalendarCVCCalendarCell.swift in Sources */,
+				024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */,
 				02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */,
 				024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
 				02F2591223CD059600167904 /* ExtensionUIButton.swift in Sources */,
-				022047972100CF26002F6E9B /* MyExtensions.swift in Sources */,
+				021ABB72247785D000B20F81 /* CalendarEdit.swift in Sources */,
 				02AB81CA24708FCA009588C2 /* ExtensionUITextField.swift in Sources */,
 				02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */,
 				02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */,
+				021ABB77247890EB00B20F81 /* ExtensionUITableViewCell.swift in Sources */,
 				027248DD238F42C1003A23E9 /* DatabaseEnums.swift in Sources */,
 				0232D92E238F5A710023BFA8 /* Database.swift in Sources */,
 				02F2590D23CD053000167904 /* ExtensionDate.swift in Sources */,
@@ -330,7 +346,7 @@
 				021964B72094333F009A43A6 /* AppDelegate.swift in Sources */,
 				02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */,
 				0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */,
-				02F8515823F72F1F0059743E /* CalendarTableView.swift in Sources */,
+				02F8515823F72F1F0059743E /* CalendarTV.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -456,7 +472,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = "$(SRCROOT)/Pocket/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Assets.Pocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -474,7 +490,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = J9V5NC69NK;
 				INFOPLIST_FILE = "$(SRCROOT)/Pocket/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Assets.Pocket;
 				PRODUCT_NAME = "$(TARGET_NAME)";

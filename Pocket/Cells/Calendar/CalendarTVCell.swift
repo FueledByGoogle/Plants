@@ -37,6 +37,7 @@ class CalendarTVCell: UITableViewCell {
         self.addSubview(amount)
     }
     
+    
     // We must set frame size here because if we set frame size during init the width has not been set yet to be the table view cell width, so we would get an incorrect width and height value
     override func layoutSubviews() {
         categoryAndName.frame = CGRect(x: 5, y: 0, width: self.frame.width*0.8-5, height: self.frame.height*0.4)

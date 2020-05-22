@@ -11,23 +11,27 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     var cellWidth = CGFloat(50)
     let cellReuseIdentifier = "cellId"
     
+    let cellDefaultBackgroundColor = UIColor.systemGray6
+    
     // List Data
     var entryCategory: [String] = []
     var entryAmount: [CGFloat] = []
     
-    var calendarTableView: CalendarTableView? // Used to update table view
+    var calendarTableView: CalendarTV? // Used to update table view
     
     // Selection properties
-    var lastSelected: IndexPath? // Used to highlight last selected cell
+    var lastSelected: IndexPath = IndexPath(row: 0, section: 0) // Used to highlight last selected cell
     var selectedDate = Date.formatDateAndTimezone(date: Date(), dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
     var selectedYear = ""
     var selectedMonth = Date.findMonthAsNum(date: Date())
+
     var setNumOfDays = Date.findNumOfDaysInMonth(date: Date()) // Used to see which cells need to be hidden
     
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self
-        self.register(CalendarCVCCalendarCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        self.register(CalendarCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
+        self.backgroundColor = UIColor.clear
         cellWidth = self.frame.width/7
         
         // set selected year
@@ -51,7 +55,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         }
         else {
             // Must reselect when coming back from view, otherwise after returning from another clicking another cell will not clear the last selected cell
-            self.collectionView(self, didSelectItemAt: lastSelected!)
+            self.collectionView(self, didSelectItemAt: lastSelected)
             self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
         }
     }
@@ -66,24 +70,15 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     /// what each cell is going to display
     func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
-        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCalendarCell
+        let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! CalendarCVCCell
         
-        cell.layer.borderWidth = 0.1
         cell.label.text = String(indexPath.row+1)
         cell.date = indexPath.row+1
         
-        if #available(iOS 13.0, *) { // Needed so we when cells are reused we still highlight the correct cell
-            if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue) {
-                cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
-            } else if cell.backgroundColor != UIColor.systemGray6{
-                cell.backgroundColor = UIColor.systemGray6
-            }
-        } else {
-            if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue) {
-               cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
-            } else if cell.backgroundColor != UIColor.white{
-               cell.backgroundColor = .white
-            }
+        if cell.isSelected && cell.backgroundColor != UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue) {
+            cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
+        } else if cell.backgroundColor != cellDefaultBackgroundColor {
+            cell.backgroundColor = cellDefaultBackgroundColor
         }
         
         // Hide cell if it is not in the current month
@@ -92,6 +87,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         } else {
             cell.isHidden = false
         }
+        
         return cell
     }
     
@@ -108,7 +104,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
+        if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
             cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
             cell.label.textColor = UIColor.white
             lastSelected = indexPath
@@ -127,14 +123,9 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
 
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCalendarCell {
-            if #available(iOS 13.0, *) {
-                cell.label.textColor = UIColor.label
-                cell.backgroundColor = UIColor.systemGray6
-            } else {
-                cell.label.textColor = UIColor.black
-                cell.backgroundColor = UIColor.white
-            }
+        if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
+            cell.label.textColor = UIColor.label
+            cell.backgroundColor = cellDefaultBackgroundColor
         }
     }
 }

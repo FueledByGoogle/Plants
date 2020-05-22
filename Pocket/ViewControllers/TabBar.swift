@@ -18,6 +18,7 @@ class TabBar: UITabBarController {
         let calendarView = CalendarView()
         let calendarViewController = UINavigationController(rootViewController: calendarView)
         calendarViewController.tabBarItem.title = MyEnums.TabNames.Calendar.rawValue
+//        calendarViewController.navigationBar.isHidden = true
         
         let addExpenseController = AddExpenseCVC(collectionViewLayout: layout)
         let addExpenseNavController = UINavigationController(rootViewController: addExpenseController)
@@ -27,16 +28,14 @@ class TabBar: UITabBarController {
         let chartsNavcontroller = UINavigationController(rootViewController: charts)
         chartsNavcontroller.tabBarItem.title = MyEnums.TabNames.Charts.rawValue
         
+        // Colors
+        calendarViewController.tabBarItem.image = UIImage(systemName: "calendar")
+        addExpenseNavController.tabBarItem.image = UIImage(systemName: "plus")
+        chartsNavcontroller.tabBarItem.image = UIImage(systemName: "chart.pie")
         
-        if #available(iOS 13.0, *) {
-            calendarViewController.tabBarItem.image = UIImage(systemName: "calendar")
-            addExpenseNavController.tabBarItem.image = UIImage(systemName: "plus")
-            chartsNavcontroller.tabBarItem.image = UIImage(systemName: "chart.pie")
-        } else {
-            // Fallback on earlier versions
-        }
         
         viewControllers = [calendarViewController, addExpenseNavController, chartsNavcontroller]
-        self.tabBar.tintColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
+        self.tabBar.tintColor = UIColor.label
+        self.tabBar.barTintColor = UIColor.systemGray6
     }
 }

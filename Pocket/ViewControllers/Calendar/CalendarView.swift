@@ -4,79 +4,70 @@ import UIKit
 class CalendarView: UIViewController {
     
     var collectionView: CalendarCVC?
-    var tableView: CalendarTableView?
-    
+    var tableView: CalendarTV?
     
     let datePicker: UIDatePickerMonthYear = UIDatePickerMonthYear()
     var datePickerTextField: UITextField?
     var datePickerButton: UIButton?
     
+    var cumulativeYOffset = CGFloat(0) // used to place one view after another
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.navigationItem.title = MyEnums.TabNames.Calendar.rawValue
+        self.view.backgroundColor = .black
         
+        calculateInitialOffset()
         setupDatePicker()
+        setupCollectionView()
+        setupTableView()
         
-        let layout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        layout.minimumInteritemSpacing = 0
-        layout.minimumLineSpacing = 0
-        
-        // Collection view setup
-        collectionView = CalendarCVC(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.width/7*5 + self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height), collectionViewLayout: layout)
-        collectionView!.viewDidLoad()
-        collectionView!.setCollectionViewLayout(layout, animated: false)
-        // Table view setup
-        tableView = CalendarTableView(frame: CGRect(x: 0, y: collectionView!.frame.maxY + 1, width: self.view.frame.width, height: self.view.frame.height - collectionView!.frame.height - self.navigationController!.navigationBar.frame.height + UIApplication.shared.statusBarFrame.height))
-        tableView?.viewDidLoad()
-        
-        collectionView?.calendarTableView = tableView // "pass" table view to collection view
-        
-        
-        
-        
-        if #available(iOS 13.0, *) {
-            self.view.backgroundColor = UIColor.systemGray6
-            collectionView?.backgroundColor = UIColor.clear
-            tableView?.backgroundColor = UIColor.systemGray5
-            self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        self.view.addSubview(collectionView!)
-        self.view.addSubview(tableView!)
+ 
+        // Colors
+        self.view.backgroundColor = UIColor.systemGray6
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
     }
-    
     
     override func viewDidAppear(_ animated: Bool) {
         collectionView?.viewDidAppear(true)
-        
-        // we want to tell table view to update view
+        // Tell table view to refresh data
         if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true {
             tableView?.reloadData(referenceDate: collectionView!.selectedDate)
             GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
         }
+        
+    }
+    
+    
+    func calculateInitialOffset() {
+        // Calculate offset
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        cumulativeYOffset += (window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0)
+        cumulativeYOffset += (self.navigationController?.navigationBar.frame.height)!
     }
     
     /// Sets up date picker entry views
     func setupDatePicker() {
         // Text field
-        datePickerTextField = UITextField(frame: CGRect(x: 0, y: 0, width: (self.navigationController?.navigationBar.frame.width)!, height: (self.navigationController?.navigationBar.frame.height)!))
-        datePickerTextField!.textAlignment = .center
+        let height = self.view.frame.height*0.07
+        datePickerTextField = UITextField(frame: CGRect(x: 10, y: cumulativeYOffset, width: self.view.frame.width-20, height: height))
+        datePickerTextField!.textAlignment = .left
         datePickerTextField!.inputView = datePicker
+        datePickerTextField?.addBottomBorder(cgColor: UIColor.label.cgColor, height: 1, width: (datePickerTextField?.frame.width)!)
+        
+        
+        
+        cumulativeYOffset += height // we must calculate this way because frame height is incorrect
+        
         // Format initial display date
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
         datePickerTextField!.text = formatter.string(from: Date())
         datePickerTextField?.font = .boldSystemFont(ofSize: 18)
-        if #available(iOS 13.0, *) { // colors
-            datePickerTextField?.textColor = UIColor.label
-        } else {
-            // Fallback on earlier versions
-        }
-        self.navigationController?.navigationBar.addSubview(datePickerTextField!)
-
-
+        datePickerTextField?.textColor = UIColor.label
+        self.view.addSubview(datePickerTextField!)
+        
+        
         // Toolbar
         let datePickerToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)) // Height has to be 44 or greater?
         datePickerToolBar.barStyle = UIBarStyle.default
@@ -87,8 +78,38 @@ class CalendarView: UIViewController {
         datePickerToolBar.sizeToFit()
         // Add toolbar to datepicker keyboard
         datePickerTextField!.inputAccessoryView = datePickerToolBar
-        
     }
+    
+    
+    func setupCollectionView() {
+        let layout = UICollectionViewFlowLayout()
+        layout.sectionInset = .zero
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        
+        
+        let height = self.view.frame.width/7*5
+        collectionView = CalendarCVC(frame: CGRect(x: 0, y: cumulativeYOffset+1, width: self.view.frame.width, height: height), collectionViewLayout: layout)
+        collectionView!.viewDidLoad()
+        collectionView!.setCollectionViewLayout(layout, animated: false)
+        self.view.addSubview(collectionView!)
+        
+        cumulativeYOffset += height
+    }
+    
+    
+    func setupTableView() {
+        // Used to calculate offset
+        let height = self.view.frame.height - cumulativeYOffset - (self.tabBarController?.tabBar.frame.height)!
+        
+        // Table view setup
+        tableView = CalendarTV(frame: CGRect(x: 0, y: cumulativeYOffset, width: self.view.frame.width, height: height))
+        tableView?.viewDidLoad()
+        tableView?.navigationController = self.navigationController // Used to on cell select the table view can push new view
+        collectionView?.calendarTableView = tableView // collection view triggers tableview refreshes
+        self.view.addSubview(tableView!)
+    }
+
     
     /// Date picker done button
     @objc func doneDatePicker(){
@@ -118,13 +139,13 @@ class CalendarView: UIViewController {
         }
         
         // Dismiss date picker dialog
-        self.navigationController?.navigationBar.endEditing(true)
+        self.view.endEditing(true)
     }
 
     
     /// Date picker cancle button
     @objc func cancelDatePicker(){
-        self.navigationController?.navigationBar.endEditing(true)
+        self.view.endEditing(true)
     }
     
 }
