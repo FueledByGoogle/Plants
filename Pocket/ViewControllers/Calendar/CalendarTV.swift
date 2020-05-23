@@ -11,7 +11,8 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     var expenseRowId: [Int] = []
     var expenseCategory: [String] = []
     var expenseAmount: [CGFloat] = []
-    var expenseName: [String] = []
+    var expenseEntryDate: [String] = []
+    var expenseDescription: [String] = []
     var expenseNotes: [String] = []
     
     let cellId = "TableViewcell"
@@ -32,9 +33,7 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         expenseAmount.removeAll()
         
         // Populate variables
-        (expenseCategory, expenseAmount, expenseRowId, expenseName, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
-        
-//        print(expenseName, expenseNotes)
+        (expenseCategory, expenseAmount, expenseEntryDate, expenseRowId, expenseDescription, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
         
         currentDate = Date.formatDateAndTimezoneString(date: referenceDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         self.reloadData()
@@ -53,7 +52,7 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
         cell.addBottomBorder(cgColor: UIColor.gray.cgColor, height: 1, width: cell.frame.width)
         cell.rowId = expenseRowId[indexPath.row]
-        cell.categoryAndName.text = expenseCategory[indexPath.row] + ": " + expenseName[indexPath.row]
+        cell.categoryAndName.text = expenseCategory[indexPath.row] + ": " + expenseDescription[indexPath.row]
         cell.notes.text = expenseNotes[indexPath.row]
         cell.amount.text = expenseAmount[indexPath.row].description
         cell.backgroundColor = UIColor.systemGray5
@@ -75,10 +74,11 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
             if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
                 if (GLOBAL_userDatabase?.deleteExpenseEntry(rowId: cell.rowId))! {
                     expenseRowId.remove(at: indexPath.row)
-                    expenseName.remove(at: indexPath.row)
                     expenseCategory.remove(at: indexPath.row)
-                    expenseNotes.remove(at: indexPath.row)
                     expenseAmount.remove(at: indexPath.row)
+                    expenseEntryDate.remove(at: indexPath.row)
+                    expenseDescription.remove(at: indexPath.row)
+                    expenseNotes.remove(at: indexPath.row)
                     self.deleteRows(at: [indexPath], with: .automatic)
                     
                     // Flag need to refresh

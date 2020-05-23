@@ -3,6 +3,8 @@ import UIKit
 /*
     Collection view holds current year and month.
     Then using the selected cell the three values date, month, and year is used to create the start and end date to send to query the database.
+ 
+    Collection view also triggers further table view reloads
  */
 class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
@@ -45,6 +47,14 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     
     
     func viewDidAppear(_ animated: Bool) {
+        
+        if (initialLoad == false && GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true) {
+                    self.collectionView(self, didSelectItemAt: lastSelected)
+                    self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
+            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
+        }
+        
+        
         if initialLoad == true {
             let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
             
@@ -55,9 +65,11 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         }
         else {
             // Must reselect when coming back from view, otherwise after returning from another clicking another cell will not clear the last selected cell
-            self.collectionView(self, didSelectItemAt: lastSelected)
-            self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
+//            self.collectionView(self, didSelectItemAt: lastSelected)
+//            self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
         }
+        
+
     }
     
     
@@ -117,6 +129,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             dateComponents.timeZone = TimeZone.current
             
             selectedDate = Calendar.current.date(from: dateComponents)!
+            
             calendarTableView?.reloadData(referenceDate: selectedDate) // refresh table view
         }
     }

@@ -194,7 +194,7 @@ class Database {
     
     
     /// Returns all expenses from beginning to the end of a day
-    func loadExpensesOnDay(referenceDate: Date) -> ([String], [CGFloat], [Int], [String], [String]) {
+    func loadExpensesOnDay(referenceDate: Date) -> ([String], [CGFloat], [String], [Int], [String], [String]) {
         
         
         let (startingDate, endingDate) = Date.getStartEndDatesString(referenceDate: referenceDate, timeInterval: .Day)
@@ -202,26 +202,27 @@ class Database {
         var rowId: [Int] = []
         var category: [String] = []
         var categoryAmount: [CGFloat] = []
+        var entryDate: [String] = []
         var description: [String] = []
         var notes: [String] = []
         
-        if VerifyDatabaseSetup() != true { return  (category, categoryAmount, rowId, description, notes) }
+        if VerifyDatabaseSetup() != true { return  (category, categoryAmount, entryDate, rowId, description, notes) }
         
         // Note that we do not need single quote when binding
-        let queryString = "SELECT ExpenseTable.rowId, ExpenseTable.category, ExpenseTable.amount, ExpenseTable.description, ExpenseTable.notes FROM ExpenseTable WHERE ExpenseTable.entry_date BETWEEN ? AND ?"
+        let queryString = "SELECT ExpenseTable.rowId, ExpenseTable.category, ExpenseTable.amount, ExpenseTable.entry_date, ExpenseTable.description, ExpenseTable.notes FROM ExpenseTable WHERE ExpenseTable.entry_date BETWEEN ? AND ?"
         
-        if prepare(query: queryString) != true { return (category, categoryAmount, rowId, description, notes) }
+        if prepare(query: queryString) != true { return (category, categoryAmount, entryDate, rowId, description, notes) }
         
         // Bind variables
         if sqlite3_bind_text(stmt, 1, startingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding startingDate: \(errmsg)")
-            return (category, categoryAmount, rowId, description, notes)
+            return (category, categoryAmount, entryDate, rowId, description, notes)
         }
         if sqlite3_bind_text(stmt, 2, endingDate, -1, SQLITE_TRANSIENT) != SQLITE_OK {
            let errmsg = String(cString: sqlite3_errmsg(db)!)
            print("Error binding endingDate: \(errmsg)")
-           return (category, categoryAmount, rowId, description, notes)
+           return (category, categoryAmount, entryDate, rowId, description, notes)
         }
         
         // Traverse through all records
@@ -231,30 +232,33 @@ class Database {
             let rowIdDb = String(cString: sqlite3_column_text(stmt, 0))
             let categoryDb = String(cString: sqlite3_column_text(stmt, 1))
             let amountDb = String(cString: sqlite3_column_text(stmt, 2))
-            let descriptionDB = String(cString: sqlite3_column_text(stmt, 3))
-            let notesDB = String(cString: sqlite3_column_text(stmt, 4))
+            let entryDateDb = String(cString: sqlite3_column_text(stmt, 3))
+            let descriptionDB = String(cString: sqlite3_column_text(stmt, 4))
+            let notesDB = String(cString: sqlite3_column_text(stmt, 5))
             
             // Format to NSNumber
             guard let rowIdNum = NumberFormatter().number(from: rowIdDb) else {
                 print ("Error converting entry ", i+1, " in database category \"rowId\" to NSNumber format.")
-                return (category, categoryAmount, rowId, description, notes)
+                return (category, categoryAmount, entryDate, rowId, description, notes)
             }
             guard let amount = NumberFormatter().number(from: amountDb) else {
                 print ("Error converting entry ", i+1, " in database category \"Amounts\" to NSNumber format.")
-                return (category, categoryAmount, rowId, description, notes)
+                return (category, categoryAmount, entryDate, rowId, description, notes)
             }
             
             rowId.append(Int(truncating: rowIdNum))
             category.append(categoryDb)
             categoryAmount.append(CGFloat(truncating: amount))
+            entryDate.append(entryDateDb)
             description.append(descriptionDB)
             notes.append(notesDB)
             i += 1
         }
-        if reset() != true { return (category, categoryAmount, rowId, description, notes) }
+        if reset() != true { return (category, categoryAmount, entryDate, rowId, description, notes) }
         if finalize() != true { print ("Data loaded.") }
         
-        return (category, categoryAmount, rowId, description, notes)
+        
+        return (category, categoryAmount, entryDate, rowId, description, notes)
     }
     
     

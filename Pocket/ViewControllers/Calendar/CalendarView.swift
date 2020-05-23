@@ -30,12 +30,6 @@ class CalendarView: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         collectionView?.viewDidAppear(true)
-        // Tell table view to refresh data
-        if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true {
-            tableView?.reloadData(referenceDate: collectionView!.selectedDate)
-            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
-        }
-        
     }
     
     
