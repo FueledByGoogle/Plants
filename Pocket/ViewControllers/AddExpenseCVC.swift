@@ -181,7 +181,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     /// Number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return MyEnums.Categories.allCases.count
+        return CategoryEnum.Categories.allCases.count
     }
     
     
@@ -189,8 +189,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     override func collectionView(_ collection: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell
     {
         let cell = collection.dequeueReusableCell(withReuseIdentifier: cellReuseIdentifier, for: indexPath) as! AddExpenseCVCCell
-        cell.backgroundColor = UIColor(rgb: CategoryColourEnum.Colours.allCases[indexPath.row].rawValue)
-        cell.label.text = MyEnums.Categories.allCases[indexPath.item].rawValue
+        cell.backgroundColor = UIColor(rgb: CategoryEnum.Colours.allCases[indexPath.row].rawValue)
+        cell.label.text = CategoryEnum.Categories.allCases[indexPath.item].rawValue
 
         return cell
     }
@@ -224,7 +224,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             }
             let roundedNum = String(round(100*num)/100) // Round to two decimal places, >= 5 are rounded up
             
-            if GLOBAL_userDatabase?.InsertExpenseToDatabase(category: MyEnums.Categories.allCases[indexPath.item].rawValue, amount: roundedNum, date: datePicker.date, description: (descriptionEntry?.text)!, notes: (notesEntry?.text)!) == false {}
+            if GLOBAL_userDatabase?.InsertExpenseToDatabase(category: CategoryEnum.Categories.allCases[indexPath.item].rawValue, amount: roundedNum, date: datePicker.date, description: (descriptionEntry?.text)!, notes: (notesEntry?.text)!) == false {}
         }
     }
 }

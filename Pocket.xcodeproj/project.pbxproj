@@ -12,7 +12,6 @@
 		021964B72094333F009A43A6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021964B62094333F009A43A6 /* AppDelegate.swift */; };
 		021964BE2094333F009A43A6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 021964BD2094333F009A43A6 /* Assets.xcassets */; };
 		021ABB72247785D000B20F81 /* CalendarEdit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021ABB71247785D000B20F81 /* CalendarEdit.swift */; };
-		021ABB7524779C5700B20F81 /* CalendarEditCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021ABB7424779C5700B20F81 /* CalendarEditCell.swift */; };
 		021ABB77247890EB00B20F81 /* ExtensionUITableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 021ABB76247890EB00B20F81 /* ExtensionUITableViewCell.swift */; };
 		02202DBD231B32DC00FAAFC4 /* MyEnums.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DBC231B32DC00FAAFC4 /* MyEnums.swift */; };
 		02202DC6231C69B200FAAFC4 /* PieChart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02202DC5231C69B200FAAFC4 /* PieChart.swift */; };
@@ -55,7 +54,6 @@
 		021964D62094333F009A43A6 /* PocketUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PocketUITests.swift; sourceTree = "<group>"; };
 		021964D82094333F009A43A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		021ABB71247785D000B20F81 /* CalendarEdit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEdit.swift; sourceTree = "<group>"; };
-		021ABB7424779C5700B20F81 /* CalendarEditCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarEditCell.swift; sourceTree = "<group>"; };
 		021ABB76247890EB00B20F81 /* ExtensionUITableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUITableViewCell.swift; sourceTree = "<group>"; };
 		02202DBC231B32DC00FAAFC4 /* MyEnums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyEnums.swift; sourceTree = "<group>"; };
 		02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsCVC.swift; sourceTree = "<group>"; };
@@ -157,7 +155,6 @@
 			children = (
 				024B266123B45E0500DE1584 /* CalendarCVCCell.swift */,
 				02671EA02409AEF10074AF8C /* CalendarTVCell.swift */,
-				021ABB7424779C5700B20F81 /* CalendarEditCell.swift */,
 			);
 			path = Calendar;
 			sourceTree = "<group>";
@@ -320,7 +317,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				02202DC7231C69B200FAAFC4 /* ChartsCVC.swift in Sources */,
-				021ABB7524779C5700B20F81 /* CalendarEditCell.swift in Sources */,
 				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
 				024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */,
 				02F2591423CD05C000167904 /* ExtensionUIViewController.swift in Sources */,

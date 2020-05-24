@@ -8,11 +8,6 @@ class MyEnums {
         case Calendar, Charts
     }
     
-    
-    enum Categories: String, CaseIterable {
-        case Clothing, Electronics, Entertainment, Food, Furniture, Groceries, Sports, Transportation
-    }
-    
     enum Colours: Int, CaseIterable {
         case POCKET_BLUE = 0x8b96b2
         case BLUE_LIGHT = 0x76D6FF
@@ -31,7 +26,11 @@ class MyEnums {
 }
 
 
-class CategoryColourEnum {
+class CategoryEnum {
+    
+    enum Categories: String, CaseIterable {
+        case Clothing, Electronics, Entertainment, Food, Furniture, Groceries, Sports, Transportation
+    }
     
     // colours used for each category in pie chart
     enum Colours: Int, CaseIterable {

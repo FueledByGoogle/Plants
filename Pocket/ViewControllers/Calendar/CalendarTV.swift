@@ -8,7 +8,7 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     var navigationController: UINavigationController?
     
     // Data
-    var expenseRowId: [Int] = []
+    var expenseID: [Int] = []
     var expenseCategory: [String] = []
     var expenseAmount: [CGFloat] = []
     var expenseEntryDate: [String] = []
@@ -33,7 +33,7 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         expenseAmount.removeAll()
         
         // Populate variables
-        (expenseCategory, expenseAmount, expenseEntryDate, expenseRowId, expenseDescription, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
+        (expenseCategory, expenseAmount, expenseEntryDate, expenseID, expenseDescription, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
         
         currentDate = Date.formatDateAndTimezoneString(date: referenceDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         self.reloadData()
@@ -42,19 +42,25 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let editView = CalendarEdit()
-        navigationController?.pushViewController(editView, animated: true)
-        
+        if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
+            
+            let editView = CalendarEdit()
+            editView.calendarTVCell = cell
+            navigationController?.pushViewController(editView, animated: true)
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
         cell.addBottomBorder(cgColor: UIColor.gray.cgColor, height: 1, width: cell.frame.width)
-        cell.rowId = expenseRowId[indexPath.row]
-        cell.categoryAndName.text = expenseCategory[indexPath.row] + ": " + expenseDescription[indexPath.row]
-        cell.notes.text = expenseNotes[indexPath.row]
-        cell.amount.text = expenseAmount[indexPath.row].description
+        cell.expenseID = expenseID[indexPath.row]
+        cell.expenseLabel.text = expenseCategory[indexPath.row] + ": " + expenseDescription[indexPath.row]
+        cell.expenseCategory = expenseCategory[indexPath.row]
+        cell.expenseDescription = expenseDescription[indexPath.row]
+        cell.expenseEntryDate = expenseEntryDate[indexPath.row]
+        cell.expenseAmount.text = expenseAmount[indexPath.row].description
+        cell.expenseNotes.text = expenseNotes[indexPath.row]
         cell.backgroundColor = UIColor.systemGray5
         
         return cell
@@ -72,8 +78,8 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         if editingStyle == .delete {
             if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
-                if (GLOBAL_userDatabase?.deleteExpenseEntry(rowId: cell.rowId))! {
-                    expenseRowId.remove(at: indexPath.row)
+                if (GLOBAL_userDatabase?.deleteExpenseEntry(rowId: cell.expenseID))! {
+                    expenseID.remove(at: indexPath.row)
                     expenseCategory.remove(at: indexPath.row)
                     expenseAmount.remove(at: indexPath.row)
                     expenseEntryDate.remove(at: indexPath.row)

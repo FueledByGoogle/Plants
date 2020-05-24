@@ -21,7 +21,7 @@ class ChartsCVCCell: UICollectionViewCell {
     /// Add label views [Call this AFTER setting indexPathNum and percentage variables]
     func addViewsWithUpdatedProperties()
     {
-        label.textColor = UIColor(rgb: CategoryColourEnum.Colours.allCases[indexPathNum].rawValue)
+        label.textColor = UIColor(rgb: CategoryEnum.Colours.allCases[indexPathNum].rawValue)
         
         self.addSubview(totalLabel)
         self.addSubview(label)
