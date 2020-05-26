@@ -4,8 +4,6 @@ import UIKit
 class CalendarTVCell: UITableViewCell {
     
     
-
-    
     let expenseAmount: UILabel = {
         let label = UILabel()
 //        label.backgroundColor = .purple
@@ -32,9 +30,8 @@ class CalendarTVCell: UITableViewCell {
     var expenseEntryDate = ""
     var expenseCategory = ""
     var expenseDescription = ""
-    
     var expenseID = 0
-    
+    var rowID = 0 // Used to set colour of label
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -46,12 +43,15 @@ class CalendarTVCell: UITableViewCell {
     
     // We must set frame size here because if we set frame size during init the width has not been set yet to be the table view cell width, so we would get an incorrect width and height value
     override func layoutSubviews() {
-        expenseLabel.frame = CGRect(x: 5, y: 0, width: self.frame.width*0.8-5, height: self.frame.height*0.4)
-        expenseNotes.frame = CGRect(x: 5, y: expenseLabel.frame.maxY, width: self.frame.width*0.8-5, height: self.frame.height*0.6)
-        expenseAmount.frame = CGRect(x: expenseNotes.frame.width+5, y: 0, width: self.frame.width*0.2, height: self.frame.height)
+        let colorBox = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: self.frame.height))
+        colorBox.backgroundColor = UIColor(rgb: CategoryEnum.getCategoryColorValue(category: expenseCategory))
+        self.addSubview(colorBox)
+        
+        let margin = CGFloat(15)
+        expenseLabel.frame = CGRect(x: margin, y: 0, width: self.frame.width*0.8-margin, height: self.frame.height*0.4)
+        expenseNotes.frame = CGRect(x: margin, y: expenseLabel.frame.maxY, width: self.frame.width*0.8-margin, height: self.frame.height*0.6)
+        expenseAmount.frame = CGRect(x: expenseNotes.frame.width+margin, y: 0, width: self.frame.width*0.2, height: self.frame.height)
         expenseAmount.textAlignment = .center
-        
-        
         expenseLabel.text = (expenseCategory + ": " + expenseDescription) // For display
     }
     

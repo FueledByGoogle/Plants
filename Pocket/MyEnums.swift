@@ -8,6 +8,7 @@ class MyEnums {
         case Calendar, Charts
     }
     
+    
     enum Colours: Int, CaseIterable {
         case POCKET_BLUE = 0x8b96b2
         case BLUE_LIGHT = 0x76D6FF
@@ -32,7 +33,9 @@ class CategoryEnum {
         case Clothing, Electronics, Entertainment, Food, Furniture, Groceries, Sports, Transportation
     }
     
-    // colours used for each category in pie chart
+    
+    
+    /// Colours used for each category in pie chart
     enum Colours: Int, CaseIterable {
         case CLOTHING = 0xafe256 // light
         case ELECTRONICS = 0x56aee2 // dark
@@ -46,5 +49,29 @@ class CategoryEnum {
         case ORANGE1 = 0xe25668 // light
         case YELLOW = 0xe2cf56 // darkest
         case GREEN2 = 0x69e256 // dark
+    }
+    
+    
+    public static func getCategoryColorValue(category: String) -> Int {
+        switch category {
+            case Categories.Clothing.rawValue:
+                return CategoryEnum.Colours.allCases[0].rawValue
+            case Categories.Electronics.rawValue:
+                return CategoryEnum.Colours.allCases[1].rawValue
+            case Categories.Entertainment.rawValue:
+                return CategoryEnum.Colours.allCases[2].rawValue
+            case Categories.Food.rawValue:
+                return CategoryEnum.Colours.allCases[3].rawValue
+            case Categories.Furniture.rawValue:
+                return CategoryEnum.Colours.allCases[4].rawValue
+            case Categories.Groceries.rawValue:
+                return CategoryEnum.Colours.allCases[5].rawValue
+            case Categories.Sports.rawValue:
+                return CategoryEnum.Colours.allCases[6].rawValue
+            case Categories.Transportation.rawValue:
+                return CategoryEnum.Colours.allCases[7].rawValue
+        default:
+            return 0x0
+        }
     }
 }
