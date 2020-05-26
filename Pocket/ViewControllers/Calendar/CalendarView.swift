@@ -137,7 +137,7 @@ class CalendarView: UIViewController {
     }
 
     
-    /// Date picker cancle button
+    /// Date picker cancel button
     @objc func cancelDatePicker(){
         self.view.endEditing(true)
     }

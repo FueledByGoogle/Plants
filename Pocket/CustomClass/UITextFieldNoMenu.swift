@@ -1,10 +1,7 @@
 import Foundation
 import UIKit
 
-class UITextFieldDate: UITextField {
-    
-    
-    //TODO: Disable long press menu options
+class UITextFieldNoMenu: UITextField {
     
     // Disable short press menu options
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {

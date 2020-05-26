@@ -55,7 +55,6 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
         cell.addBottomBorder(cgColor: UIColor.gray.cgColor, height: 1, width: cell.frame.width)
         cell.expenseID = expenseID[indexPath.row]
-        cell.expenseLabel.text = expenseCategory[indexPath.row] + ": " + expenseDescription[indexPath.row]
         cell.expenseCategory = expenseCategory[indexPath.row]
         cell.expenseDescription = expenseDescription[indexPath.row]
         cell.expenseEntryDate = expenseEntryDate[indexPath.row]

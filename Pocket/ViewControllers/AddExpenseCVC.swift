@@ -61,12 +61,10 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         
         // Expense amount input field
-        amountEntry = UITextField(frame: CGRect(x:0,
-                                                y: 0,
+        amountEntry = UITextField(frame: CGRect(x:0,  y: 0,
                                                 width: self.view.frame.width,
                                                 height: expenseEntry!.frame.height * 0.55))
-        amountEntry!.text = "25.6"
-        amountEntry!.font = .systemFont(ofSize: 50)
+        amountEntry?.setupText(text: "25.6", color: UIColor.label, font: UIFont.boldSystemFont(ofSize: 50.0))
         amountEntry!.adjustsFontSizeToFitWidth = true
         amountEntry!.textAlignment  = .center
         amountEntry!.keyboardType = UIKeyboardType.decimalPad
@@ -75,62 +73,62 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         
         // Expense name label
-        let descriptionLabel = UILabel(frame: CGRect(x: 0,
-                                                     y: (amountEntry?.frame.height)!,
+        let descriptionLabel = UILabel(frame: CGRect(x: 0, y: (amountEntry?.frame.height)!,
                                                      width: self.view.frame.width * 0.30,
                                                      height: expenseEntry!.frame.height * 0.15))
-        descriptionLabel.text = "Description: "
-        descriptionLabel.font = .systemFont(ofSize: 16)
+        descriptionLabel.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
         descriptionLabel.textAlignment = .center
-//        descriptionLabel.sizeToFit()
         expenseEntry?.addSubview(descriptionLabel)
+        
         // Expense name input field
         descriptionEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
                                                      y: (amountEntry?.frame.maxY)!,
                                               width: self.view.frame.width - descriptionLabel.frame.width,
                                               height: descriptionLabel.frame.height))
+        descriptionEntry?.setupText(text: "", color: UIColor.systemGray, font: UIFont.preferredFont(forTextStyle: .body))
         descriptionEntry?.placeholder = "Movie tickets"
-        descriptionEntry!.font = .systemFont(ofSize: 14)
         descriptionEntry!.textAlignment = .center
         expenseEntry!.addSubview(descriptionEntry!)
         
         
-        // Expense notes label
-        let notesLabel = UILabel(frame: CGRect(x: 0,
-                                               y: descriptionLabel.frame.maxY,
+        // Notes label
+        let notesLabel = UILabel(frame: CGRect(x: 0, y: descriptionLabel.frame.maxY,
                                                width: descriptionLabel.frame.width,
                                                height: descriptionLabel.frame.height))
-        notesLabel.text = "Notes: "
-        notesLabel.font = .systemFont(ofSize: 16)
+        notesLabel.setupStyle(text: "Notes:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
         notesLabel.textAlignment = .center
         expenseEntry!.addSubview(notesLabel)
-        // Expense notes input field
-        notesEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
-                                               y: descriptionLabel.frame.maxY,
+        
+        // Notes input field
+        notesEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,  y: descriptionLabel.frame.maxY,
                                                width: (descriptionEntry?.frame.width)!,
                                                height: descriptionLabel.frame.height))
+        notesEntry?.setupText(text: "", color: UIColor.systemGray, font: UIFont.preferredFont(forTextStyle: .body))
         notesEntry?.placeholder = "Cinema on sunset avenue"
-        notesEntry!.font = .systemFont(ofSize: 14)
         notesEntry!.textAlignment  = .center
         expenseEntry!.addSubview(notesEntry!)
     
         
-        
         // Date label
-        let dateLabel = UILabel(frame: CGRect(x: 0,
-                                              y: notesLabel.frame.maxY,
+        let dateLabel = UILabel(frame: CGRect(x: 0, y: notesLabel.frame.maxY,
                                               width: descriptionLabel.frame.width,
                                               height: descriptionLabel.frame.height))
-        dateLabel.text = "Date: "
+        dateLabel.setupStyle(text: "Date:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
         dateLabel.textAlignment = .center
         expenseEntry?.addSubview(dateLabel)
-        // Text field
-        dateEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
+        
+        
+        // Date picker
+        dateEntry = UITextFieldNoMenu(frame: CGRect(x: descriptionLabel.frame.width,
                                                         y:  notesLabel.frame.maxY,
                                                         width: (descriptionEntry?.frame.width)!,
                                                         height: descriptionLabel.frame.height))
         dateEntry!.textAlignment = .center
         dateEntry!.inputView = datePicker
+        // Date Picker Toolbar
+        dateEntry?.addCancelDoneButton(target: self,
+                                       doneSelector: #selector(doneDatePicker),
+                                       cancelSelector: #selector(cancelDatePicker))
         
         // Format initial display date
         let formatter = DateFormatter()
@@ -139,30 +137,11 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         expenseEntry?.addSubview(dateEntry!)
         
         
-        // Toolbar
-        let datePickerToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)) // Height has to be 44 or greater?
-        datePickerToolBar.barStyle = UIBarStyle.default
-        let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
-        let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
-        let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
-        datePickerToolBar.setItems([cancelButton, spaceButton, doneButton], animated: false)
-        datePickerToolBar.sizeToFit()
-        // Add toolbar to datepicker keyboard
-        dateEntry!.inputAccessoryView = datePickerToolBar
-        
-        
-        // Colors
-        if #available(iOS 13.0, *) {
-            descriptionEntry?.textColor = UIColor.systemGray
-            notesEntry?.textColor = UIColor.systemGray
-        } else {
-            // Fallback on earlier versions
-        }
     }
     
     
     /// Date picker done button
-    @objc func doneDatePicker(){
+    @objc func doneDatePicker() {
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         dateEntry!.text = formatter.string(from: datePicker.date)
@@ -173,7 +152,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     
     
     /// Date picker cancle button
-    @objc func cancelDatePicker(){
+    @objc func cancelDatePicker() {
         // Dismiss datepicker dialog
         self.view.endEditing(true)
     }

@@ -19,6 +19,8 @@
 		022047912100C181002F6E9B /* DSC_1336.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 022047902100C181002F6E9B /* DSC_1336.JPG */; };
 		0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0220479B2100EB96002F6E9B /* SearchVc.swift */; };
 		02235A4A231AF6550005B9AC /* IMG_9671.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 02235A49231AF6550005B9AC /* IMG_9671.jpg */; };
+		0232912E247DB619001307FC /* ExtensionUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232912D247DB619001307FC /* ExtensionUILabel.swift */; };
+		02329130247DC701001307FC /* ExtensionUiTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232912F247DC701001307FC /* ExtensionUiTextView.swift */; };
 		0232D92E238F5A710023BFA8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232D92D238F5A710023BFA8 /* Database.swift */; };
 		024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B265F23B3F8E900DE1584 /* CalendarCVC.swift */; };
 		024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCell.swift */; };
@@ -29,7 +31,7 @@
 		0272E10523593B280046A516 /* UserDatabase.db in Resources */ = {isa = PBXBuildFile; fileRef = 0272E10423593B280046A516 /* UserDatabase.db */; };
 		02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */; };
 		02886EE82352C30A006F7B8D /* ChartsCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */; };
-		0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */; };
+		0296F92D23C3DFE200C92A9E /* UITextFieldNoMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0296F92C23C3DFE200C92A9E /* UITextFieldNoMenu.swift */; };
 		029B4E8721E1DACD00882705 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 029B4E8621E1DACD00882705 /* TabBar.swift */; };
 		02A5B2FB210F61DA00486DE5 /* plant_picture.JPG in Resources */ = {isa = PBXBuildFile; fileRef = 02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */; };
 		02AB81CA24708FCA009588C2 /* ExtensionUITextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02AB81C924708FCA009588C2 /* ExtensionUITextField.swift */; };
@@ -61,6 +63,8 @@
 		022047902100C181002F6E9B /* DSC_1336.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = DSC_1336.JPG; sourceTree = "<group>"; };
 		0220479B2100EB96002F6E9B /* SearchVc.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVc.swift; sourceTree = "<group>"; };
 		02235A49231AF6550005B9AC /* IMG_9671.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = IMG_9671.jpg; sourceTree = "<group>"; };
+		0232912D247DB619001307FC /* ExtensionUILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUILabel.swift; sourceTree = "<group>"; };
+		0232912F247DC701001307FC /* ExtensionUiTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUiTextView.swift; sourceTree = "<group>"; };
 		0232D92D238F5A710023BFA8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
 		024B265F23B3F8E900DE1584 /* CalendarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVC.swift; sourceTree = "<group>"; };
 		024B266123B45E0500DE1584 /* CalendarCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCell.swift; sourceTree = "<group>"; };
@@ -71,7 +75,7 @@
 		0272E10423593B280046A516 /* UserDatabase.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = UserDatabase.db; sourceTree = "<group>"; };
 		02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVCCell.swift; sourceTree = "<group>"; };
 		02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartsCVCCell.swift; sourceTree = "<group>"; };
-		0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldDate.swift; sourceTree = "<group>"; };
+		0296F92C23C3DFE200C92A9E /* UITextFieldNoMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldNoMenu.swift; sourceTree = "<group>"; };
 		029B4E8621E1DACD00882705 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
 		02A5B2FA210F61DA00486DE5 /* plant_picture.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = plant_picture.JPG; sourceTree = "<group>"; };
 		02AB81C924708FCA009588C2 /* ExtensionUITextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUITextField.swift; sourceTree = "<group>"; };
@@ -193,7 +197,7 @@
 		0296F92B23C3DFAB00C92A9E /* CustomClass */ = {
 			isa = PBXGroup;
 			children = (
-				0296F92C23C3DFE200C92A9E /* UITextFieldDate.swift */,
+				0296F92C23C3DFE200C92A9E /* UITextFieldNoMenu.swift */,
 				020C4ADA24374B1D000DCC58 /* UIDatePickerMonthYear.swift */,
 			);
 			path = CustomClass;
@@ -225,13 +229,15 @@
 			isa = PBXGroup;
 			children = (
 				02F2590C23CD053000167904 /* ExtensionDate.swift */,
+				02F2591723CD05ED00167904 /* ExtensionString.swift */,
 				02F2591123CD059600167904 /* ExtensionUIButton.swift */,
 				02F2591523CD05D300167904 /* ExtensionUIColor.swift */,
 				02F2590F23CD057E00167904 /* ExtensionUIImage.swift */,
-				02F2591723CD05ED00167904 /* ExtensionString.swift */,
-				02F2591323CD05C000167904 /* ExtensionUIViewController.swift */,
-				02AB81C924708FCA009588C2 /* ExtensionUITextField.swift */,
+				0232912D247DB619001307FC /* ExtensionUILabel.swift */,
 				021ABB76247890EB00B20F81 /* ExtensionUITableViewCell.swift */,
+				02AB81C924708FCA009588C2 /* ExtensionUITextField.swift */,
+				02F2591323CD05C000167904 /* ExtensionUIViewController.swift */,
+				0232912F247DC701001307FC /* ExtensionUiTextView.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -317,11 +323,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				02202DC7231C69B200FAAFC4 /* ChartsCVC.swift in Sources */,
+				0232912E247DB619001307FC /* ExtensionUILabel.swift in Sources */,
 				02F2591023CD057E00167904 /* ExtensionUIImage.swift in Sources */,
 				024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */,
 				02F2591423CD05C000167904 /* ExtensionUIViewController.swift in Sources */,
 				02671EA12409AEF10074AF8C /* CalendarTVCell.swift in Sources */,
 				02F2591623CD05D300167904 /* ExtensionUIColor.swift in Sources */,
+				02329130247DC701001307FC /* ExtensionUiTextView.swift in Sources */,
 				020C4ADB24374B1D000DCC58 /* UIDatePickerMonthYear.swift in Sources */,
 				024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */,
 				02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */,
@@ -341,7 +349,7 @@
 				0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */,
 				021964B72094333F009A43A6 /* AppDelegate.swift in Sources */,
 				02886EE62352B82F006F7B8D /* AddExpenseCVCCell.swift in Sources */,
-				0296F92D23C3DFE200C92A9E /* UITextFieldDate.swift in Sources */,
+				0296F92D23C3DFE200C92A9E /* UITextFieldNoMenu.swift in Sources */,
 				02F8515823F72F1F0059743E /* CalendarTV.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
