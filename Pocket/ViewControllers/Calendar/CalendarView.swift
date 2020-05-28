@@ -1,6 +1,10 @@
 import UIKit
 
 
+
+/*
+    Class Description:
+ */
 class CalendarView: UIViewController {
     
     var collectionView: CalendarCVC?
@@ -22,7 +26,6 @@ class CalendarView: UIViewController {
         setupCollectionView()
         setupTableView()
         
- 
         // Colors
         self.view.backgroundColor = UIColor.systemGray6
         self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
@@ -49,14 +52,12 @@ class CalendarView: UIViewController {
         datePickerTextField!.inputView = datePicker
         datePickerTextField?.addBottomBorder(cgColor: UIColor.label.cgColor, height: 1, width: (datePickerTextField?.frame.width)!)
         
-        
-        
         cumulativeYOffset += height // we must calculate this way because frame height is incorrect
         
         // Format initial display date
         let formatter = DateFormatter()
         formatter.dateFormat = "MMMM yyyy"
-        datePickerTextField!.text = formatter.string(from: Date())
+        datePickerTextField!.text = formatter.string(from: Date()) // Returns a string representation of a given date formatted using the receiver’s current settings.
         datePickerTextField?.font = .boldSystemFont(ofSize: 18)
         datePickerTextField?.textColor = UIColor.label
         self.view.addSubview(datePickerTextField!)
@@ -115,21 +116,22 @@ class CalendarView: UIViewController {
             
             // update collection view properties
             collectionView?.selectedMonth = datePicker.month
-            collectionView?.setNumOfDays = Date.findNumOfDaysInMonth(year: datePicker.year, month: datePicker.month)
+            collectionView?.setNumOfDays = Date.calculateNumOfDaysInMonth(year: datePicker.year, month: datePicker.month)
             collectionView?.reloadData() // MUST be before highlighting below, otherwise the highlight will be "cleared"
+            
             // select first item of the month when changing to a new month
             collectionView?.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
             collectionView?.collectionView(collectionView!.self, didSelectItemAt: IndexPath(item: 0, section: 0))
-            collectionView?.lastSelected = IndexPath(row: 0, section: 0)
+            collectionView?.lastSelectedIndexPath = IndexPath(row: 0, section: 0)
             
             // Specify date components
             var dateComponents = DateComponents()
             dateComponents.year = datePicker.year
             dateComponents.month = datePicker.month
             dateComponents.day = 1
-            dateComponents.timeZone = TimeZone.current
+            dateComponents.timeZone = TimeZone(identifier: "UTC")
             
-            tableView?.reloadData(referenceDate: Calendar.current.date(from: dateComponents)!)
+            tableView?.reloadData(selectedDate: Calendar.current.date(from: dateComponents)!)
         }
         
         // Dismiss date picker dialog

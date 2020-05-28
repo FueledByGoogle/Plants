@@ -20,7 +20,6 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     let datePicker: UIDatePicker = UIDatePicker()
     var dateEntry: UITextField?
     var datePickerButton: UIButton?
-    var dateUTC = Date() // UTC date of user's entered date when sent to be inserted to database
     
     
     override func viewDidLoad() {
@@ -42,13 +41,9 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView.setCollectionViewLayout(layout, animated: false)
         
         // Colors
-        if #available(iOS 13.0, *) {
-            self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
-            self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.label]
-            self.collectionView.backgroundColor =  UIColor.systemGray6
-        } else {
-           // Fallback on earlier versions
-        }
+        self.navigationController?.navigationBar.barTintColor = UIColor.systemGray6
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor : UIColor.label]
+        self.collectionView.backgroundColor =  UIColor.systemGray6
     }
     
     
@@ -62,8 +57,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         // Expense amount input field
         amountEntry = UITextField(frame: CGRect(x:0,  y: 0,
-                                                width: self.view.frame.width,
-                                                height: expenseEntry!.frame.height * 0.55))
+                                                width: self.view.frame.width, height: expenseEntry!.frame.height * 0.55))
         amountEntry?.setupText(text: "25.6", color: UIColor.label, font: UIFont.boldSystemFont(ofSize: 50.0))
         amountEntry!.adjustsFontSizeToFitWidth = true
         amountEntry!.textAlignment  = .center
@@ -74,16 +68,15 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         
         // Expense name label
         let descriptionLabel = UILabel(frame: CGRect(x: 0, y: (amountEntry?.frame.height)!,
-                                                     width: self.view.frame.width * 0.30,
+                                                     width: self.view.frame.width * 0.3,
                                                      height: expenseEntry!.frame.height * 0.15))
         descriptionLabel.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
         descriptionLabel.textAlignment = .center
         expenseEntry?.addSubview(descriptionLabel)
         
         // Expense name input field
-        descriptionEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width,
-                                                     y: (amountEntry?.frame.maxY)!,
-                                              width: self.view.frame.width - descriptionLabel.frame.width,
+        descriptionEntry = UITextField(frame: CGRect(x: descriptionLabel.frame.width, y: (amountEntry?.frame.maxY)!,
+                                              width: self.view.frame.width*0.7,
                                               height: descriptionLabel.frame.height))
         descriptionEntry?.setupText(text: "", color: UIColor.systemGray, font: UIFont.preferredFont(forTextStyle: .body))
         descriptionEntry?.placeholder = "Movie tickets"
@@ -117,26 +110,18 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         dateLabel.textAlignment = .center
         expenseEntry?.addSubview(dateLabel)
         
-        
         // Date picker
-        dateEntry = UITextFieldNoMenu(frame: CGRect(x: descriptionLabel.frame.width,
-                                                        y:  notesLabel.frame.maxY,
-                                                        width: (descriptionEntry?.frame.width)!,
-                                                        height: descriptionLabel.frame.height))
+        dateEntry = UITextFieldNoMenu(frame: CGRect(x: descriptionLabel.frame.width, y:  notesLabel.frame.maxY,
+                                                    width: (descriptionEntry?.frame.width)!,
+                                                    height: descriptionLabel.frame.height))
         dateEntry!.textAlignment = .center
         dateEntry!.inputView = datePicker
-        // Date Picker Toolbar
-        dateEntry?.addCancelDoneButton(target: self,
-                                       doneSelector: #selector(doneDatePicker),
-                                       cancelSelector: #selector(cancelDatePicker))
-        
-        // Format initial display date
-        let formatter = DateFormatter()
-        formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
-        dateEntry!.text = formatter.string(from: Date())
+        dateEntry?.addCancelDoneButton(target: self,  doneSelector: #selector(doneDatePicker), cancelSelector: #selector(cancelDatePicker))
         expenseEntry?.addSubview(dateEntry!)
         
-        
+        let formatter = DateFormatter() // Format initial display date
+        formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
+        dateEntry!.text = formatter.string(from: Date()) // Returns a string representation of a given date formatted using the receiver’s current settings.
     }
     
     
@@ -145,7 +130,8 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         dateEntry!.text = formatter.string(from: datePicker.date)
-        dateUTC = datePicker.date
+        
+        print (dateEntry?.text)
         // Dismiss date picker dialog
         self.view.endEditing(true)
     }
@@ -203,7 +189,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
             }
             let roundedNum = String(round(100*num)/100) // Round to two decimal places, >= 5 are rounded up
             
-            if GLOBAL_userDatabase?.InsertExpenseToDatabase(category: CategoryEnum.Categories.allCases[indexPath.item].rawValue, amount: roundedNum, date: datePicker.date, description: (descriptionEntry?.text)!, notes: (notesEntry?.text)!) == false {}
+            if GLOBAL_userDatabase?.insertExpenseToDatabase(category: CategoryEnum.Categories.allCases[indexPath.item].rawValue, amount: roundedNum, date: datePicker.date, description: (descriptionEntry?.text)!, notes: (notesEntry?.text)!) == false {}
         }
     }
 }

@@ -49,7 +49,7 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     
     override func viewDidAppear(_ animated: Bool) {
         if GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Charts.rawValue] == true {
-            let (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: lastSelectedButton)
+            let (d1, d2) = Date.calculateStartEndDatesAsString(referenceDate: Date(), timeInterval: lastSelectedButton)
             reloadData(startDate: d1, endDate: d2)
             GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Charts.rawValue] = false
 //            print (GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Expenses.rawValue])
@@ -104,13 +104,13 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
         
         switch sender.selectedSegmentIndex {
         case 0:
-            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Day)
+            (d1, d2) = Date.calculateStartEndDatesAsString(referenceDate: Date(), timeInterval: .Day)
         case 1:
-            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Week)
+            (d1, d2) = Date.calculateStartEndDatesAsString(referenceDate: Date(), timeInterval: .Week)
         case 2:
-            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Month)
+            (d1, d2) = Date.calculateStartEndDatesAsString(referenceDate: Date(), timeInterval: .Month)
         case 3:
-            (d1, d2) = Date.getStartEndDatesString(referenceDate: Date(), timeInterval: .Year)
+            (d1, d2) = Date.calculateStartEndDatesAsString(referenceDate: Date(), timeInterval: .Year)
         default:
             print ("Time filter out of bounds")
         }

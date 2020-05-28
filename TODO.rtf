@@ -8,4 +8,26 @@
 \f0\fs24 \cf0 Database\
 \
 \
-- Set limit on number of characters allowed to be entered for notes}
+\
+Improvements:\
+- Preload table view in calendar after editing changes\
+- Set limit on number of characters allowed to be entered for notes?\
+\
+\
+\
+Refactoring & Optimization:\
+- Date extension start and end dates return based on type? Generics? Or only return one type\
+\
+\
+Bugs:\
+- Collection view cell selection is sending correct date to query, but done date picker is sending time not in UTC to query\
+- When changing calendar month previously selected cell text colour is incorrect\
+\
+\
+\
+\
+\
+\
+\
+Need verification user settings will not cause  bug:\
+ - Selected Date in CalendarCVC currently gives time already in UTC when converting using date components into Date type when using Calendar.current}

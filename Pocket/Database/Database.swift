@@ -32,8 +32,9 @@ class Database {
             self.dbUrl = Bundle.main.url(
                 forResource: DatabaseEnum.UserDatabase.fileName.rawValue,
                 withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)
-//        print (dbUrl?.absoluteURL!)
+//        print (dbUrl?.absoluteURL!) // Where run time files in simulator are located e.g, database files
             if openDb() == true { print ("Database successfully opened.") }
+        
         #else
         let cacheUrl = try! FileManager().url(for: .cachesDirectory,
                                                   in: .userDomainMask,
@@ -74,12 +75,89 @@ class Database {
         }
     }
     
-    /// Inserts expense amount into the database, date is converted to UTC
-    func InsertExpenseToDatabase(category: String, amount: String, date: Date, description: String, notes: String) -> Bool {
+    
+    // Query database
+    
+    
+    /// update query
+    func updateExpenseInDatabase(rowId: Int, category: String, amount: String, date: Date, description: String, notes: String) -> Bool {
         
         // Convert input into string before sending to be inserted
-        let dateString = Date.formatDateAndTimezoneString(date: date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+        let dateString = Date.calculateDateIntoString(date: date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         
+        
+        if VerifyDatabaseSetup() != true { return false }
+        
+        
+        print (rowId, category, amount, date, description, notes)
+        let queryString = "UPDATE ExpenseTable SET amount = ?, category = ?, entry_date = ?, description = ?, notes  = ? WHERE ROWID = ?"
+
+        if prepare(query: queryString) != true {
+            print ("Failed to prepare query")
+            return false
+        }
+
+        
+        //              Binding the parameters
+        // Note: Column out of index maybe caused by quotes single/doubble outside of question marks
+        // Amount
+        if sqlite3_bind_double(stmt, 1, Double(amount)!) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding amount: \(errmsg)")
+            return false
+        }
+        // Category
+        if sqlite3_bind_text(stmt, 2, category, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding category: \(errmsg)")
+            return false
+        }
+        // Date
+        if sqlite3_bind_text(stmt, 3, dateString, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding category: \(errmsg)")
+            return false
+        }
+        // Description
+        if sqlite3_bind_text(stmt, 4, description, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding category: \(errmsg)")
+            return false
+        }
+        // Notes
+        if sqlite3_bind_text(stmt, 5, notes, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding category: \(errmsg)")
+            return false
+        }
+        // Row ID
+        if sqlite3_bind_text(stmt, 6, String(rowId), -1, SQLITE_TRANSIENT) != SQLITE_OK {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error binding category: \(errmsg)")
+            return false
+        }
+        // Execute the query to update values
+        if sqlite3_step(stmt) != SQLITE_DONE {
+            let errmsg = String(cString: sqlite3_errmsg(db)!)
+            print("Error updating: \(errmsg)")
+            return false
+        } else {
+            print("Updated: " + category + ", " + amount + ", " + dateString + ", " + description + ", " + notes)
+        }
+        
+        if reset() != true { return false }
+        if finalize() != true { print("Failed to finalize after update") }
+        
+        updateNeedToUpdateStatus()
+        return true
+    }
+    
+    
+    /// Inserts expense amount into the database, date is converted to UTC
+    func insertExpenseToDatabase(category: String, amount: String, date: Date, description: String, notes: String) -> Bool {
+        
+        // Convert input into string before sending to be inserted
+        let dateString = Date.calculateDateIntoString(date: date, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         
         if VerifyDatabaseSetup() != true { return false }
         
@@ -90,10 +168,9 @@ class Database {
 
         
         //              Binding the parameters
-        // Note: Column out of index maybe caused by quotes single/doubble outside of question marks
+        // Note: Column out of index maybe caused by quotes single/double outside of question marks
         
-        // Category
-        if sqlite3_bind_text(stmt, 1, category, -1, SQLITE_TRANSIENT) != SQLITE_OK {
+        if sqlite3_bind_text(stmt, 1, category, -1, SQLITE_TRANSIENT) != SQLITE_OK { // Category
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding category: \(errmsg)")
             return false
@@ -132,14 +209,13 @@ class Database {
         }
         
         if reset() != true { return false }
-        if finalize() != true { print("Data inserted") }
+        if finalize() != true { print("Failed to finalize after insert") }
         
         updateNeedToUpdateStatus()
         return true
     }
     
     
-    /// Query database
     /// StartingDate, Ending Date should be according to the format in DatabaseEnum "yyyy-MM-dd HH:mm"
     func loadCategoriesAndTotals(startingDate: String, endingDate: String) -> ([String], [CGFloat]) {
         
@@ -156,7 +232,10 @@ class Database {
             + " WHERE " + DatabaseEnum.ExpenseTable.entryDate.rawValue
             + " BETWEEN ? AND ?"
             + " GROUP BY " + DatabaseEnum.ExpenseTable.category.rawValue
-        if prepare(query: queryString) != true { return (category, categoryAmount) }
+        if prepare(query: queryString) != true {
+            print ("Failed to prepare query")
+            return (category, categoryAmount)
+        }
         
         
         // Bind variables
@@ -187,7 +266,7 @@ class Database {
             i += 1
         }
         if reset() != true { return (category, categoryAmount) }
-        if finalize() != true { print ("Data loaded.") }
+        if finalize() != true { print ("Failed to finalize after load category totals") }
         
         return (category, categoryAmount)
     }
@@ -196,8 +275,7 @@ class Database {
     /// Returns all expenses from beginning to the end of a day
     func loadExpensesOnDay(referenceDate: Date) -> ([String], [CGFloat], [String], [Int], [String], [String]) {
         
-        
-        let (startingDate, endingDate) = Date.getStartEndDatesString(referenceDate: referenceDate, timeInterval: .Day)
+        let (startingDate, endingDate) = Date.calculateStartEndDatesAsString(referenceDate: referenceDate, timeInterval: .Day)
         
         var rowId: [Int] = []
         var category: [String] = []
@@ -255,8 +333,7 @@ class Database {
             i += 1
         }
         if reset() != true { return (category, categoryAmount, entryDate, rowId, description, notes) }
-        if finalize() != true { print ("Data loaded.") }
-        
+        if finalize() != true { print ("Failed to finalize after insert load expense on day") }
         
         return (category, categoryAmount, entryDate, rowId, description, notes)
     }
@@ -268,13 +345,15 @@ class Database {
         if VerifyDatabaseSetup() != true { return false }
         
         let queryString = "DELETE FROM ExpenseTable WHERE ROWID = ?"
-        if prepare(query: queryString) != true { return false }
+        if prepare(query: queryString) != true {
+            print ("Failed to prepare query")
+            return false
+        }
 
         
         //              Binding the parameters
         // Note: Column out of index maybe caused by quotes single/doubble outside of question marks
         
-        // Category
         if sqlite3_bind_text(stmt, 1, String(rowId), -1, SQLITE_TRANSIENT) != SQLITE_OK {
             let errmsg = String(cString: sqlite3_errmsg(db)!)
             print("Error binding category: \(errmsg)")
@@ -291,14 +370,16 @@ class Database {
         }
         
         if reset() != true { return false }
-        if finalize() != true { print("Data inserted") }
+        if finalize() != true { print("Failed to finalize after deletion") }
         
         updateNeedToUpdateStatus()
         return true
     }
     
     
-    /// Called before each operation to verify database is set up before performing any operations
+    
+    
+    /// Called before each database operation to verify database is set up before performing any operations
     func VerifyDatabaseSetup() -> Bool {
         if dbUrl?.absoluteString == nil {
             print ("Database incorrectly setup. Operation not executed.")

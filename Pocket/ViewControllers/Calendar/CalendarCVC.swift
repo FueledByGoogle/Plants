@@ -1,11 +1,12 @@
 import UIKit
 
 /*
+    Class Description:
     Collection view holds current year and month.
     Then using the selected cell the three values date, month, and year is used to create the start and end date to send to query the database.
- 
+
     Collection view also triggers further table view reloads
- */
+*/
 class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
     var initialLoad = true
@@ -22,13 +23,15 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     var calendarTableView: CalendarTV? // Used to update table view
     
     // Selection properties
-    var lastSelected: IndexPath = IndexPath(row: 0, section: 0) // Used to highlight last selected cell
-    var selectedDate = Date.formatDateAndTimezone(date: Date(), dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+    var lastSelectedIndexPath: IndexPath = IndexPath(row: 0, section: 0) // Used to highlight last selected cell
     var selectedYear = ""
-    var selectedMonth = Date.findMonthAsNum(date: Date())
-
-    var setNumOfDays = Date.findNumOfDaysInMonth(date: Date()) // Used to see which cells need to be hidden
+    var selectedMonth = Date.calculateDateMonthAsInt(date: Date())
+    var selectedDate : Date? // Created by using selected Year, Month, Day.
     
+
+    var setNumOfDays = Date.calculateNumOfDaysInMonth(date: Date()) // Used to see which cells need to be hidden
+    
+
     func viewDidLoad() {
         self.dataSource = self
         self.delegate = self
@@ -37,39 +40,34 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         cellWidth = self.frame.width/7
         
         // set selected year
-        let (startDate, _) = Date.getStartEndDate(referenceDate: Date(), timeInterval: .Month)
+        let (startDate, _) = Date.calculateStartEndDatesAsDate(referenceDate: Date(), timeInterval: .Month)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "YYYY"
         selectedYear = dateFormatter.string(from: startDate)
-        
-        
     }
     
     
     func viewDidAppear(_ animated: Bool) {
         
-        if (initialLoad == false && GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true) {
-                    self.collectionView(self, didSelectItemAt: lastSelected)
-                    self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
+        // only refresh when it is not the initial load and database has been updated since last load
+        if (initialLoad == false && GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] == true)
+        {
+            self.collectionView(self, didSelectItemAt: lastSelectedIndexPath)
+            self.selectItem(at: lastSelectedIndexPath, animated: true, scrollPosition: .top)
             GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
         }
         
-        
-        if initialLoad == true {
-            let currentDay = Date.formatDateAndTimezoneString(date: Date(), dateFormat: "dd", timeZone: .LocalZone)
-            
+        if initialLoad == true
+        {
+            // Use local date to select correct day
+            let currentDay = Date.calculateDateIntoString(date: Date(), dateFormat: "dd", timeZone: .current)
             self.collectionView(self, didSelectItemAt: IndexPath(item: Int(currentDay)!-1, section: 0))
             self.selectItem(at: IndexPath(row: Int(currentDay)!-1, section: 0), animated: true, scrollPosition: .top)
-            lastSelected = IndexPath(row: Int(currentDay)!-1, section: 0)
+            lastSelectedIndexPath = IndexPath(row: Int(currentDay)!-1, section: 0)
+            
+            GLOBAL_userDatabase?.needToUpdateData[MyEnums.TabNames.Calendar.rawValue] = false
             initialLoad = false
         }
-        else {
-            // Must reselect when coming back from view, otherwise after returning from another clicking another cell will not clear the last selected cell
-//            self.collectionView(self, didSelectItemAt: lastSelected)
-//            self.selectItem(at: lastSelected, animated: true, scrollPosition: .top)
-        }
-        
-
     }
     
     
@@ -119,7 +117,8 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
             cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
             cell.label.textColor = UIColor.white
-            lastSelected = indexPath
+            lastSelectedIndexPath = indexPath
+            
             
             // Specify date components
             var dateComponents = DateComponents()
@@ -127,10 +126,9 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
             dateComponents.month = selectedMonth
             dateComponents.day = cell.date
             dateComponents.timeZone = TimeZone.current
-            
             selectedDate = Calendar.current.date(from: dateComponents)!
             
-            calendarTableView?.reloadData(referenceDate: selectedDate) // refresh table view
+            calendarTableView?.reloadData(selectedDate: selectedDate!) // refresh table view
         }
     }
 

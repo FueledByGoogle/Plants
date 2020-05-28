@@ -30,7 +30,7 @@ class CalendarTVCell: UITableViewCell {
     var expenseEntryDate = ""
     var expenseCategory = ""
     var expenseDescription = ""
-    var expenseID = 0
+    var databaseID = 0
     var rowID = 0 // Used to set colour of label
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -1,8 +1,9 @@
 import UIKit
 
 /*
+    Class Description:
     Table view is initially refreshed with current day, further refreshes are called from calendar collection view
- */
+*/
 class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     
     var navigationController: UINavigationController?
@@ -28,14 +29,14 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     }
     
     /// Updates the view. start and end date should be in UTC
-    func reloadData(referenceDate: Date) {
+    func reloadData(selectedDate: Date) {
         expenseCategory.removeAll()
         expenseAmount.removeAll()
         
         // Populate variables
-        (expenseCategory, expenseAmount, expenseEntryDate, expenseID, expenseDescription, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: referenceDate))!
+        (expenseCategory, expenseAmount, expenseEntryDate, expenseID, expenseDescription, expenseNotes) = (GLOBAL_userDatabase?.loadExpensesOnDay(referenceDate: selectedDate))!
         
-        currentDate = Date.formatDateAndTimezoneString(date: referenceDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+        currentDate = Date.calculateDateIntoString(date: selectedDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         self.reloadData()
     }
     
@@ -55,10 +56,13 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! CalendarTVCell
         cell.addBottomBorder(cgColor: UIColor.gray.cgColor, height: 1, width: cell.frame.width)
         cell.rowID = indexPath.row
-        cell.expenseID = expenseID[indexPath.row]
+        cell.databaseID = expenseID[indexPath.row]
         cell.expenseCategory = expenseCategory[indexPath.row]
         cell.expenseDescription = expenseDescription[indexPath.row]
-        cell.expenseEntryDate = expenseEntryDate[indexPath.row]
+        
+        // Convert UTC date to local date
+        cell.expenseEntryDate = Date.calculateDateTimezoneConversionAsString(date: expenseEntryDate[indexPath.row], format: DatabaseEnum.Date.dataFormat.rawValue, timezoneCurrent: TimeZone.current, timezoneDesired: TimeZone(identifier: "UTC")!)
+        
         cell.expenseAmount.text = expenseAmount[indexPath.row].description
         cell.expenseNotes.text = expenseNotes[indexPath.row]
         cell.backgroundColor = UIColor.systemGray5
@@ -78,7 +82,7 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         if editingStyle == .delete {
             if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
-                if (GLOBAL_userDatabase?.deleteExpenseEntry(rowId: cell.expenseID))! {
+                if (GLOBAL_userDatabase?.deleteExpenseEntry(rowId: cell.databaseID))! {
                     expenseID.remove(at: indexPath.row)
                     expenseCategory.remove(at: indexPath.row)
                     expenseAmount.remove(at: indexPath.row)

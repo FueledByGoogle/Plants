@@ -7,12 +7,72 @@ extension Date
         case Day, Week, Month, Year
     }
     
-    public enum TimeZones : String{
-        case UTC, LocalZone
+    public enum Timezones : String{
+        case UTC, current
+    }
+
+    /// String to Date timezone conversion
+//    public static func calculateDateTimezoneConversionAsDate(date: String, format: String, timezoneCurrent: TimeZone, timezoneDesired: TimeZone) -> Date {
+//        let dateFormatter = DateFormatter()
+//        dateFormatter.dateFormat = format
+//        dateFormatter.calendar = NSCalendar.current
+//        dateFormatter.timeZone = timezoneCurrent
+//
+//        // Desired timezone
+//        let dt = dateFormatter.date(from: date)
+//        dateFormatter.timeZone = timezoneDesired
+//        dateFormatter.dateFormat = format
+//
+//        return Date()
+//    }
+    
+    /// String to String timezone conversion
+    public static func calculateDateTimezoneConversionAsString(date: String, format: String, timezoneCurrent: TimeZone, timezoneDesired: TimeZone) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        dateFormatter.calendar = NSCalendar.current
+        dateFormatter.timeZone = timezoneCurrent
+        
+        // Desired timezone
+        let dt = dateFormatter.date(from: date)
+        dateFormatter.timeZone = timezoneDesired
+        dateFormatter.dateFormat = format
+
+        return dateFormatter.string(from: dt!)
     }
 
     
-    public static func findMonthAsNum(date: Date) -> Int {
+    
+    
+    
+    /// String to Date conversion
+    //  Date string format and date format must match otherwise dateformatter will return nil
+    public static func calculateDateStringIntoDate(date: String, dateFormat: String, timezone: Timezones?) -> Date {
+        
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = dateFormat
+        
+        if timezone != nil {
+            dateformatter.timeZone = TimeZone(identifier: timezone!.rawValue)
+        }
+        return dateformatter.date(from: date)!
+    }
+    
+    /// Date to String conversion
+    public static func calculateDateIntoString(date: Date, dateFormat: String, timeZone: Timezones) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = dateFormat
+        dateFormatter.timeZone = TimeZone(identifier: timeZone.rawValue)
+
+        return dateFormatter.string(from: date)
+    }
+    
+    
+    
+    
+    
+    /// Get date's month as an integer
+    public static func calculateDateMonthAsInt(date: Date) -> Int {
         
         let calendar = Calendar.current
         let components = calendar.dateComponents([.month], from: date)
@@ -20,9 +80,8 @@ extension Date
         return components.month!
     }
     
-    
     /// Get number of days in a month
-    public static func findNumOfDaysInMonth(date: Date) -> Int {
+    public static func calculateNumOfDaysInMonth(date: Date) -> Int {
         
         let calendar = Calendar.current
         // Calculate start and end of the current month
@@ -32,8 +91,9 @@ extension Date
         
         return numDays
     }
+    
     /// Get number of days in a month
-    public static func findNumOfDaysInMonth(year: Int, month: Int) -> Int {
+    public static func calculateNumOfDaysInMonth(year: Int, month: Int) -> Int {
         
         let dateComponents = DateComponents(year: year, month: month)
         let calendar = Calendar.current
@@ -45,33 +105,11 @@ extension Date
     }
     
     
-    /// Converts date to string
-    public static func formatDateAndTimezoneString(date: Date, dateFormat: String, timeZone: TimeZones) -> String {
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = dateFormat
-        dateFormatter.timeZone = TimeZone(identifier: timeZone.rawValue)
-
-        return dateFormatter.string(from: date)
-    }
     
-    /// F
-    public static func formatDateAndTimezone(date: Date, dateFormat: String, timeZone: TimeZones) -> Date {
-
-        let timezone = TimeZone.current
-        let seconds = -TimeInterval(timezone.secondsFromGMT(for: date))
-        return Date(timeInterval: seconds, since: date)
-    }
     
-    // Convert local time to UTC (or GMT)
-//    func toGlobalTime() -> Date {
-//        let timezone = TimeZone.current
-//        let seconds = -TimeInterval(timezone.secondsFromGMT(for: self))
-//        return Date(timeInterval: seconds, since: self)
-//    }
     
     /// Input time is converted to UTC time
-    public static func getStartEndDatesString(referenceDate: Date, timeInterval: DateTimeInterval) -> (String, String) {
+    public static func calculateStartEndDatesAsString(referenceDate: Date, timeInterval: DateTimeInterval) -> (String, String) {
         
         var dateComponentDayWeek = DateComponents() // Used for Day and Week
         let dateComponentMonthYear: DateComponents? // Used for Month and Year
@@ -108,16 +146,16 @@ extension Date
             endDate = Calendar.current.date(byAdding: dateComponentDayWeek, to: startDate)
         }
         
-        let startDateString =  formatDateAndTimezoneString(date: startDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
+        let startDateString =  calculateDateIntoString(date: startDate, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC)
         
         return (
            startDateString,
-           formatDateAndTimezoneString(date: endDate!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC))
+           calculateDateIntoString(date: endDate!, dateFormat: DatabaseEnum.Date.dataFormat.rawValue, timeZone: .UTC))
     }
     
     
     /// Input time is converted to UTC time
-    public static func getStartEndDate(referenceDate: Date, timeInterval: DateTimeInterval) -> (Date, Date) {
+    public static func calculateStartEndDatesAsDate(referenceDate: Date, timeInterval: DateTimeInterval) -> (Date, Date) {
         
         var dateComponentDayWeek = DateComponents() // Used for Day and Week
         let dateComponentMonthYear: DateComponents? // Used for Month and Year
