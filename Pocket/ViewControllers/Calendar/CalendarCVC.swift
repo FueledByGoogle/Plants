@@ -9,16 +9,16 @@ import UIKit
 */
 class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
-    var initialLoad = true
+    private var initialLoad = true
     
-    var cellWidth = CGFloat(50)
-    let cellReuseIdentifier = "cellId"
+    private var cellWidth = CGFloat(50)
+    private let cellReuseIdentifier = "cellId"
     
-    let cellDefaultBackgroundColor = UIColor.systemGray6
+    private let cellDefaultBackgroundColor = UIColor.systemGray6
     
     // List Data
-    var entryCategory: [String] = []
-    var entryAmount: [CGFloat] = []
+//    var entryCategory: [String] = []
+//    var entryAmount: [CGFloat] = []
     
     var calendarTableView: CalendarTV? // Used to update table view
     
@@ -112,7 +112,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         }
     }
     
-    
+    /// Did select
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
             cell.backgroundColor = UIColor(rgb: MyEnums.Colours.POCKET_BLUE.rawValue)
@@ -132,7 +132,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
         }
     }
 
-    
+    /// Did deselect
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? CalendarCVCCell {
             cell.label.textColor = UIColor.label

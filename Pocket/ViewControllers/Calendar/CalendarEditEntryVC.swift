@@ -2,7 +2,7 @@ import UIKit
 
 
 
-class CalendarEdit: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate  {
+class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate  {
     
     
     var calendarTVCell : CalendarTVCell?

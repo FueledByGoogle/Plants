@@ -7,14 +7,14 @@ import UIKit
  */
 class CalendarView: UIViewController {
     
-    var collectionView: CalendarCVC?
-    var tableView: CalendarTV?
+    private var collectionView: CalendarCVC?
+    private var tableView: CalendarTV?
     
-    let datePicker: UIDatePickerMonthYear = UIDatePickerMonthYear()
-    var datePickerTextField: UITextField?
-    var datePickerButton: UIButton?
+    private let datePicker: UIDatePickerMonthYear = UIDatePickerMonthYear()
+    private var datePickerTextField: UITextField?
+    private var datePickerButton: UIButton?
     
-    var cumulativeYOffset = CGFloat(0) // used to place one view after another
+    private var cumulativeYOffset = CGFloat(0) // used to place one view after another
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +47,7 @@ class CalendarView: UIViewController {
     func setupDatePicker() {
         // Text field
         let height = self.view.frame.height*0.07
-        datePickerTextField = UITextField(frame: CGRect(x: 10, y: cumulativeYOffset, width: self.view.frame.width-20, height: height))
+        datePickerTextField = UITextField(frame: CGRect(x: 20, y: cumulativeYOffset, width: self.view.frame.width-40, height: height))
         datePickerTextField!.textAlignment = .left
         datePickerTextField!.inputView = datePicker
         datePickerTextField?.addBottomBorder(cgColor: UIColor.label.cgColor, height: 1, width: (datePickerTextField?.frame.width)!)
@@ -113,16 +113,20 @@ class CalendarView: UIViewController {
         
         if datePickerTextField!.text != newDate {
             datePickerTextField!.text = newDate
+
+            // deselect previous item
+            collectionView?.deselectItem(at: collectionView!.lastSelectedIndexPath, animated: true)
+            collectionView?.collectionView(collectionView!.self, didDeselectItemAt: collectionView!.lastSelectedIndexPath)
             
-            // update collection view properties
+            // update collection view with selected month's properties
             collectionView?.selectedMonth = datePicker.month
             collectionView?.setNumOfDays = Date.calculateNumOfDaysInMonth(year: datePicker.year, month: datePicker.month)
-            collectionView?.reloadData() // MUST be before highlighting below, otherwise the highlight will be "cleared"
+//            collectionView?.reloadData() // MUST be before selecting the cell below, otherwise the highlight will be "cleared"
             
             // select first item of the month when changing to a new month
-            collectionView?.selectItem(at: IndexPath(row: 0, section: 0), animated: true, scrollPosition: .top)
-            collectionView?.collectionView(collectionView!.self, didSelectItemAt: IndexPath(item: 0, section: 0))
             collectionView?.lastSelectedIndexPath = IndexPath(row: 0, section: 0)
+            collectionView?.selectItem(at: collectionView?.lastSelectedIndexPath, animated: true, scrollPosition: .top)
+            collectionView?.collectionView(collectionView!.self, didSelectItemAt: collectionView!.lastSelectedIndexPath)
             
             // Specify date components
             var dateComponents = DateComponents()

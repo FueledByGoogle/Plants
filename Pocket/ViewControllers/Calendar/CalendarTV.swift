@@ -6,7 +6,7 @@ import UIKit
 */
 class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     
-    var navigationController: UINavigationController?
+    var navigationController: UINavigationController? // set by Calendar View
     
     // Data
     var expenseID: [Int] = []
@@ -16,9 +16,10 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     var expenseDescription: [String] = []
     var expenseNotes: [String] = []
     
-    let cellId = "TableViewcell"
-    
     var currentDate = ""
+    
+    private let cellId = "TableViewcell"
+
     
     func viewDidLoad() {
         self.separatorInset = UIEdgeInsets.zero // So seaprators stretch to the edges of the screen
@@ -27,6 +28,7 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         self.register(CalendarTVCell.self, forCellReuseIdentifier: cellId)
         self.backgroundColor = UIColor.systemGray6
     }
+    
     
     /// Updates the view. start and end date should be in UTC
     func reloadData(selectedDate: Date) {
@@ -45,11 +47,12 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
         
         if let cell = self.cellForRow(at: indexPath) as? CalendarTVCell {
             
-            let editView = CalendarEdit()
+            let editView = CalendarEditEntryVC()
             editView.calendarTVCell = cell
             navigationController?.pushViewController(editView, animated: true)
         }
     }
+    
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
@@ -103,5 +106,4 @@ class CalendarTV: UITableView, UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
-    
 }
