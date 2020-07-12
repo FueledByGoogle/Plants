@@ -23,10 +23,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
     override func viewDidLoad() {
         self.edgesForExtendedLayout = []
         self.view.backgroundColor = UIColor.systemGray6
-    }
-    
-    
-    override func viewDidLayoutSubviews() {
+        
         setupCategoryPicker()
         setupAmount()
         setupDatePicker()
@@ -34,10 +31,8 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         
         let save = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(tapSave))
         navigationItem.rightBarButtonItems = [save]
-        
-        
     }
-
+    
 
     func setupCategoryPicker() {
         // Picker
@@ -58,6 +53,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         
         cumulativeOffset += (categoryField?.frame.height)!
     }
+    
     
     func setupAmount() {
         let amountLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset,
@@ -82,6 +78,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         cumulativeOffset += amountLabel.frame.height
     }
 
+    
     func setupDatePicker() {
         // Date label
         let dateLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset,
@@ -119,7 +116,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
     }
     
     
-    /// Date picker cancle button
+    /// Date picker cancel button
     @objc func cancelDatePicker() {
         self.view.endEditing(true)
     }
@@ -134,7 +131,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         self.view.addSubview(descriptionLabel)
         cumulativeOffset += descriptionLabel.frame.height
         
-        // Description
+        // Description text
         descriptionTextView = UITextView(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.15))
         descriptionTextView!.addCancelDoneButton(target: self, doneSelector: #selector(tapDescriptionDone))
         descriptionTextView!.text = calendarTVCell?.expenseDescription
@@ -151,7 +148,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         cumulativeOffset += notesLabel.frame.height
         
         
-        // Notes
+        // Notes text
         notesTextView = UITextView(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.30))
         notesTextView!.addCancelDoneButton(target: self, doneSelector: #selector(tapNotesDone))
         notesTextView!.text = calendarTVCell?.expenseNotes.text
