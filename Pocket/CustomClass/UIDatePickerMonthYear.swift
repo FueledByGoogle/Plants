@@ -8,6 +8,8 @@ class UIDatePickerMonthYear: UIPickerView, UIPickerViewDelegate, UIPickerViewDat
     var months: [String]!
     var years: [Int]!
     
+    private let startYear = 2001
+    
     var month = Calendar.current.component(.month, from: Date()) {
         didSet {
             selectRow(month-1, inComponent: 0, animated: false)
@@ -40,7 +42,7 @@ class UIDatePickerMonthYear: UIPickerView, UIPickerViewDelegate, UIPickerViewDat
             // Specify date components
             // Need this so when we are in 2021 user can stil go back as far as 2020 when using date picker
             var dateComponents = DateComponents()
-            dateComponents.year = 2021
+            dateComponents.year = startYear
             dateComponents.month = 1
             dateComponents.day = 1
             dateComponents.timeZone = TimeZone(abbreviation: "UTC")
@@ -52,7 +54,7 @@ class UIDatePickerMonthYear: UIPickerView, UIPickerViewDelegate, UIPickerViewDat
             
             
             var year = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!.component(.year, from: date!)
-            for _ in 1...15 {
+            for _ in 1...100 {
                 years.append(year)
                 year += 1
             }
@@ -71,12 +73,15 @@ class UIDatePickerMonthYear: UIPickerView, UIPickerViewDelegate, UIPickerViewDat
         self.delegate = self
         self.dataSource = self
         
+        // select current month
         let currentMonth = NSCalendar(identifier: NSCalendar.Identifier.gregorian)!.component(.month, from: NSDate() as Date)
         self.selectRow(currentMonth - 1, inComponent: 0, animated: false)
+        // select current year
+        let currentYear = Calendar.current.component(.year, from: Date()) - startYear
+        self.selectRow(currentYear + 1, inComponent: 1, animated: false)
     }
     
-    // Mark: UIPicker Delegate / Data Source
-    
+    //MARK: UIPicker Delegate / Data Source
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 2
     }

@@ -27,13 +27,13 @@ class Database {
     /// Opens up database
     init() {
         #if targetEnvironment(simulator)
-            print ("Simulator")
+            print ("POCKETDEBUG [Database] - Simulator")
             // get file url
             self.dbUrl = Bundle.main.url(
                 forResource: DatabaseEnum.UserDatabase.fileName.rawValue,
                 withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)
 //        print (dbUrl?.absoluteURL!) // Where run time files in simulator are located e.g, database files
-            if openDb() == true { print ("Database successfully opened.") }
+            if openDb() == true { print ("POCKETDEBUG [Database] - Database successfully opened.") }
         
         #else
         let cacheUrl = try! FileManager().url(for: .cachesDirectory,
@@ -48,7 +48,7 @@ class Database {
 //        } else {
 //            print ("Database file does not exist!")
         // We copy over our test database if one does not exist.
-        print ("For testing purposes we always copy over test database")
+        print ("POCKETDEBUG [Database] - For testing purposes we always copy over test database")
         do {
             try FileManager.default.removeItem(atPath: dbUrl!.path)
         } catch {}
@@ -57,11 +57,11 @@ class Database {
                 try FileManager.default.copyItem(atPath: Bundle.main.url(forResource: DatabaseEnum.UserDatabase.fileName.rawValue,
                                                                          withExtension: DatabaseEnum.UserDatabase.fileExtension.rawValue)!.path,
                                                  toPath: dbUrl!.path)
-                print ("File successfully copied to cache.")
+                print ("POCKETDEBUG [Database] - File successfully copied to cache.")
                 self.dbUrl = cacheUrl.appendingPathComponent("UserDatabase.db").absoluteURL
-                if openDb() == true { print ("Database successfully opened.") }
+                if openDb() == true { print ("POCKETDEBUG [Database] - Database successfully opened.") }
             } catch {
-                print("Failed to copy over file.\n", error)
+                print("POCKETDEBUG [Database] - Failed to copy over file.\n", error)
             }
 //        }
         #endif
@@ -76,8 +76,7 @@ class Database {
     }
     
     
-    // Query database
-    
+    //MARK: Query database
     
     /// update query
     func updateExpenseInDatabase(rowId: Int, category: String, amount: String, date: Date, description: String, notes: String) -> Bool {
@@ -378,7 +377,7 @@ class Database {
     
     
     
-    
+    //MARK: Database base operations
     /// Called before each database operation to verify database is set up before performing any operations
     func VerifyDatabaseSetup() -> Bool {
         if dbUrl?.absoluteString == nil {
