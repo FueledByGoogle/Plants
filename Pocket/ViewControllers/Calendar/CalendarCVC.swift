@@ -1,12 +1,9 @@
 import UIKit
 
-/*
-    Class Description:
-    Collection view holds current year and month.
-    Then using the selected cell the three values date, month, and year is used to create the start and end date to send to query the database.
-
-    Collection view also triggers further table view reloads
-*/
+/// Class Description: Collection view holds current year and month.
+/// Then using the selected cell the three values date, month,
+/// and year is used to create the start and end date to send to query the database.
+/// Collection view also triggers further table view reloads
 class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
     
     private var initialLoad = true
@@ -71,6 +68,7 @@ class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollec
     }
     
     
+    //MARK: Collection view
     /// number of cells in section
     func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 31 // we will hide ones we do not need

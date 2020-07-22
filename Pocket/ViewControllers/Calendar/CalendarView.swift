@@ -2,9 +2,7 @@ import UIKit
 
 
 
-/*
-    Class Description:
- */
+/// Description:
 class CalendarView: UIViewController {
     
     private var collectionView: CalendarCVC?
@@ -66,6 +64,7 @@ class CalendarView: UIViewController {
         // Toolbar
         let datePickerToolBar = UIToolbar(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: 44)) // Height has to be 44 or greater?
         datePickerToolBar.barStyle = UIBarStyle.default
+        // add buttons
         let doneButton = UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(doneDatePicker))
         let spaceButton = UIBarButtonItem(barButtonSystemItem: UIBarButtonItem.SystemItem.flexibleSpace, target: nil, action: nil)
         let cancelButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelDatePicker))
@@ -76,6 +75,7 @@ class CalendarView: UIViewController {
     }
     
     
+    //MARK: Subviews setup
     func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = .zero
@@ -106,6 +106,7 @@ class CalendarView: UIViewController {
     }
 
     
+    //MARK: Date Picker
     /// Date picker done button
     @objc func doneDatePicker(){
 
@@ -141,8 +142,6 @@ class CalendarView: UIViewController {
         // Dismiss date picker dialog
         self.view.endEditing(true)
     }
-
-    
     /// Date picker cancel button
     @objc func cancelDatePicker(){
         self.view.endEditing(true)

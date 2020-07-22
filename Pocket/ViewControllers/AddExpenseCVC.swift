@@ -144,6 +144,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     }
     
     
+    //MARK: Collection View
     /// Number of cells in section
     override func collectionView(_ collection: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return CategoryEnum.Categories.allCases.count
