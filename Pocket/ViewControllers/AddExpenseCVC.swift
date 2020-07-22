@@ -131,7 +131,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
         dateEntry!.text = formatter.string(from: datePicker.date)
         
-        print (dateEntry?.text)
+        print ("POCKETDEBUG [AddExpenseCVC] - \(#function)", dateEntry?.text as Any)
         // Dismiss date picker dialog
         self.view.endEditing(true)
     }

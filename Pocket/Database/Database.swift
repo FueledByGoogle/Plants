@@ -141,7 +141,7 @@ class Database {
             print("Error updating: \(errmsg)")
             return false
         } else {
-            print("Updated: " + category + ", " + amount + ", " + dateString + ", " + description + ", " + notes)
+            print("POCKETDEBUG [Database] - Updated: " + category + ", " + amount + ", " + dateString + ", " + description + ", " + notes)
         }
         
         if reset() != true { return false }
@@ -204,7 +204,7 @@ class Database {
             print("Error inserting: \(errmsg)")
             return false
         } else {
-            print("Inserted: " + category + ", " + amount + ", " + dateString + ", " + description + ", " + notes)
+            print("POCKETDEBUG [Database] - Inserted: " + category + ", " + amount + ", " + dateString + ", " + description + ", " + notes)
         }
         
         if reset() != true { return false }

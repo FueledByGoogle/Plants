@@ -166,11 +166,10 @@
 		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				02D5120C24C81A4400408646 /* Miscellaneous */,
 				02DDC4CC243681E200276F8A /* Calendar */,
 				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 				02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */,
-				029B4E8621E1DACD00882705 /* TabBar.swift */,
-				0220479B2100EB96002F6E9B /* SearchVc.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -201,6 +200,15 @@
 				020C4ADA24374B1D000DCC58 /* UIDatePickerMonthYear.swift */,
 			);
 			path = CustomClass;
+			sourceTree = "<group>";
+		};
+		02D5120C24C81A4400408646 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				029B4E8621E1DACD00882705 /* TabBar.swift */,
+				0220479B2100EB96002F6E9B /* SearchVc.swift */,
+			);
+			path = Miscellaneous;
 			sourceTree = "<group>";
 		};
 		02DDC4CC243681E200276F8A /* Calendar */ = {

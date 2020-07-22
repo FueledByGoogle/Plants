@@ -1,39 +1,79 @@
 import UIKit
 
 
-
-class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate  {
-    
+//TODO: Need to implement scrolling view up
+class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate  {
     
     var calendarTVCell : CalendarTVCell?
     
+
+    
+    // Category
     var categoryField : UITextField?
     var categoryPicker: UIPickerView?
-    
+    // Amount
     var amountEntry: UITextField?
-    
+    // Date
     let datePicker: UIDatePicker = UIDatePicker()
     var dateEntry: UITextField?
-    
+    // Description
     var descriptionTextView: UITextView?
     var notesTextView: UITextView?
     
+    // UI
     var cumulativeOffset = CGFloat(0)
+    let scrollView = UIScrollView()
+    let contentView = UIView()
     
     override func viewDidLoad() {
         self.edgesForExtendedLayout = []
         self.view.backgroundColor = UIColor.systemGray6
         
+        // UI
+        setupScrollView()
         setupCategoryPicker()
         setupAmount()
         setupDatePicker()
-        setupLabels()
+        setupDescriptionAndNotes()
+        
+        contentView.frame = CGRect(x: 0, y: self.view.safeAreaInsets.top, width: self.view.safeAreaLayoutGuide.layoutFrame.size.width, height: cumulativeOffset)
         
         let save = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(tapSave))
         navigationItem.rightBarButtonItems = [save]
+        
+        
+        NotificationCenter.default.addObserver(self,selector: #selector(self.keyboardDidShow(notification:)),
+        name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self,selector: #selector(self.keyboardDidShow(notification:)),
+        name: UIResponder.keyboardDidHideNotification, object: nil)
     }
     
+    override func viewDidLayoutSubviews() {
+        scrollView.contentSize = contentView.frame.size
+    }
+    
+    func setupScrollView() {
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
+        scrollView.frame = CGRect(x: 0, y: self.view.safeAreaInsets.top,
+                                  width: self.view.safeAreaLayoutGuide.layoutFrame.size.width,
+                                  height: self.view.safeAreaLayoutGuide.layoutFrame.size.height)
+        // content view height will need to be set after the height of the all contents are determined
+//        scrollView.backgroundColor = .red
+//        contentView.backgroundColor = .blue
+        
+        self.view.addSubview(scrollView) // scrollView needs to be a subview before adding constraints
+        scrollView.addSubview(contentView)
+        
+        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
+        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
 
+    
+    //MARK: Set up labels and text fields
     func setupCategoryPicker() {
         // Picker
         categoryPicker = UIPickerView()
@@ -49,7 +89,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         categoryField?.adjustsFontSizeToFitWidth = true
         categoryField?.inputView = categoryPicker
         categoryField?.addCancelDoneButton(target: self, doneSelector: #selector(doneCategoryPicker), cancelSelector: #selector(cancelCategoryPicker))
-        self.view.addSubview(categoryField!)
+        self.contentView.addSubview(categoryField!)
         
         cumulativeOffset += (categoryField?.frame.height)!
     }
@@ -60,7 +100,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
                                                       width: self.view.frame.width*0.20,
                                                       height: self.view.frame.height * 0.05))
         amountLabel.setupStyle(text: "Amount:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.view?.addSubview(amountLabel)
+        self.contentView.addSubview(amountLabel)
         
         // Expense amount input field
         amountEntry = UITextField(frame: CGRect(x: amountLabel.frame.width+5,  y: cumulativeOffset,
@@ -72,8 +112,8 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         amountEntry!.adjustsFontSizeToFitWidth = true
         amountEntry!.textAlignment  = .center
         amountEntry!.keyboardType = UIKeyboardType.decimalPad
-//        amountEntry.delegate = self
-        self.view.addSubview(amountEntry!)
+        amountEntry!.delegate = self
+        self.contentView.addSubview(amountEntry!)
         
         cumulativeOffset += amountLabel.frame.height
     }
@@ -85,7 +125,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
                                               width: self.view.frame.width*0.30-10,
                                               height: self.view.frame.height * 0.10))
         dateLabel.setupStyle(text: "Date:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.view?.addSubview(dateLabel)
+        self.contentView.addSubview(dateLabel)
         
         // Date picker
         dateEntry = UITextFieldNoMenu(frame: CGRect(x: dateLabel.frame.width, y: cumulativeOffset,
@@ -101,34 +141,16 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         // Format initial display date
 //        let intialDate = Date.stringToDate(dateFormat: DatabaseEnum.Date.dataFormat.rawValue, date: calendarTVCell!.expenseEntryDate, timezone: .current)
         dateEntry!.text = calendarTVCell!.expenseEntryDate
-        self.view.addSubview(dateEntry!)
+        self.contentView.addSubview(dateEntry!)
     }
     
     
-    
-    /// Date picker done button
-    @objc func doneDatePicker() {
-        let formatter = DateFormatter()
-        formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
-        dateEntry!.text = formatter.string(from: datePicker.date)
-        // Dismiss date picker dialog
-        self.view.endEditing(true)
-    }
-    
-    
-    /// Date picker cancel button
-    @objc func cancelDatePicker() {
-        self.view.endEditing(true)
-    }
-
-
-    
-    func setupLabels() {
+    func setupDescriptionAndNotes() {
         
         // Description label
         let descriptionLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.05))
         descriptionLabel.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.view.addSubview(descriptionLabel)
+        self.contentView.addSubview(descriptionLabel)
         cumulativeOffset += descriptionLabel.frame.height
         
         // Description text
@@ -137,49 +159,60 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         descriptionTextView!.text = calendarTVCell?.expenseDescription
         descriptionTextView!.textColor = UIColor.label
         descriptionTextView!.font = UIFont.preferredFont(forTextStyle: .body)
-        self.view.addSubview(descriptionTextView!)
+        self.contentView.addSubview(descriptionTextView!)
         cumulativeOffset += descriptionTextView!.frame.height + 5
         
         
         // Notes label
         let notesLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.05))
         notesLabel.setupStyle(text: "Notes:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.view.addSubview(notesLabel)
+        self.contentView.addSubview(notesLabel)
         cumulativeOffset += notesLabel.frame.height
         
         
         // Notes text
-        notesTextView = UITextView(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.30))
+        notesTextView = UITextView(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.4))
         notesTextView!.addCancelDoneButton(target: self, doneSelector: #selector(tapNotesDone))
         notesTextView!.text = calendarTVCell?.expenseNotes.text
         notesTextView!.textColor = UIColor.label
         notesTextView!.font = UIFont.preferredFont(forTextStyle: .body)
-        self.view.addSubview(notesTextView!)
+        self.contentView.addSubview(notesTextView!)
         
         cumulativeOffset += notesTextView!.frame.height
     }
 
     
+    //MARK: Setup button actions
+    /// Date picker done button
+    @objc func doneDatePicker() {
+        let formatter = DateFormatter()
+        formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
+        dateEntry!.text = formatter.string(from: datePicker.date)
+        // Dismiss date picker dialog
+        self.contentView.endEditing(true)
+    }
     
+    /// Date picker cancel button
+    @objc func cancelDatePicker() {
+        self.contentView.endEditing(true)
+    }
     
     @objc func doneCategoryPicker() {
         categoryField?.text = CategoryEnum.Categories.allCases[categoryPicker!.selectedRow(inComponent: 0)].rawValue
-        self.view.endEditing(true)
+        self.contentView.endEditing(true)
     }
 
     @objc func cancelCategoryPicker() {
-        self.view.endEditing(true)
+        self.contentView.endEditing(true)
     }
     
     @objc func tapDescriptionDone() {
-        self.view.endEditing(true)
+        self.contentView.endEditing(true)
     }
     
     @objc func tapNotesDone() {
-         self.view.endEditing(true)
+         self.contentView.endEditing(true)
     }
-    
-    
     
     @objc func tapSave() {
         // Entry validation
@@ -206,8 +239,7 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
         }
     }
 
-    
-    
+    //MARK: Category picker properties
     // Category Picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -219,5 +251,19 @@ class CalendarEditEntryVC: UIViewController, UIPickerViewDataSource, UIPickerVie
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return String(CategoryEnum.Categories.allCases[row].rawValue)
+    }
+    
+    //MARK: Methods to manage keybaord
+    @objc func keyboardDidShow(notification: NSNotification) {
+        let info = notification.userInfo
+        let keyBoardSize = info![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
+        scrollView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyBoardSize.height, right: 0.0)
+        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyBoardSize.height, right: 0.0)
+    }
+
+    @objc func keyboardDidHide(notification: NSNotification) {
+
+        scrollView.contentInset = UIEdgeInsets.zero
+        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
     }
 }

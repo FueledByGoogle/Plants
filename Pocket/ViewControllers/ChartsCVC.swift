@@ -90,7 +90,7 @@ class ChartsCVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     func reloadData(startDate: String, endDate: String) {
         categories.removeAll()
         categoryTotal.removeAll()
-        print ("View refreshed")
+        print ("POCKETDEBUG [ChartsCVC] - \(#function) - View refreshed")
         (categories, categoryTotal) = (GLOBAL_userDatabase?.loadCategoriesAndTotals(startingDate: startDate, endingDate: endDate))!
         
         pieView?.updateData(categories: categories, categoryTotal: categoryTotal)
