@@ -40,17 +40,19 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         
         let save = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(tapSave))
         navigationItem.rightBarButtonItems = [save]
+     
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        
-        NotificationCenter.default.addObserver(self,selector: #selector(self.keyboardDidShow(notification:)),
-        name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self,selector: #selector(self.keyboardDidShow(notification:)),
-        name: UIResponder.keyboardDidHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+
     }
     
     override func viewDidLayoutSubviews() {
         scrollView.contentSize = contentView.frame.size
     }
+    
+    
+    //MARK: UI
     
     func setupScrollView() {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,14 +68,9 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         self.view.addSubview(scrollView) // scrollView needs to be a subview before adding constraints
         scrollView.addSubview(contentView)
         
-        scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        scrollView.widthAnchor.constraint(equalTo: view.widthAnchor).isActive = true
-        scrollView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        scrollView.contentSize = CGSize(width: self.view.safeAreaLayoutGuide.layoutFrame.size.width, height: self.view.safeAreaLayoutGuide.layoutFrame.size.height)
     }
 
-    
-    //MARK: Set up labels and text fields
     func setupCategoryPicker() {
         // Picker
         categoryPicker = UIPickerView()
@@ -93,7 +90,6 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         
         cumulativeOffset += (categoryField?.frame.height)!
     }
-    
     
     func setupAmount() {
         let amountLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset,
@@ -118,7 +114,6 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         cumulativeOffset += amountLabel.frame.height
     }
 
-    
     func setupDatePicker() {
         // Date label
         let dateLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset,
@@ -143,7 +138,6 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         dateEntry!.text = calendarTVCell!.expenseEntryDate
         self.contentView.addSubview(dateEntry!)
     }
-    
     
     func setupDescriptionAndNotes() {
         
@@ -182,7 +176,7 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     }
 
     
-    //MARK: Setup button actions
+    //MARK: button actions
     /// Date picker done button
     @objc func doneDatePicker() {
         let formatter = DateFormatter()
@@ -239,7 +233,7 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         }
     }
 
-    //MARK: Category picker properties
+    //MARK: Picker view properties
     // Category Picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -254,16 +248,19 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     }
     
     //MARK: Methods to manage keybaord
-    @objc func keyboardDidShow(notification: NSNotification) {
-        let info = notification.userInfo
-        let keyBoardSize = info![UIResponder.keyboardFrameEndUserInfoKey] as! CGRect
-        scrollView.contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyBoardSize.height, right: 0.0)
-        scrollView.scrollIndicatorInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyBoardSize.height, right: 0.0)
+
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+           // if keyboard size is not available for some reason, dont do anything
+           return
+        }
+      
+      // move the root view up by the distance of keyboard height
+      self.view.frame.origin.y = 0 - keyboardSize.height
     }
-
-    @objc func keyboardDidHide(notification: NSNotification) {
-
-        scrollView.contentInset = UIEdgeInsets.zero
-        scrollView.scrollIndicatorInsets = UIEdgeInsets.zero
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+      // move back the root view origin to zero
+      self.view.frame.origin.y = 0
     }
 }

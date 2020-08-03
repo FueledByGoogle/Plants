@@ -125,8 +125,8 @@
 				027248D9238F2B5B003A23E9 /* Database */,
 				0296F92B23C3DFAB00C92A9E /* CustomClass */,
 				02F2590E23CD055700167904 /* Extensions */,
-				0220479A2100EB6B002F6E9B /* ViewControllers */,
-				02886EE42352B7D8006F7B8D /* Cells */,
+				02D5120C24C81A4400408646 /* Miscellaneous */,
+				0220479A2100EB6B002F6E9B /* Views */,
 				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				021964C22094333F009A43A6 /* Info.plist */,
@@ -154,24 +154,23 @@
 			path = PocketUITests;
 			sourceTree = "<group>";
 		};
-		021ABB7324779C3000B20F81 /* Calendar */ = {
+		021ABB7324779C3000B20F81 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				024B266123B45E0500DE1584 /* CalendarCVCCell.swift */,
 				02671EA02409AEF10074AF8C /* CalendarTVCell.swift */,
 			);
-			path = Calendar;
+			path = Cells;
 			sourceTree = "<group>";
 		};
-		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
+		0220479A2100EB6B002F6E9B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				02D5120C24C81A4400408646 /* Miscellaneous */,
 				02DDC4CC243681E200276F8A /* Calendar */,
-				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
-				02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */,
+				0284EFD924CACC08007B1F67 /* AddExpense */,
+				0284EFDA24CACC1C007B1F67 /* Charts */,
 			);
-			path = ViewControllers;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		027248D9238F2B5B003A23E9 /* Database */ = {
@@ -183,14 +182,22 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		02886EE42352B7D8006F7B8D /* Cells */ = {
+		0284EFD924CACC08007B1F67 /* AddExpense */ = {
 			isa = PBXGroup;
 			children = (
-				021ABB7324779C3000B20F81 /* Calendar */,
 				02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */,
-				02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */,
+				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 			);
-			path = Cells;
+			path = AddExpense;
+			sourceTree = "<group>";
+		};
+		0284EFDA24CACC1C007B1F67 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */,
+				02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */,
+			);
+			path = Charts;
 			sourceTree = "<group>";
 		};
 		0296F92B23C3DFAB00C92A9E /* CustomClass */ = {
@@ -214,6 +221,7 @@
 		02DDC4CC243681E200276F8A /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				021ABB7324779C3000B20F81 /* Cells */,
 				024E34FB23DB71260059AA0A /* CalendarView.swift */,
 				024B265F23B3F8E900DE1584 /* CalendarCVC.swift */,
 				02F8515723F72F1F0059743E /* CalendarTV.swift */,
