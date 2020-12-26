@@ -5,7 +5,7 @@ import UIKit
 /// Description:
 class CalendarView: UIViewController {
     
-    private var collectionView: CalendarCVC?
+    private var collectionView: CalendarCV?
     private var tableView: CalendarTV?
     
     private let datePicker: UIDatePickerMonthYear = UIDatePickerMonthYear()
@@ -84,7 +84,7 @@ class CalendarView: UIViewController {
         
         
         let height = self.view.frame.width/7*5
-        collectionView = CalendarCVC(frame: CGRect(x: 0, y: cumulativeYOffset+1, width: self.view.frame.width, height: height), collectionViewLayout: layout)
+        collectionView = CalendarCV(frame: CGRect(x: 0, y: cumulativeYOffset+1, width: self.view.frame.width, height: height), collectionViewLayout: layout)
         collectionView!.viewDidLoad()
         collectionView!.setCollectionViewLayout(layout, animated: false)
         self.view.addSubview(collectionView!)

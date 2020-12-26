@@ -6,173 +6,233 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     
     var calendarTVCell : CalendarTVCell?
     
-
-    
     // Category
-    var categoryField : UITextField?
     var categoryPicker: UIPickerView?
-    // Amount
-    var amountEntry: UITextField?
-    // Date
-    let datePicker: UIDatePicker = UIDatePicker()
-    var dateEntry: UITextField?
-    // Description
-    var descriptionTextView: UITextView?
-    var notesTextView: UITextView?
     
-    // UI
-    var cumulativeOffset = CGFloat(0)
-    let scrollView = UIScrollView()
-    let contentView = UIView()
+    let scrollView: UIScrollView = {
+        let v = UIScrollView()
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
+    
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = NSLayoutConstraint.Axis.vertical
+        stackView.distribution = UIStackView.Distribution.equalSpacing
+        stackView.alignment = UIStackView.Alignment.leading
+        stackView.spacing = 16.0
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        return stackView
+    }()
+    
+    let categoryTextField: UITextFieldNoMenu = {
+        let textField = UITextFieldNoMenu()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.font = UIFont.preferredFont(forTextStyle: .title1)
+        textField.adjustsFontSizeToFitWidth = true
+        return textField
+    }()
+    
+    let amountLabel: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textAlignment = .left
+        label.setupStyle(text: "Amount:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .headline))
+        return label
+    }()
+    
+    let amountTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.adjustsFontSizeToFitWidth = true
+        textField.textAlignment = .left
+        textField.keyboardType = UIKeyboardType.decimalPad
+        return textField
+    }()
+    
+    let dateLabel: UILabel = {
+        let label = UILabel()
+        label.setupStyle(text: "Date:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .headline))
+        return label
+    }()
+    
+    let datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        if #available(iOS 13.4, *) {
+            datePicker.preferredDatePickerStyle = UIDatePickerStyle.wheels
+        } else {
+            // Fallback on earlier versions
+        }
+        return datePicker
+    }()
+    
+    let dateTextField: UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        textField.adjustsFontSizeToFitWidth = true
+        textField.textAlignment = .left
+        return textField
+    }()
+    
+    let descriptionLabel: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .headline))
+        return label
+    }()
+    
+    let descriptionTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.isScrollEnabled = false
+        textView.font =  UIFont.preferredFont(forTextStyle: .body)
+        return textView
+    }()
+    
+    let notesLabel: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .headline))
+        return label
+    }()
+    
+    let notesTextView: UITextView = {
+        let textView = UITextView()
+        textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.isScrollEnabled = false
+        textView.font =  UIFont.preferredFont(forTextStyle: .body)
+        return textView
+    }()
+    
+    
+    // For keyboard
+    var activeField: UITextField?
     
     override func viewDidLoad() {
         self.edgesForExtendedLayout = []
         self.view.backgroundColor = UIColor.systemGray6
         
         // UI
-        setupScrollView()
-        setupCategoryPicker()
-        setupAmount()
-        setupDatePicker()
-        setupDescriptionAndNotes()
-        
-        contentView.frame = CGRect(x: 0, y: self.view.safeAreaInsets.top, width: self.view.safeAreaLayoutGuide.layoutFrame.size.width, height: cumulativeOffset)
+        setupUI()
         
         let save = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(tapSave))
         navigationItem.rightBarButtonItems = [save]
-     
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        // call the 'keyboardWillShow' function when the view controller receive the notification that a keyboard is going to be shown
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
 
+         // call the 'keyboardWillHide' function when the view controlelr receive notification that keyboard is going to be hidden
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override func viewDidLayoutSubviews() {
-        scrollView.contentSize = contentView.frame.size
     }
     
     
     //MARK: UI
-    
-    func setupScrollView() {
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
-        
-        scrollView.frame = CGRect(x: 0, y: self.view.safeAreaInsets.top,
-                                  width: self.view.safeAreaLayoutGuide.layoutFrame.size.width,
-                                  height: self.view.safeAreaLayoutGuide.layoutFrame.size.height)
-        // content view height will need to be set after the height of the all contents are determined
-//        scrollView.backgroundColor = .red
-//        contentView.backgroundColor = .blue
+    func setupUI() {
         
         self.view.addSubview(scrollView) // scrollView needs to be a subview before adding constraints
-        scrollView.addSubview(contentView)
+//        scrollView.contentSize = contentView.frame.size
+//        contentView.translatesAutoresizingMaskIntoConstraints = false
+//        scrollView.addSubview(contentView)
         
-        scrollView.contentSize = CGSize(width: self.view.safeAreaLayoutGuide.layoutFrame.size.width, height: self.view.safeAreaLayoutGuide.layoutFrame.size.height)
-    }
-
-    func setupCategoryPicker() {
-        // Picker
+        NSLayoutConstraint.activate([
+            scrollView.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 5.0),
+            scrollView.rightAnchor.constraint(equalTo: view.rightAnchor, constant: -5.0),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 5.0),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -5.0),
+        ])
+        
+        //Stack View
+        scrollView.addSubview(stackView)
+        stackView.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+        
+        
+        // Category Picker
         categoryPicker = UIPickerView()
         categoryPicker!.frame.size.width = self.view.frame.width
         categoryPicker!.delegate = self
         categoryPicker!.dataSource = self
         
-        
         // Category text field
-        categoryField = UITextFieldNoMenu(frame: CGRect(x: 10, y: 0, width: self.view.frame.width-20, height: self.view.frame.height*0.15))
-        categoryField?.text = calendarTVCell!.expenseCategory
-        categoryField?.font = .systemFont(ofSize: 35)
-        categoryField?.adjustsFontSizeToFitWidth = true
-        categoryField?.inputView = categoryPicker
-        categoryField?.addCancelDoneButton(target: self, doneSelector: #selector(doneCategoryPicker), cancelSelector: #selector(cancelCategoryPicker))
-        self.contentView.addSubview(categoryField!)
-        
-        cumulativeOffset += (categoryField?.frame.height)!
-    }
-    
-    func setupAmount() {
-        let amountLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset,
-                                                      width: self.view.frame.width*0.20,
-                                                      height: self.view.frame.height * 0.05))
-        amountLabel.setupStyle(text: "Amount:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.contentView.addSubview(amountLabel)
-        
-        // Expense amount input field
-        amountEntry = UITextField(frame: CGRect(x: amountLabel.frame.width+5,  y: cumulativeOffset,
-                                                width: self.view.frame.width*0.8-15,
-                                                height: amountLabel.frame.height))
-        amountEntry!.setupText(text: (calendarTVCell?.expenseAmount.text)!, color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
+        categoryTextField.text = calendarTVCell!.expenseCategory
+        categoryTextField.inputView = categoryPicker
+        categoryTextField.addCancelDoneButton(target: self, doneSelector: #selector(doneCategoryPicker), cancelSelector: #selector(cancelCategoryPicker))
+        stackView.addArrangedSubview(categoryTextField)
+        categoryTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         
         
-        amountEntry!.adjustsFontSizeToFitWidth = true
-        amountEntry!.textAlignment  = .center
-        amountEntry!.keyboardType = UIKeyboardType.decimalPad
-        amountEntry!.delegate = self
-        self.contentView.addSubview(amountEntry!)
         
-        cumulativeOffset += amountLabel.frame.height
-    }
-
-    func setupDatePicker() {
+        // Amount stackview
+        let amountStackView = UIStackView()
+        amountStackView.axis = NSLayoutConstraint.Axis.horizontal
+        amountStackView.distribution = UIStackView.Distribution.equalSpacing
+        amountStackView.alignment = UIStackView.Alignment.leading
+        amountStackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(amountStackView)
+        amountStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        amountStackView.heightAnchor.constraint(equalToConstant: amountLabel.font.lineHeight).isActive = true
+        // Amount label
+        amountStackView.addArrangedSubview(amountLabel)
+        amountLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.3).isActive = true
+        amountLabel.heightAnchor.constraint(equalToConstant: amountLabel.font.lineHeight).isActive = true
+        // Amount text field
+        amountTextField.text = (calendarTVCell?.expenseAmount.text)!
+        amountTextField.delegate = self
+        amountStackView.addArrangedSubview(amountTextField)
+        amountTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.7).isActive = true
+        amountTextField.heightAnchor.constraint(equalToConstant: amountLabel.font.lineHeight).isActive = true
+        
+        
+        // Date stackview
+        let dateStackView = UIStackView()
+        dateStackView.axis = NSLayoutConstraint.Axis.horizontal
+        dateStackView.distribution = UIStackView.Distribution.equalSpacing
+        dateStackView.alignment = UIStackView.Alignment.leading
+        dateStackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.addArrangedSubview(dateStackView)
+        dateStackView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        dateStackView.heightAnchor.constraint(equalToConstant: amountLabel.font.lineHeight).isActive = true
         // Date label
-        let dateLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset,
-                                              width: self.view.frame.width*0.30-10,
-                                              height: self.view.frame.height * 0.10))
-        dateLabel.setupStyle(text: "Date:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.contentView.addSubview(dateLabel)
+        dateStackView.addArrangedSubview(dateLabel)
+        dateLabel.widthAnchor.constraint(equalTo: dateStackView.widthAnchor, multiplier: 0.3).isActive = true
+        dateLabel.heightAnchor.constraint(equalToConstant: dateLabel.font.lineHeight).isActive = true
+        // Date text field
+        dateTextField.addCancelDoneButton(target: self, doneSelector: #selector(doneDatePicker), cancelSelector: #selector(cancelDatePicker))
+        dateTextField.inputView = datePicker
+        dateTextField.text = calendarTVCell!.expenseEntryDate
+        dateStackView.addArrangedSubview(dateTextField)
+        dateTextField.widthAnchor.constraint(equalTo: dateStackView.widthAnchor, multiplier: 0.7).isActive = true
+        dateTextField.heightAnchor.constraint(equalToConstant: dateLabel.font.lineHeight).isActive = true
         
-        // Date picker
-        dateEntry = UITextFieldNoMenu(frame: CGRect(x: dateLabel.frame.width, y: cumulativeOffset,
-                                                    width: self.view.frame.width*0.7-10,
-                                                    height: dateLabel.frame.height))
         
-        dateEntry?.addCancelDoneButton(target: self,  doneSelector: #selector(doneDatePicker), cancelSelector: #selector(cancelDatePicker))
-        dateEntry!.textAlignment = .center
-        dateEntry!.inputView = datePicker
-        
-        cumulativeOffset += dateLabel.frame.height
-        
-        // Format initial display date
-//        let intialDate = Date.stringToDate(dateFormat: DatabaseEnum.Date.dataFormat.rawValue, date: calendarTVCell!.expenseEntryDate, timezone: .current)
-        dateEntry!.text = calendarTVCell!.expenseEntryDate
-        self.contentView.addSubview(dateEntry!)
-    }
-    
-    func setupDescriptionAndNotes() {
         
         // Description label
-        let descriptionLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.05))
-        descriptionLabel.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.contentView.addSubview(descriptionLabel)
-        cumulativeOffset += descriptionLabel.frame.height
-        
+        stackView.addArrangedSubview(descriptionLabel)
+        descriptionLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        descriptionLabel.heightAnchor.constraint(equalToConstant: descriptionLabel.font.lineHeight).isActive = true
         // Description text
-        descriptionTextView = UITextView(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.15))
-        descriptionTextView!.addCancelDoneButton(target: self, doneSelector: #selector(tapDescriptionDone))
-        descriptionTextView!.text = calendarTVCell?.expenseDescription
-        descriptionTextView!.textColor = UIColor.label
-        descriptionTextView!.font = UIFont.preferredFont(forTextStyle: .body)
-        self.contentView.addSubview(descriptionTextView!)
-        cumulativeOffset += descriptionTextView!.frame.height + 5
+        descriptionTextView.text = calendarTVCell?.expenseDescription
+        stackView.addArrangedSubview(descriptionTextView)
+        descriptionTextView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        
         
         
         // Notes label
-        let notesLabel = UILabel(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.05))
-        notesLabel.setupStyle(text: "Notes:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .body))
-        self.contentView.addSubview(notesLabel)
-        cumulativeOffset += notesLabel.frame.height
-        
-        
+        stackView.addArrangedSubview(notesLabel)
+        notesLabel.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
+        notesLabel.heightAnchor.constraint(equalToConstant: descriptionLabel.font.lineHeight).isActive = true
         // Notes text
-        notesTextView = UITextView(frame: CGRect(x: 10, y: cumulativeOffset, width: self.view.frame.width-20, height: self.view.frame.height*0.4))
-        notesTextView!.addCancelDoneButton(target: self, doneSelector: #selector(tapNotesDone))
-        notesTextView!.text = calendarTVCell?.expenseNotes.text
-        notesTextView!.textColor = UIColor.label
-        notesTextView!.font = UIFont.preferredFont(forTextStyle: .body)
-        self.contentView.addSubview(notesTextView!)
+        notesTextView.text = calendarTVCell?.expenseNotes.text
+        stackView.addArrangedSubview(notesTextView)
+        notesTextView.widthAnchor.constraint(equalTo: stackView.widthAnchor).isActive = true
         
-        cumulativeOffset += notesTextView!.frame.height
+        
+        /* IMPORTANT!! This makes it so we can scroll!
+        The last anchor may seem odd because you're anchoring a view that is x points tall to an anchor that you just anchored to the bottom of the view which is definitely less than x points tall. But this is how Apple wants you to do it. This way, you do not need to create a content view, auto layout does it for you.*/
+        stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
     }
 
     
@@ -181,40 +241,40 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     @objc func doneDatePicker() {
         let formatter = DateFormatter()
         formatter.dateFormat = DatabaseEnum.Date.dataFormat.rawValue
-        dateEntry!.text = formatter.string(from: datePicker.date)
+        dateTextField.text = formatter.string(from: datePicker.date)
         // Dismiss date picker dialog
-        self.contentView.endEditing(true)
+        self.scrollView.endEditing(true)
     }
     
     /// Date picker cancel button
     @objc func cancelDatePicker() {
-        self.contentView.endEditing(true)
+        self.scrollView.endEditing(true)
     }
     
     @objc func doneCategoryPicker() {
-        categoryField?.text = CategoryEnum.Categories.allCases[categoryPicker!.selectedRow(inComponent: 0)].rawValue
-        self.contentView.endEditing(true)
+        categoryTextField.text = CategoryEnum.Categories.allCases[categoryPicker!.selectedRow(inComponent: 0)].rawValue
+        self.scrollView.endEditing(true)
     }
 
     @objc func cancelCategoryPicker() {
-        self.contentView.endEditing(true)
+        self.scrollView.endEditing(true)
     }
     
     @objc func tapDescriptionDone() {
-        self.contentView.endEditing(true)
+        self.scrollView.endEditing(true)
     }
     
     @objc func tapNotesDone() {
-         self.contentView.endEditing(true)
+         self.scrollView.endEditing(true)
     }
     
     @objc func tapSave() {
         // Entry validation
-        if (amountEntry!.text!.filter { $0 == "."}.count) > 1 { // Check for correct number of decimals
+        if (amountTextField.text!.filter { $0 == "."}.count) > 1 { // Check for correct number of decimals
             print ("Invalid input, try again")
             return
         }
-        let decimalRemoved = amountEntry!.text!.replacingOccurrences(of: ".", with: "") // Check for invalid characters
+        let decimalRemoved = amountTextField.text!.replacingOccurrences(of: ".", with: "") // Check for invalid characters
         
         
         if CharacterSet.decimalDigits.isSuperset(of: CharacterSet(charactersIn: decimalRemoved)) == false {
@@ -222,15 +282,16 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
             return
         }
         else {
-            guard let num = Double(amountEntry!.text!) else {
+            guard let num = Double(amountTextField.text!) else {
                 print ("Could not convert number to a float")
                 return
             }
             let roundedNum = String(round(100*num)/100) // Round to two decimal places, >= 5 are rounded up
             
             
-            if GLOBAL_userDatabase?.updateExpenseInDatabase(rowId: calendarTVCell!.databaseID, category: (categoryField?.text)!, amount: roundedNum, date: datePicker.date, description: (descriptionTextView?.text)!, notes: (notesTextView?.text)!) == false {}
+            if GLOBAL_userDatabase?.updateExpenseInDatabase(rowId: calendarTVCell!.databaseID, category: categoryTextField.text!, amount: roundedNum, date: datePicker.date, description: descriptionTextView.text, notes: notesTextView.text) == false {}
         }
+        self.scrollView.endEditing(true)
     }
 
     //MARK: Picker view properties
@@ -247,20 +308,17 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         return String(CategoryEnum.Categories.allCases[row].rawValue)
     }
     
-    //MARK: Methods to manage keybaord
-
-    @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-           // if keyboard size is not available for some reason, dont do anything
-           return
-        }
-      
-      // move the root view up by the distance of keyboard height
-      self.view.frame.origin.y = 0 - keyboardSize.height
-    }
     
+    
+    //MARK: Keyboard
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let keyboardFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        scrollView.contentInset.bottom = view.convert(keyboardFrame.cgRectValue, from: nil).size.height
+    }
+
     @objc func keyboardWillHide(notification: NSNotification) {
-      // move back the root view origin to zero
-      self.view.frame.origin.y = 0
+        // reset back the content inset to zero after keyboard is gone
+        scrollView.contentInset.bottom = 0
     }
 }
