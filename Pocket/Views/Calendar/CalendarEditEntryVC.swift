@@ -2,7 +2,7 @@ import UIKit
 
 
 //TODO: Need to implement scrolling view up
-class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextFieldDelegate  {
+class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewDataSource, UIPickerViewDelegate, UITextViewDelegate  {
     
     var calendarTVCell : CalendarTVCell?
     
@@ -11,7 +11,9 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     
     let scrollView: UIScrollView = {
         let v = UIScrollView()
+        v.keyboardDismissMode = .interactive // allows keyboard to be dismissed when scroll view is dragged down
         v.translatesAutoresizingMaskIntoConstraints = false
+//        v.backgroundColor = .red
         return v
     }()
     
@@ -92,7 +94,7 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     let notesLabel: UILabel = {
        let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.setupStyle(text: "Description:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .headline))
+        label.setupStyle(text: "Notes:", color: UIColor.label, font: UIFont.preferredFont(forTextStyle: .headline))
         return label
     }()
     
@@ -111,9 +113,16 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     override func viewDidLoad() {
         self.edgesForExtendedLayout = []
         self.view.backgroundColor = UIColor.systemGray6
+        self.enableDimissKeyboardOnTapOutside()
+        
+        
         
         // UI
         setupUI()
+        
+        // Set delegates to capture events
+        descriptionTextView.delegate = self
+        notesTextView.delegate = self
         
         let save = UIBarButtonItem(title: "Save", style: .plain, target: self, action: #selector(tapSave))
         navigationItem.rightBarButtonItems = [save]
@@ -123,9 +132,6 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
 
          // call the 'keyboardWillHide' function when the view controlelr receive notification that keyboard is going to be hidden
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    override func viewDidLayoutSubviews() {
     }
     
     
@@ -180,7 +186,6 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         amountLabel.heightAnchor.constraint(equalToConstant: amountLabel.font.lineHeight).isActive = true
         // Amount text field
         amountTextField.text = (calendarTVCell?.expenseAmount.text)!
-        amountTextField.delegate = self
         amountStackView.addArrangedSubview(amountTextField)
         amountTextField.widthAnchor.constraint(equalTo: stackView.widthAnchor, multiplier: 0.7).isActive = true
         amountTextField.heightAnchor.constraint(equalToConstant: amountLabel.font.lineHeight).isActive = true
@@ -260,14 +265,6 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
         self.scrollView.endEditing(true)
     }
     
-    @objc func tapDescriptionDone() {
-        self.scrollView.endEditing(true)
-    }
-    
-    @objc func tapNotesDone() {
-         self.scrollView.endEditing(true)
-    }
-    
     @objc func tapSave() {
         // Entry validation
         if (amountTextField.text!.filter { $0 == "."}.count) > 1 { // Check for correct number of decimals
@@ -295,6 +292,7 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     }
 
     //MARK: Picker view properties
+    
     // Category Picker
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -312,13 +310,74 @@ class CalendarEditEntryVC: UIViewController, UIScrollViewDelegate, UIPickerViewD
     
     //MARK: Keyboard
     
+    var keyboardHeight: CGFloat = 0
+    
     @objc func keyboardWillShow(notification: NSNotification) {
-        guard let keyboardFrame = notification.userInfo![UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
-        scrollView.contentInset.bottom = view.convert(keyboardFrame.cgRectValue, from: nil).size.height
+        
+        guard let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else {
+            return
+        }
+
+        // don't forget to subtract tab bar height because keyboard's dictation, emoji includes the tab bar height
+        keyboardHeight = keyboardFrame.cgRectValue.height - self.view.safeAreaInsets.bottom
+
+        scrollView.contentInset.bottom = keyboardHeight
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
         // reset back the content inset to zero after keyboard is gone
-        scrollView.contentInset.bottom = 0
+        scrollView.contentInset.bottom = .zero
+    }
+    
+    func keyBoardDidShow(_ notification:Notification) {
+    }
+    
+    
+    
+    //MARK: Text view protocols
+    
+    // TODO: Implement scrolling depending on where curosr is
+    func textViewDidChange(_ textView: UITextView) {
+        
+        // Because textview frame is not updated correctly on new and deleted lines we re-calculate it manually here.
+        let fixedWidth = textView.frame.size.width
+        let newSize = textView.sizeThatFits(CGSize.init(width: fixedWidth, height: CGFloat(MAXFLOAT)))
+        var newFrame = textView.frame
+        newFrame.size = CGSize.init(width: CGFloat(fmaxf(Float(newSize.width), Float(fixedWidth))), height: newSize.height)
+        
+        var lineHeight = CGFloat(0)
+        if newSize.height > textView.frame.height { // only scroll if textview is obscured by keyboard
+            lineHeight = newSize.height - textView.frame.height
+        }
+        
+        // Convert to scrollview coordinate plane
+        let tabBarHeight = (self.tabBarController?.tabBar.frame.size.height ?? 0)
+        let keyboardMinY = self.view.frame.height-keyboardHeight+tabBarHeight
+        let keyboardMinYConverted = self.view.convert(CGPoint(x: 0, y: keyboardMinY), to: scrollView)
+        
+        print("KBMinY:", keyboardMinYConverted.y, " TVMaxY:", textView.frame.maxY, " content:", scrollView.contentSize, "content offset:", scrollView.contentOffset)
+        
+        
+        // Get cursor location and convert to scrollview coordinate space
+        
+        // 'caretRect' is in the 'textView' coordinate space.
+        let caretRect = textView.caretRect(for: textView.selectedTextRange!.end)
+
+        // Convert 'caretRect' in the main window coordinate space.
+        // Passing 'nil' for the view converts to window base coordinates.
+        // Passing any 'UIView' object converts to that view coordinate space.
+        let windowRect = textView.convert(caretRect, to: scrollView)
+        
+        // Bottom of textview is blocked by keyboard
+//        if textView.frame.maxY+lineHeight > keyboardMinYConverted.y {
+        if !windowRect.maxY.isInfinite && windowRect.maxY > keyboardMinYConverted.y {
+            print("Keyboard blocking view")
+            
+            UIView.animate(withDuration: 0.5, animations: {
+                let scrollViewVisibleHeight = self.scrollView.frame.height - self.keyboardHeight + tabBarHeight
+//                self.scrollView.contentOffset = CGPoint(x: 0, y: textView.frame.maxY-scrollViewVisibleHeight+lineHeight)
+                self.scrollView.contentOffset = CGPoint(x: 0, y: windowRect.maxY-scrollViewVisibleHeight+lineHeight)
+                })
+        }
     }
 }

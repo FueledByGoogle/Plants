@@ -4,7 +4,11 @@ import UIKit
 /// Then using the selected cell the three values date, month,
 /// and year is used to create the start and end date to send to query the database.
 /// Collection view also triggers further table view reloads
+<<<<<<< HEAD:Pocket/Views/Calendar/CalendarCVC.swift
 class CalendarCV: UICollectionView, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource, UITextFieldDelegate {
+=======
+class CalendarCVC: UICollectionView, UICollectionViewDelegateFlowLayout,UICollectionViewDataSource, UITextFieldDelegate {
+>>>>>>> a3ea41ac170dbd211e9a1fb2b9503ecacab52623:Pocket/ViewControllers/Calendar/CalendarCVC.swift
     
     private var initialLoad = true
     

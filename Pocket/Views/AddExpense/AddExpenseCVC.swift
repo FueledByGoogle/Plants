@@ -17,7 +17,13 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
     // Used for the Y position of each view section e.g. expense entry -> expense date -> collection view cell begin
     var cumulativeYOffset = CGFloat(0)
     
-    let datePicker: UIDatePicker = UIDatePicker()
+    let datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        if #available(iOS 13.4, *) { //FIXME: Seems to be a bug with the new date picker so we will use old one for now
+            datePicker.preferredDatePickerStyle = .wheels
+        }
+        return datePicker
+    }()
     var dateEntry: UITextField?
     var datePickerButton: UIButton?
     
@@ -31,7 +37,7 @@ class AddExpenseCVC: UICollectionViewController, UICollectionViewDelegateFlowLay
         self.collectionView.register(AddExpenseCVCCell.self, forCellWithReuseIdentifier: cellReuseIdentifier)
         
         // Dismiss keyboard upon touching outside the keyboard
-        self.setupToHideKeyboardOnTapOnView()
+        self.enableDimissKeyboardOnTapOutside()
         // View setup
         setupExpenseDataEntry()
         
