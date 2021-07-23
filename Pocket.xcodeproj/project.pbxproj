@@ -22,7 +22,7 @@
 		0232912E247DB619001307FC /* ExtensionUILabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232912D247DB619001307FC /* ExtensionUILabel.swift */; };
 		02329130247DC701001307FC /* ExtensionUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232912F247DC701001307FC /* ExtensionUITextView.swift */; };
 		0232D92E238F5A710023BFA8 /* Database.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0232D92D238F5A710023BFA8 /* Database.swift */; };
-		024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B265F23B3F8E900DE1584 /* CalendarCVC.swift */; };
+		024B266023B3F8E900DE1584 /* CalendarCV.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B265F23B3F8E900DE1584 /* CalendarCV.swift */; };
 		024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024B266123B45E0500DE1584 /* CalendarCVCCell.swift */; };
 		024E34FC23DB71260059AA0A /* CalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 024E34FB23DB71260059AA0A /* CalendarView.swift */; };
 		0266A55923429B6800025226 /* AddExpenseCVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0266A55823429B6800025226 /* AddExpenseCVC.swift */; };
@@ -66,7 +66,7 @@
 		0232912D247DB619001307FC /* ExtensionUILabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExtensionUILabel.swift; sourceTree = "<group>"; };
 		0232912F247DC701001307FC /* ExtensionUITextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionUITextView.swift; sourceTree = "<group>"; };
 		0232D92D238F5A710023BFA8 /* Database.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Database.swift; sourceTree = "<group>"; };
-		024B265F23B3F8E900DE1584 /* CalendarCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVC.swift; sourceTree = "<group>"; };
+		024B265F23B3F8E900DE1584 /* CalendarCV.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCV.swift; sourceTree = "<group>"; };
 		024B266123B45E0500DE1584 /* CalendarCVCCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarCVCCell.swift; sourceTree = "<group>"; };
 		024E34FB23DB71260059AA0A /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		0266A55823429B6800025226 /* AddExpenseCVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddExpenseCVC.swift; sourceTree = "<group>"; };
@@ -125,8 +125,8 @@
 				027248D9238F2B5B003A23E9 /* Database */,
 				0296F92B23C3DFAB00C92A9E /* CustomClass */,
 				02F2590E23CD055700167904 /* Extensions */,
-				0220479A2100EB6B002F6E9B /* ViewControllers */,
-				02886EE42352B7D8006F7B8D /* Cells */,
+				02D5120C24C81A4400408646 /* Miscellaneous */,
+				0220479A2100EB6B002F6E9B /* Views */,
 				02202DC5231C69B200FAAFC4 /* PieChart.swift */,
 				02202DBC231B32DC00FAAFC4 /* MyEnums.swift */,
 				021964C22094333F009A43A6 /* Info.plist */,
@@ -154,25 +154,23 @@
 			path = PocketUITests;
 			sourceTree = "<group>";
 		};
-		021ABB7324779C3000B20F81 /* Calendar */ = {
+		021ABB7324779C3000B20F81 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
 				024B266123B45E0500DE1584 /* CalendarCVCCell.swift */,
 				02671EA02409AEF10074AF8C /* CalendarTVCell.swift */,
 			);
-			path = Calendar;
+			path = Cells;
 			sourceTree = "<group>";
 		};
-		0220479A2100EB6B002F6E9B /* ViewControllers */ = {
+		0220479A2100EB6B002F6E9B /* Views */ = {
 			isa = PBXGroup;
 			children = (
 				02DDC4CC243681E200276F8A /* Calendar */,
-				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
-				02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */,
-				029B4E8621E1DACD00882705 /* TabBar.swift */,
-				0220479B2100EB96002F6E9B /* SearchVc.swift */,
+				0284EFD924CACC08007B1F67 /* AddExpense */,
+				0284EFDA24CACC1C007B1F67 /* Charts */,
 			);
-			path = ViewControllers;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		027248D9238F2B5B003A23E9 /* Database */ = {
@@ -184,14 +182,22 @@
 			path = Database;
 			sourceTree = "<group>";
 		};
-		02886EE42352B7D8006F7B8D /* Cells */ = {
+		0284EFD924CACC08007B1F67 /* AddExpense */ = {
 			isa = PBXGroup;
 			children = (
-				021ABB7324779C3000B20F81 /* Calendar */,
 				02886EE52352B82F006F7B8D /* AddExpenseCVCCell.swift */,
-				02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */,
+				0266A55823429B6800025226 /* AddExpenseCVC.swift */,
 			);
-			path = Cells;
+			path = AddExpense;
+			sourceTree = "<group>";
+		};
+		0284EFDA24CACC1C007B1F67 /* Charts */ = {
+			isa = PBXGroup;
+			children = (
+				02886EE72352C30A006F7B8D /* ChartsCVCCell.swift */,
+				02202DC4231C69B200FAAFC4 /* ChartsCVC.swift */,
+			);
+			path = Charts;
 			sourceTree = "<group>";
 		};
 		0296F92B23C3DFAB00C92A9E /* CustomClass */ = {
@@ -203,11 +209,21 @@
 			path = CustomClass;
 			sourceTree = "<group>";
 		};
+		02D5120C24C81A4400408646 /* Miscellaneous */ = {
+			isa = PBXGroup;
+			children = (
+				029B4E8621E1DACD00882705 /* TabBar.swift */,
+				0220479B2100EB96002F6E9B /* SearchVc.swift */,
+			);
+			path = Miscellaneous;
+			sourceTree = "<group>";
+		};
 		02DDC4CC243681E200276F8A /* Calendar */ = {
 			isa = PBXGroup;
 			children = (
+				021ABB7324779C3000B20F81 /* Cells */,
 				024E34FB23DB71260059AA0A /* CalendarView.swift */,
-				024B265F23B3F8E900DE1584 /* CalendarCVC.swift */,
+				024B265F23B3F8E900DE1584 /* CalendarCV.swift */,
 				02F8515723F72F1F0059743E /* CalendarTV.swift */,
 				021ABB71247785D000B20F81 /* CalendarEditEntryVC.swift */,
 			);
@@ -269,7 +285,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0900;
-				LastUpgradeCheck = 1120;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = "Leo Huang";
 				TargetAttributes = {
 					021964B22094333F009A43A6 = {
@@ -333,7 +349,7 @@
 				020C4ADB24374B1D000DCC58 /* UIDatePickerMonthYear.swift in Sources */,
 				024B266223B45E0500DE1584 /* CalendarCVCCell.swift in Sources */,
 				02F2591823CD05ED00167904 /* ExtensionString.swift in Sources */,
-				024B266023B3F8E900DE1584 /* CalendarCVC.swift in Sources */,
+				024B266023B3F8E900DE1584 /* CalendarCV.swift in Sources */,
 				0220479C2100EB96002F6E9B /* SearchVc.swift in Sources */,
 				02F2591223CD059600167904 /* ExtensionUIButton.swift in Sources */,
 				021ABB72247785D000B20F81 /* CalendarEditEntryVC.swift in Sources */,
@@ -382,6 +398,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -441,6 +458,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
