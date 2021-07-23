@@ -1,31 +1,39 @@
 # Pocket
 
-An IOS app to track your daily expenses. All UI designed programmatically rather than using Apple's visual interface builder storyboard.
+An IOS app to track your daily expenses. All UI designed programmatically without storyboard or SwiftUI.
+
+## Longterm Goals
+- Exportable data.
+- Exportable charts for easy viewing.
+- Incorporate payment providers so all transactions are automatically entered for transactions.
 
 
-## Todo (In order of priority):
+## Todo (In order of priority)
 
-- Draw my own UI icons
-- Choose custom date for pie view
-
-
-## Bugs:
-
-- Highlighted calendar cell text colour not reverting back correctly upon switching to another month while date picker tool is up
+- Check over completion handlers for database operations to prevent nil pointer crashes in case data is too slowly loaded.
+- Choose custom date for pie view.
+- Calendar date positioned depending on day of the week so the 1st day doesn't always start at the top left of the calendar view.
+- Draw my own UI icons.
 
 
-## Currently Completed: 
-- Calendar view which users can choose different months of the year, and specific date to view epxneses
-- Swipe to delete single entries from calendar view
-- Edit an existing entry from calendar view
-- User can choose a date, amount, to enter into database
-- Custom pie chart drawn from data that dynamically assigns a colour to a category, and displayed along with a chart legend.
-- Update pie chart view based on filter of current day, week, month, or year.
-- Consistent dark/light mode colour switching
+## Currently Completed
+### Calendar View
+  - Users filter expneses depending by date.
+  - Easily delete entries by swiping left in the cell.
+  - Edit an existing entry from calendar view.
+### Expense Edit View
+  - Textview automatically scrolls up if cursor is obscured by the keyboard (pain in the ass).
+### Add Expense view
+  - Enter a detailed description of an expense
+### Chart View
+  - Custom pie chart drawn from data that dynamically assigns a colour to a category, and displayed along with a chart legend.
+  - Update pie chart view based on filter of current day, week, month, or year.
+### General
+  - Adaptive dark/light mode colour switching.
 
-## Improvements:
-- Refresh table view in calendar tab after user edits entry, this provides smoother looking animation
+## Bugs
 
+- Highlighted calendar cell text colour not reverting back correctly upon switching to another month while date picker tool is up.
 
 
 <img src="/MarkdownImages/Calendar.png" width="300"/>
