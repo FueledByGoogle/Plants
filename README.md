@@ -22,7 +22,7 @@ An IOS app to track your daily expenses. All UI designed programmatically withou
   - Easily delete entries by swiping left in the cell.
   - Edit an existing entry from calendar view.
 ### Expense Edit View
-  - Textview automatically scrolls up if cursor is obscured by the keyboard (pain in the ass).
+  - Textview automatically scrolls up if cursor is obscured by the keyboard (Ths was a pain in the ass to get right).
 ### Add Expense view
   - Enter a detailed description of an expense
 ### Chart View
