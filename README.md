@@ -1,6 +1,6 @@
 # Pocket
 
-An IOS app to track your daily expenses. All UI designed programmatically without storyboard or SwiftUI. **Currently prioritising a new photography app over Pocket, happy with what I've learned so far creating this app and will be using this as a basis for the new photography app. (With improvements of course)**
+An IOS app to track your daily expenses. All UI designed programmatically without storyboard or SwiftUI. **Currently prioritizing a new photography app over Pocket, happy with what I've learned so far creating this app and will be using this as a basis for the new photography app. (With improvements of course)**
 
 ## Longterm Goals
 - Exportable data.
@@ -18,7 +18,7 @@ An IOS app to track your daily expenses. All UI designed programmatically withou
 
 ## Currently Completed
 ### Calendar View
-  - Users filter expneses depending by date.
+  - Users filter expense depending by date.
   - Easily delete entries by swiping left in the cell.
   - Edit an existing entry from calendar view.
 ### Expense Edit View
